@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-light py-5 text-center border-bottom">
+    <div class="container py-5">
+        <h1 class="display-4 fw-bold">Welcome to ANTS</h1>
+        <p class="lead text-muted mb-4">All Nations Theological College and Seminary</p>
+        <p class="mb-4">Preparing Servants for the Harvest</p>
+        <a href="#" class="btn btn-primary btn-lg">Explore Programs</a>
+        <a href="{% url 'about' %}" class="btn btn-outline-secondary btn-lg ms-2">Learn More</a>
+    </div>
+</div>
+
+<!-- Highlights Section -->
+<div class="container py-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="h5">Biblical Foundation</h3>
+                    <p class="card-text text-muted">Rooted in the unshakeable truth of Scripture.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="h5">Practical Ministry</h3>
+                    <p class="card-text text-muted">Hands-on training for real-world challenges.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="h5">Global Mission</h3>
+                    <p class="card-text text-muted">Preparing Servants for the Harvest</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

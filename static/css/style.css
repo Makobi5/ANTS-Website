@@ -1,0 +1,150 @@
+/* ANTS Brand Colors */
+:root {
+    --ants-purple: #4a148c;
+    --ants-gold: #ffca28;
+    --footer-bg: #002147;
+}
+
+/* --- 1. Top Navigation Bar (The "ANTS Identity") --- */
+/* Update this block in your style.css */
+.top-navbar {
+    background-color: var(--ants-purple);
+    border-bottom: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0;
+    
+    /* NEW: Ensures it stays on top of everything else */
+    z-index: 1020; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3); /* Adds a shadow so it pops out */
+}
+
+.top-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important; /* White text */
+    border-right: 1px solid rgba(255, 255, 255, 0.1); /* Very subtle dividers */
+    padding: 12px 25px !important; /* Spacing */
+    position: relative; /* Needed for the hover effect */
+    transition: all 0.3s ease;
+}
+
+/* The "Gold Underline" Hover Effect */
+.top-navbar .nav-link:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--ants-gold);
+    transition: width 0.3s;
+}
+
+.top-navbar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker on hover */
+}
+
+.top-navbar .nav-link:hover:after {
+    width: 100%; /* The gold line expands across */
+}
+
+/* --- 2. Header & Logo Area --- */
+/* Fix the Logo Size */
+.brand-logo {
+    height: 90px;  /* Limits the height strictly */
+    width: auto;   /* Maintains aspect ratio */
+    object-fit: contain;
+}
+
+/* Ensure the header has enough breathing room */
+.brand-header {
+    background-color: #ffffff;
+    padding: 20px 0;
+}
+
+/* --- 3. The Custom "Apply Now" Button --- */
+.btn-apply-custom {
+    background-color: var(--ants-gold);
+    color: var(--ants-purple);
+    font-weight: 800; /* Extra Bold */
+    text-transform: uppercase;
+    padding: 12px 30px;
+    border-radius: 50px; /* Makes it a "Pill" shape */
+    border: 2px solid var(--ants-gold);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-apply-custom:hover {
+    background-color: white;
+    color: var(--ants-purple);
+    border: 2px solid var(--ants-purple);
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* --- 4. The Solid Gold Anchor Line --- */
+.brand-separator {
+    height: 8px;
+    background-color: var(--ants-gold); /* Solid Gold Bar */
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); /* Shadow below the line */
+}
+
+/* 4. Footer & Buttons (Keep these) */
+.btn-primary {
+    background-color: var(--ants-purple);
+    border-color: var(--ants-purple);
+}
+
+.btn-warning {
+    background-color: var(--ants-gold);
+    color: #000;
+    font-weight: bold;
+}
+
+footer {
+    background-color: var(--footer-bg);
+    color: white;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+}
+
+footer a { color: white; text-decoration: none; }
+
+/* --- Social Media Icons (Header) --- */
+.social-header-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Space between icons */
+}
+
+.social-icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes it a perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important; /* Force icon color to white */
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, opacity 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.social-icon-circle:hover {
+    transform: translateY(-3px); /* Floats up slightly on hover */
+    opacity: 0.9;
+}
+
+/* Brand Colors */
+.bg-facebook { background-color: #1877F2; }
+.bg-x { background-color: #000000; }
+.bg-youtube  { background-color: #FF0000; }
+.bg-linkedin { background-color: #0A66C2; }
+.bg-tiktok   { background-color: #000000; }
+
+.bg-x { 
+    background-color: #000000 !important; /* Forces it to be black */
+    color: white;
+}

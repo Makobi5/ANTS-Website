@@ -6,76 +6,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Nations Theological College and Seminary | ANTS</title>
     
-    <!-- Bootstrap 5 CSS CDN -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Custom CSS (We will use this later) -->
+    <!-- FontAwesome for Social Icons -->
+    <!-- FontAwesome 6.5.2 (Includes the new X logo) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <!-- 1. Top Navigation Bar (Menu Only) -->
+    <nav class="navbar navbar-expand-lg top-navbar sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">ANTS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Programs</a></li>
+                <ul class="navbar-nav w-100 justify-content-center"> <!-- Center the menu -->
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About ANTS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Academics</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Admissions</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Students</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">News & Events</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contacts</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-warning text-dark ms-2 px-3 fw-bold" href="#">Apply Now</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Library</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Block -->
-    <!-- This is where individual pages will inject their content -->
+<!-- 2. Brand Header (Logo - Socials - Apply) -->
+    <header class="brand-header">
+        <div class="container">
+            <div class="row align-items-center">
+                
+                <!-- Column 1: Logo & Name (Left) -->
+                <div class="col-lg-5 col-md-12 text-center text-lg-start mb-3 mb-lg-0">
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" class="brand-logo">
+                        </a>
+                        <div class="ms-3 text-start">
+                            <h1 class="mb-0 fw-bold text-dark" style="font-size: 1.5rem; line-height: 1.2;">
+                                All Nations Theological <br> College & Seminary
+                            </h1>
+                            <p class="mb-0 text-muted fst-italic small">
+                                "Make Disciples of All Nations"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Social Media Icons (Center) -->
+                <div class="col-lg-4 col-md-6 text-center mb-3 mb-lg-0">
+                    <div class="social-header-icons">
+                        <a href="#" class="social-icon-circle bg-facebook" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon-circle bg-x" title="X">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon-circle bg-youtube" title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon-circle bg-linkedin" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon-circle bg-tiktok" title="TikTok">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 3: Apply Button (Right) -->
+                <div class="col-lg-3 col-md-6 text-center text-lg-end">
+                    <a href="#" class="btn btn-apply-custom btn-lg px-4">Apply Now</a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- 3. Decorative Separator Line -->
+    <div class="brand-separator"></div>
+
+    <!-- Main Content -->
     <main class="flex-grow-1">
         {% block content %}
         {% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-auto">
+    <!-- Footer (Styled like Victoria University) -->
+    <footer>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <h5>ANTS</h5>
-                    <p class="small">Training leaders for the nations. Developing spiritual maturity and academic excellence.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled small">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Diploma Programs</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Admissions</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contact</h5>
-                    <p class="small text-white-50">
-                        Kampala, Uganda<br>
-                        Email: info@ants.ac.ug<br>
-                        Phone: +256 700 000 000
+                <!-- Column 1: Address & About -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold text-uppercase mb-3">All Nations Theological College and Seminary</h5>
+                    <p class="small">
+                        <strong>Our Address:</strong><br>
+                        P.O. Box 84, Kisubi, Uganda<br>
+                        Bwerenga Kawuku, 5km off Entebbe Road<br>
+                        
+                    </p>
+                    <p class="small mt-3">
+                        Training leaders for the nations. Developing spiritual maturity and academic excellence since 1990.
                     </p>
                 </div>
+
+                <!-- Column 2: Contact Info -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold text-uppercase mb-3">Contact Us</h5>
+                    <p class="small mb-1">Send us an email at:</p>
+                    <a href="mailto:info@ants.ac.ug" class="fw-bold">info@ants.ac.ug</a><br>
+
+                    <p class="small mt-3 mb-1">Admissions & Registry:</p>
+                    <a href="mailto:admin@ants.ac.ug" class="fw-bold">admin@ants.ac.ug</a>
+
+                    <div class="mt-3">
+                        <a href="#" class="footer-btn">Send Us a message</a>
+                    </div>
+                </div>
+
+                <!-- Column 3: Socials & Logo -->
+                <div class="col-md-4 mb-4 text-md-end text-start">
+                    <div class="mb-3 social-icons">
+                        <a href="#" class="me-2"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="me-2"><i class="fa-brands fa-x-twitter"></i></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-youtube"></i></i></a>
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    
+                    <div class="mt-4">
+                        {% comment %} <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" width="80" class="mb-2"> {% endcomment %}
+                        <h6 class="text-uppercase fw-bold text-warning">All Nations Theological College & Seminary</h6>
+                        <p class="small fst-italic">"From Learning to Ministry"</p>
+                    </div>
+                </div>
             </div>
+            
             <div class="text-center border-top border-secondary pt-3 mt-3 small text-white-50">
-                &copy; 2025 All Nations Theological College and Seminary.
+                &copy; 2026 All Nations Theological College and Seminary.
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
