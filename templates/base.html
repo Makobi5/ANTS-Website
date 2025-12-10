@@ -28,7 +28,21 @@
                 <ul class="navbar-nav w-100 justify-content-center"> <!-- Center the menu -->
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About ANTS</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Academics</a></li>
+                                            
+                        <!-- Programs Dropdown -->
+                        <li class="nav-item dropdown">
+                            <!-- added 'dropdown-toggle' class for the arrow icon -->
+                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Programs
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="programsDropdown">
+                                <!-- Add your real links in the href="" later -->
+                                <li><a class="dropdown-item" href="#">Bachelor's</a></li>
+                                <li><a class="dropdown-item" href="#">Diplomas</a></li>
+                                <li><a class="dropdown-item" href="#">Short courses</a></li>
+                            </ul>
+                        </li>
+                    
                     <li class="nav-item"><a class="nav-link" href="#">Admissions</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Students</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">News & Events</a></li>
