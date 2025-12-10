@@ -244,3 +244,48 @@ footer a { color: white; text-decoration: none; }
         transform: translateY(0);
     }
 }
+
+/* --- Mega Menu / 2-Column Dropdown Styling --- */
+
+/* 1. Make the "About" dropdown wider to fit 2 columns */
+.top-navbar .megamenu-custom {
+    min-width: 500px; /* Adjust this if you want it wider */
+    padding: 15px 0;
+}
+
+/* 2. Style the headers (Get Informed / Governance) */
+.dropdown-header-custom {
+    color: var(--ants-gold);
+    font-weight: 800; /* Extra bold */
+    font-size: 0.85rem;
+    padding: 5px 25px 10px 25px; /* Spacing around the header */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+/* 3. Adjust the vertical white line separator */
+.border-white-50 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 4. Fix dropdown items inside the columns to line up correctly */
+.top-navbar .megamenu-custom .dropdown-item {
+    padding-left: 25px; /* Indent the links slightly under the header */
+}
+
+/* 5. Mobile Responsive Adjustment */
+/* On mobile, we stack them instead of side-by-side */
+@media (max-width: 991px) {
+    .top-navbar .megamenu-custom {
+        min-width: 100%;
+    }
+    .top-navbar .megamenu-custom .d-flex {
+        flex-direction: column;
+    }
+    .top-navbar .megamenu-custom .col-6 {
+        width: 100%;
+        border-right: none !important; /* Remove separator on mobile */
+        margin-bottom: 15px;
+    }
+}
