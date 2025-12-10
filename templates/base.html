@@ -8,46 +8,54 @@
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome for Social Icons -->
-    <!-- FontAwesome 6.5.2 (Includes the new X logo) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- FontAwesome 6.5.2 (For Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- 1. Top Navigation Bar (Menu Only) -->
+    <!-- ============================================ -->
+    <!-- 1. TOP NAVIGATION BAR (Sticky Menu)          -->
+    <!-- ============================================ -->
     <nav class="navbar navbar-expand-lg top-navbar sticky-top">
         <div class="container">
-            <!-- Mobile Toggle Button -->
+            
+            <!-- Mobile Toggle Button (Hamburger Menu) -->
             <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <!-- Menu Links Container -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav w-100 justify-content-center"> <!-- Center the menu -->
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    <!-- About ANTS Dropdown (Mega Menu Style) -->
+                <ul class="navbar-nav w-100 justify-content-center">
+                    
+                    <!-- === 1. HOME === -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+
+                    <!-- === 2. ABOUT ANTS (Mega Menu / 2 Columns) === -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'about' %}" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             About ANTS
                         </a>
-                        
-                        <!-- Custom Width Dropdown -->
                         <ul class="dropdown-menu megamenu-custom" aria-labelledby="aboutDropdown">
                             <li>
                                 <div class="d-flex p-2">
-                                    
-                                    <!-- Column 1: Get Informed -->
+                                    <!-- Left Col: Get Informed -->
                                     <div class="col-6 px-2 border-end border-white-50">
                                         <h6 class="dropdown-header-custom">GET INFORMED</h6>
                                         <a class="dropdown-item" href="#">Who we are</a>
                                         <a class="dropdown-item" href="#">Vision, Mission & Core Values</a>
+                                        <a class="dropdown-item" href="#">Statement of Faith</a>
                                         <a class="dropdown-item" href="#">University Policies</a>
-                                        <a class="dropdown-item" href="#">Daily</a>
+                                        <a class="dropdown-item" href="#">Daily Schedule</a>
                                     </div>
-
-                                    <!-- Column 2: Governance -->
+                                    <!-- Right Col: Governance -->
                                     <div class="col-6 px-2">
                                         <h6 class="dropdown-header-custom">GOVERNANCE</h6>
                                         <a class="dropdown-item" href="#">Governance Structure</a>
@@ -55,44 +63,38 @@
                                         <a class="dropdown-item" href="#">Management</a>
                                         <a class="dropdown-item" href="#">Staff Directory</a>
                                     </div>
-
                                 </div>
                             </li>
                         </ul>
                     </li>
-                                            
-                        <!-- Programs Dropdown -->
-                        <li class="nav-item dropdown">
-                            <!-- added 'dropdown-toggle' class for the arrow icon -->
-                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Programs
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="programsDropdown">
-                                <!-- Add your real links in the href="" later -->
-                                <li><a class="dropdown-item" href="#">Bachelor's</a></li>
-                                <li><a class="dropdown-item" href="#">Diplomas</a></li>
-                                <li><a class="dropdown-item" href="#">Short courses</a></li>
-                            </ul>
-                        </li>
-                    
-                    <!-- Study at ANTS Dropdown -->
+
+                    <!-- === 3. PROGRAMS (Standard Dropdown) === -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Programs
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="programsDropdown">
+                            <li><a class="dropdown-item" href="#">Bachelor Programs</a></li>
+                            <li><a class="dropdown-item" href="#">Diploma Programs</a></li>
+                            <li><a class="dropdown-item" href="#">Certificate Programs</a></li>
+                            <li><a class="dropdown-item" href="#">Short Courses</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- === 4. STUDY AT ANTS (Mega Menu / 2 Columns) === -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="studyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Study at ANTS
                         </a>
-                        
-                        <!-- Mega Menu Structure -->
                         <ul class="dropdown-menu megamenu-custom" aria-labelledby="studyDropdown">
                             <li>
                                 <div class="d-flex p-2">
-                                    
-                                    <!-- Column 1: Why ANTS? (From note #1) -->
+                                    <!-- Left Col: Discover -->
                                     <div class="col-6 px-2 border-end border-white-50">
                                         <h6 class="dropdown-header-custom">DISCOVER</h6>
                                         <a class="dropdown-item" href="#">Why Study at ANTS</a>
                                     </div>
-
-                                    <!-- Column 2: Admissions (From note #2) -->
+                                    <!-- Right Col: Admissions -->
                                     <div class="col-6 px-2">
                                         <h6 class="dropdown-header-custom">ADMISSIONS</h6>
                                         <a class="dropdown-item" href="#">Admission Requirements</a>
@@ -100,81 +102,89 @@
                                         <a class="dropdown-item" href="#">Apply Online</a>
                                         <a class="dropdown-item" href="#">Admission Lists</a>
                                     </div>
-
                                 </div>
                             </li>
                         </ul>
                     </li>
-                                        <!-- Students Dropdown -->
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Students
-                                            </a>
-                                            <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
-                                                <li><a class="dropdown-item" href="#">Students Manual</a></li>
-                                                <li><a class="dropdown-item" href="#">Students Guild</a></li>
-                                                <li><a class="dropdown-item" href="#">Alumni</a></li>
-                                                <li><a class="dropdown-item" href="#">Life at ANTS</a></li>
-                                                <li><a class="dropdown-item" href="#">Fees Structure</a></li>
-                                            </ul>
-                                        </li>
-                                      <!-- Services Dropdown (Replaces 'Library') -->
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Services
-                                            </a>
-                                            
-                                            <!-- Mega Menu Structure -->
-                                            <ul class="dropdown-menu megamenu-custom" aria-labelledby="servicesDropdown">
-                                                <li>
-                                                    <div class="d-flex p-2">
-                                                        
-                                                        <!-- Column 1: University Services (From note #1) -->
-                                                        <div class="col-6 px-2 border-end border-white-50">
-                                                            <h6 class="dropdown-header-custom">UNIVERSITY SERVICES</h6>
-                                                            <a class="dropdown-item" href="#">University Library</a>
-                                                            <a class="dropdown-item" href="#">Quality Assurance</a>
-                                                            <a class="dropdown-item" href="#">Computing Services</a>
-                                                            <a class="dropdown-item" href="#">Financial Services</a>
-                                                            <a class="dropdown-item" href="#">Health Services</a>
-                                                        </div>
 
-                                                        <!-- Column 2: Key Offices (From note #2) -->
-                                                        <div class="col-6 px-2">
-                                                            <h6 class="dropdown-header-custom">KEY OFFICES</h6>
-                                                            <a class="dropdown-item" href="#">The Principal</a>
-                                                            <a class="dropdown-item" href="#">University Secretary</a>
-                                                            <a class="dropdown-item" href="#">Academic Registrar</a>
-                                                            <a class="dropdown-item" href="#">Human Resource</a>
-                                                            <a class="dropdown-item" href="#">Dean of Students</a>
-                                                        </div>
+                    <!-- === 5. STUDENTS (Standard Dropdown) === -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Students
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
+                            <li><a class="dropdown-item" href="#">Students Manual</a></li>
+                            <li><a class="dropdown-item" href="#">Students Guild</a></li>
+                            <li><a class="dropdown-item" href="#">Alumni</a></li>
+                            <li><a class="dropdown-item" href="#">Life at ANTS</a></li>
+                            <li><a class="dropdown-item" href="#">Fees Structure</a></li>
+                        </ul>
+                    </li>
 
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <!-- News & Events Dropdown -->
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                News & Events
-                                            </a>
-                                            <ul class="dropdown-menu" aria-labelledby="newsDropdown">
-                                                <li><a class="dropdown-item" href="#">ANTS News</a></li>
-                                                <li><a class="dropdown-item" href="#">ANTS Gallery</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Contacts</a></li>
-                                    </ul>
+                    <!-- === 6. SERVICES (Mega Menu / 2 Columns) === -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu megamenu-custom" aria-labelledby="servicesDropdown">
+                            <li>
+                                <div class="d-flex p-2">
+                                    <!-- Left Col: University Services -->
+                                    <div class="col-6 px-2 border-end border-white-50">
+                                        <h6 class="dropdown-header-custom">UNIVERSITY SERVICES</h6>
+                                        <a class="dropdown-item" href="#">University Library</a>
+                                        <a class="dropdown-item" href="#">Quality Assurance</a>
+                                        <a class="dropdown-item" href="#">Computing Services</a>
+                                        <a class="dropdown-item" href="#">Financial Services</a>
+                                        <a class="dropdown-item" href="#">Health Services</a>
+                                    </div>
+                                    <!-- Right Col: Key Offices -->
+                                    <div class="col-6 px-2">
+                                        <h6 class="dropdown-header-custom">KEY OFFICES</h6>
+                                        <a class="dropdown-item" href="#">The Principal</a>
+                                        <a class="dropdown-item" href="#">University Secretary</a>
+                                        <a class="dropdown-item" href="#">Academic Registrar</a>
+                                        <a class="dropdown-item" href="#">Human Resource</a>
+                                        <a class="dropdown-item" href="#">Dean of Students</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </nav>
+                            </li>
+                        </ul>
+                    </li>
 
-<!-- 2. Brand Header (Logo - Socials - Apply) -->
+                    <!-- === 7. NEWS & EVENTS (Standard Dropdown) === -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            News & Events
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                            <li><a class="dropdown-item" href="#">ANTS News</a></li>
+                            <li><a class="dropdown-item" href="#">ANTS Gallery</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- === 8. OTHER LINKS === -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">ANTS Chapel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contacts</a>
+                    </li>
+
+                </ul> <!-- End Navbar Nav -->
+            </div> <!-- End Collapse -->
+        </div> <!-- End Container -->
+    </nav>
+
+
+    <!-- ============================================ -->
+    <!-- 2. BRAND HEADER (Logo, Socials, Apply Button)-->
+    <!-- ============================================ -->
     <header class="brand-header">
         <div class="container">
             <div class="row align-items-center">
                 
-                <!-- Column 1: Logo & Name (Left) -->
+                <!-- Left: Logo & Name -->
                 <div class="col-lg-5 col-md-12 text-center text-lg-start mb-3 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
                         <a href="{% url 'home' %}">
@@ -191,7 +201,7 @@
                     </div>
                 </div>
 
-                <!-- Column 2: Social Media Icons (Center) -->
+                <!-- Center: Social Media Icons -->
                 <div class="col-lg-4 col-md-6 text-center mb-3 mb-lg-0">
                     <div class="social-header-icons">
                         <a href="https://www.facebook.com/ants.uganda" class="social-icon-circle bg-facebook" title="Facebook">
@@ -212,7 +222,7 @@
                     </div>
                 </div>
 
-                <!-- Column 3: Apply Button (Right) -->
+                <!-- Right: Apply Button -->
                 <div class="col-lg-3 col-md-6 text-center text-lg-end">
                     <a href="#" class="btn btn-apply-custom btn-lg px-4">Apply Now</a>
                 </div>
@@ -221,36 +231,46 @@
         </div>
     </header>
 
-    <!-- 3. Decorative Separator Line -->
+
+    <!-- ============================================ -->
+    <!-- 3. DECORATIVE SEPARATOR LINE                 -->
+    <!-- ============================================ -->
     <div class="brand-separator"></div>
 
-    <!-- Main Content -->
+
+    <!-- ============================================ -->
+    <!-- 4. MAIN CONTENT BLOCK                        -->
+    <!-- ============================================ -->
     <main class="flex-grow-1">
         {% block content %}
         {% endblock %}
     </main>
 
-    <!-- Footer (Styled like Victoria University) -->
+
+    <!-- ============================================ -->
+    <!-- 5. FOOTER                                    -->
+    <!-- ============================================ -->
     <footer>
         <div class="container">
             <div class="row">
-                <!-- Column 1: Address & About -->
+                
+                <!-- Footer Col 1: Address & About -->
                 <div class="col-md-4 mb-4">
                     <h5 class="fw-bold text-uppercase mb-3">All Nations Theological College and Seminary</h5>
                     <p class="small">
                         <strong>Our Address:</strong><br>
                         P.O. Box 84, Kisubi, Uganda<br>
                         Bwerenga Kawuku, 5km off Entebbe Road<br>
-                        
                     </p>
                     <p class="small mt-3">
                         Training leaders for the nations. Developing spiritual maturity and academic excellence since 1990.
                     </p>
                 </div>
 
-                <!-- Column 2: Contact Info -->
+                <!-- Footer Col 2: Contact Info -->
                 <div class="col-md-4 mb-4">
                     <h5 class="fw-bold text-uppercase mb-3">Contact Us</h5>
+                    
                     <p class="small mb-1">Send us an email at:</p>
                     <a href="mailto:info@ants.ac.ug" class="fw-bold">info@ants.ac.ug</a><br>
 
@@ -262,24 +282,26 @@
                     </div>
                 </div>
 
-                <!-- Column 3: Socials & Logo -->
+                <!-- Footer Col 3: Socials & Branding -->
                 <div class="col-md-4 mb-4 text-md-end text-start">
                     <div class="mb-3 social-icons">
                         <a href="#" class="me-2"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#" class="me-2"><i class="fa-brands fa-x-twitter"></i></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></i></a>
-                        <a href="#" class="me-2"><i class="fab fa-youtube"></i></i></a>
+                        <a href="#" class="me-2"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-youtube"></i></a>
                         <i class="fab fa-tiktok"></i>
                     </div>
                     
                     <div class="mt-4">
-                        {% comment %} <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" width="80" class="mb-2"> {% endcomment %}
+                        <!-- Logo Placeholder -->
+                        <!-- <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" width="80" class="mb-2"> -->
                         <h6 class="text-uppercase fw-bold text-warning">All Nations Theological College & Seminary</h6>
                         <p class="small fst-italic">"From Learning to Ministry"</p>
                     </div>
                 </div>
             </div>
             
+            <!-- Copyright Bar -->
             <div class="text-center border-top border-secondary pt-3 mt-3 small text-white-50">
                 &copy; 2026 All Nations Theological College and Seminary.
             </div>
