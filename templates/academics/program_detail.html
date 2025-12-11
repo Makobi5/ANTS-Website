@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        
+        <!-- LEFT: Sidebar Info -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm mb-4">
+                {% if program.image %}
+                    <img src="{{ program.image.url }}" class="card-img-top" alt="{{ program.title }}">
+                {% else %}
+                    <div class="bg-primary text-white p-5 text-center">
+                        <i class="fas fa-graduation-cap fa-4x"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h4 class="fw-bold text-primary">{{ program.title }}</h4>
+                    <hr>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Duration:</strong> {{ program.duration }}</li>
+                        <li class="mb-2"><strong>Mode:</strong> {{ program.study_mode }}</li>
+                        <li class="mb-2"><strong>Level:</strong> {{ program.get_category_display }}</li>
+                    </ul>
+                    
+                    <a href="#" class="btn btn-warning w-100 fw-bold mt-2">Apply for this Course</a>
+                    
+                    {% if program.brochure %}
+                        <a href="{{ program.brochure.url }}" class="btn btn-outline-secondary w-100 mt-2" target="_blank">
+                            <i class="fas fa-download me-2"></i> Download Fees Structure
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Main Content -->
+        <div class="col-lg-8">
+            <h3 class="fw-bold border-bottom pb-2 mb-4">Course Overview</h3>
+            <div class="text-muted mb-5" style="line-height: 1.8;">
+                {{ program.overview|linebreaks }}
+            </div>
+
+            <h3 class="fw-bold border-bottom pb-2 mb-4">Admission Requirements</h3>
+            <div class="bg-light p-4 rounded border-start border-5 border-warning">
+                {{ program.requirements|linebreaks }}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

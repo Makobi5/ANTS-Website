@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.95), rgba(74, 20, 140, 0.95)), url('{% static 'img/banner.jpg' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">{{ title }}</h1>
+        <p class="mb-0 text-white-50 text-uppercase">ACADEMICS / {{ title }}</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    {% if programs %}
+        <div class="row">
+            {% for program in programs %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm border-0 hover-shadow transition-all">
+                    <div class="row g-0 h-100">
+                        <!-- Left: Image -->
+                        <div class="col-md-4 bg-light d-flex align-items-center justify-content-center overflow-hidden">
+                            {% if program.image %}
+                                <img src="{{ program.image.url }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 220px;">
+                            {% else %}
+                                <!-- Fallback Icon if no image -->
+                                <i class="fas fa-graduation-cap fa-3x text-secondary opacity-25"></i>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Right: Content -->
+                        <div class="col-md-8">
+                            <div class="card-body d-flex flex-column h-100">
+                                <h5 class="card-title fw-bold text-primary mb-2">
+                                    <a href="{% url 'program_detail' program.slug %}" class="text-decoration-none">{{ program.title }}</a>
+                                </h5>
+                                
+                                <div class="mb-3 text-muted small">
+                                    <span class="badge bg-light text-dark border me-2"><i class="far fa-clock me-1"></i> {{ program.duration }}</span>
+                                    <span class="badge bg-light text-dark border"><i class="fas fa-chalkboard-teacher me-1"></i> {{ program.study_mode }}</span>
+                                </div>
+                                
+                                <p class="card-text text-muted small flex-grow-1">
+                                    {{ program.summary|truncatewords:20 }}
+                                </p>
+                                
+                                <div class="mt-3">
+                                    <a href="{% url 'program_detail' program.slug %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <div class="py-5 bg-light rounded">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h3 class="text-muted">No programs found.</h3>
+                <p>We are currently updating our {{ title }} list. Check back soon!</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

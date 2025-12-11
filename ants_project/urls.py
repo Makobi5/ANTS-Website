@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('staff/', include('staff.urls')),
+    path('programs/', include('academics.urls')),
 ]
 
 # Serve images during development

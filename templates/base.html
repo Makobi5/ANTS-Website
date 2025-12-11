@@ -80,11 +80,10 @@
                             Programs
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="programsDropdown">
-                            <li><a class="dropdown-item" href="#">Bachelor Programs</a></li>
-                            <li><a class="dropdown-item" href="#">Diploma Programs</a></li>
-                            <li><a class="dropdown-item" href="#">Certificate Programs</a></li>
-                            <li><a class="dropdown-item" href="#">Short Courses</a></li>
-                            <li><a class="dropdown-item" href="#">Pastor Training Course (PTC)</a></li>
+                            <li><a class="dropdown-item" href="{% url 'program_list' 'bachelors' %}">Bachelor Programs</a></li>
+                            <li><a class="dropdown-item" href="{% url 'program_list' 'diplomas' %}">Diploma Programs</a></li>
+                            <li><a class="dropdown-item" href="{% url 'program_list' 'certificates' %}">Certificate Programs</a></li>
+                            <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Short Courses</a></li>
                         </ul>
                     </li>
 
