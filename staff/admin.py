@@ -6,4 +6,5 @@ class StaffMemberAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'category', 'order')
     list_filter = ('category',)
     search_fields = ('name', 'role')
-    list_editable = ('order',) # Allows you to reorder people quickly
+    list_editable = ('order',)
+    prepopulated_fields = {'slug': ('name',)} # <--- Auto-fills URL based on Name

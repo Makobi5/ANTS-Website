@@ -49,20 +49,26 @@
                                     <!-- Left Col: Get Informed -->
                                     <div class="col-6 px-2 border-end border-white-50">
                                         <h6 class="dropdown-header-custom">GET INFORMED</h6>
-                                        <a class="dropdown-item" href="#">Who we are</a>
-                                        <a class="dropdown-item" href="#">Vision, Mission & Core Values</a>
+                                        <a class="dropdown-item" href="{% url 'about' %}">Who we are</a>
+                                        <a class="dropdown-item" href="{% url 'about' %}">Vision, Mission & Core Values</a>
                                         <a class="dropdown-item" href="#">Statement of Faith</a>
                                         <a class="dropdown-item" href="#">University Policies</a>
                                         <a class="dropdown-item" href="#">Daily Schedule</a>
                                     </div>
                                     <!-- Right Col: Governance -->
-                                    <div class="col-6 px-2">
-                                        <h6 class="dropdown-header-custom">GOVERNANCE</h6>
-                                        <a class="dropdown-item" href="#">Governance Structure</a>
-                                        <a class="dropdown-item" href="#">The Principal</a>
-                                        <a class="dropdown-item" href="#">Management</a>
-                                        <a class="dropdown-item" href="#">Staff Directory</a>
-                                    </div>
+                                <div class="col-6 px-2">
+                                    <h6 class="dropdown-header-custom">GOVERNANCE</h6>
+                                    <a class="dropdown-item" href="#">Governance Structure</a>
+                                    
+                                    <!-- Link 1: Points directly to the Principal's Profile -->
+                                    <a class="dropdown-item" href="{% url 'principal_profile' %}">The Principal</a>
+                                    
+                                    <!-- Link 2: Points to the filtered Management List -->
+                                    <a class="dropdown-item" href="{% url 'management_list' %}">Management</a>
+                                    
+                                    <!-- Link 3: Points to the FULL Staff List -->
+                                    <a class="dropdown-item" href="{% url 'staff_list' %}">Staff Directory</a>
+                                </div>
                                 </div>
                             </li>
                         </ul>

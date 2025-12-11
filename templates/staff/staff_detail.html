@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="row">
+        <!-- LEFT COLUMN: Photo & Contact -->
+        <div class="col-lg-4 text-center text-lg-start mb-4">
+            <div class="p-3 border rounded shadow-sm bg-white">
+                {% if staff.photo %}
+                    <img src="{{ staff.photo.url }}" class="img-fluid rounded-circle mb-3 border border-5 border-light shadow-sm" style="width: 250px; height: 250px; object-fit: cover;">
+                {% endif %}
+                
+                <h3 class="fw-bold text-primary mt-2">{{ staff.name }}</h3>
+                <h6 class="text-uppercase text-success fw-bold mb-3">{{ staff.role }}</h6>
+                
+                <ul class="list-unstyled small text-muted">
+                    {% if staff.email %}
+                    <li class="mb-2"><i class="fas fa-envelope me-2"></i> {{ staff.email }}</li>
+                    {% endif %}
+                    {% if staff.phone %}
+                    <li class="mb-2"><i class="fas fa-phone me-2"></i> {{ staff.phone }}</li>
+                    {% endif %}
+                </ul>
+
+                <div class="mt-4">
+                    {% if staff.cv %}
+                    <a href="{{ staff.cv.url }}" class="btn btn-primary w-100" target="_blank">
+                        <i class="fas fa-download me-2"></i> Download CV
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Social Icons Placeholder -->
+                <div class="mt-3">
+                    <a href="#" class="me-2"><i class="fab fa-facebook fa-lg text-primary"></i></a>
+                    <a href="#" class="me-2"><i class="fab fa-twitter fa-lg text-info"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Biography & Tabs -->
+        <div class="col-lg-8">
+            <h4 class="fw-bold border-bottom pb-2 mb-3">Biography</h4>
+            <p class="text-muted" style="line-height: 1.8;">
+                {{ staff.bio|default:"No biography available."|linebreaks }}
+            </p>
+
+            <!-- TABS SECTION -->
+            <div class="mt-5">
+                <ul class="nav nav-tabs" id="staffTabs" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="qual-tab" data-bs-toggle="tab" data-bs-target="#qual" type="button">Qualifications</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="research-tab" data-bs-toggle="tab" data-bs-target="#research" type="button">Research Interests</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="pubs-tab" data-bs-toggle="tab" data-bs-target="#pubs" type="button">Publications</button>
+                    </li>
+                </ul>
+                <div class="tab-content p-4 border border-top-0 bg-white" id="staffTabsContent">
+                    <!-- Qualifications -->
+                    <div class="tab-pane fade show active" id="qual">
+                        {{ staff.qualifications|default:"Information not available."|linebreaks }}
+                    </div>
+                    <!-- Research -->
+                    <div class="tab-pane fade" id="research">
+                        {{ staff.research_interests|default:"Information not available."|linebreaks }}
+                    </div>
+                    <!-- Publications -->
+                    <div class="tab-pane fade" id="pubs">
+                        {{ staff.publications|default:"Information not available."|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
