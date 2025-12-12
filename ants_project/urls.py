@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('staff/', include('staff.urls')),
     path('programs/', include('academics.urls')),
+    path('admissions/', include('admissions.urls')),
 ]
 
 # Serve images during development

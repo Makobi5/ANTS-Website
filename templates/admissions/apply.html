@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-light min-vh-100 py-5">
+    <div class="container">
+        
+        <!-- Page Title Section -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold text-primary">ONLINE ADMISSIONS</h2>
+                <p class="text-muted">Fill in the form below to apply for our programs.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            
+            <!-- LEFT COLUMN: Instructions / "Sidebar" style -->
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-header bg-primary text-white fw-bold">
+                        <i class="fas fa-info-circle me-2"></i> Instructions
+                    </div>
+                    <div class="card-body small text-muted">
+                        <p>1. Ensure all information provided is accurate.</p>
+                        <p>2. Upload clear copies of your result slips and passport photo.</p>
+                        <p>3. Fields marked with <span class="text-danger">*</span> are mandatory.</p>
+                        <hr>
+                        <p class="mb-0">Need help? Call Registry:</p>
+                        <strong>+256 700 000 000</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: The Application Form -->
+            <div class="col-lg-9">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-white py-3 border-bottom">
+                        <h5 class="mb-0 fw-bold text-dark border-start border-5 border-warning ps-3">
+                            Application Form 2026 Intake
+                        </h5>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <form method="POST" enctype="multipart/form-data">
+                                                        <!-- Error Reporting Block -->
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        <h5 class="fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Please fix the following errors:</h5>
+                                        <ul>
+                                            {% for field, errors in form.errors.items %}
+                                                <li>
+                                                    <strong>{{ field|title }}:</strong> 
+                                                    {% for error in errors %} {{ error }} {% endfor %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% csrf_token %}
+
+                            <!-- SECTION 1: Personal Details -->
+                            <h6 class="text-uppercase text-primary fw-bold mb-3 mt-2">1. Personal Details</h6>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                    {{ form.full_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                    {{ form.gender }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                    {{ form.date_of_birth }}
+                                </div>
+                                <div class="col-md-6">
+                                <label class="form-label">Place of Birth</label>
+                                    {{ form.place_of_birth }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Marital Status</label>
+                                    {{ form.marital_status }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Tribe</label>
+                                    {{ form.tribe }}
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Nationality</label>
+                                    {{ form.nationality }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    {{ form.phone }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    {{ form.email }}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Permanent Address</label>
+                                    {{ form.permanent_address }}
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+
+                            <!-- SECTION 2: Next of Kin -->
+                            <h6 class="text-uppercase text-primary fw-bold mb-3">2. Next of Kin</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Next of Kin Name</label>
+                                    {{ form.next_of_kin_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Relationship</label>
+                                    {{ form.next_of_kin_relationship }}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Contact Number</label>
+                                    {{ form.next_of_kin_contact }}
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <!-- SECTION 3: Church Background -->
+                            <h6 class="text-uppercase text-primary fw-bold mb-3">3. Church Background</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Attending Church</label>
+                                    {{ form.attending_church }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Church Location</label>
+                                    {{ form.church_location }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Senior Pastor's Name</label>
+                                    {{ form.senior_pastor }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Pastor's Contact</label>
+                                    {{ form.pastor_contact }}
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <!-- SECTION 4: Academics & Program -->
+                            <h6 class="text-uppercase text-primary fw-bold mb-3">4. Program & Qualifications</h6>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Educational Background (Previous Schools)</label>
+                                    {{ form.education_history }}
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold">Select Program Applying For <span class="text-danger">*</span></label>
+                                    {{ form.program_choice }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Funding Method</label>
+                                    {{ form.finance_method }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Sponsor Name (If applicable)</label>
+                                    {{ form.sponsor_name }}
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <!-- SECTION 5: Uploads -->
+                            <h6 class="text-uppercase text-primary fw-bold mb-3">5. Attachments</h6>
+                            <div class="p-3 bg-light rounded border">
+                                <div class="mb-3">
+                                    <label class="form-label">Passport Photo <span class="text-danger">*</span></label>
+                                    {{ form.passport_photo }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Academic Documents (PDF) <span class="text-danger">*</span></label>
+                                    {{ form.academic_documents }}
+                                </div>
+                                <div>
+                                    <label class="form-label">Recommendation Letter (Optional)</label>
+                                    {{ form.recommendation_letter }}
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="mt-5 text-end">
+                                <button type="submit" class="btn btn-warning btn-lg px-5 fw-bold shadow-sm">
+                                    <i class="fas fa-paper-plane me-2"></i> SUBMIT APPLICATION
+                                </button>
+                            </div>
+                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

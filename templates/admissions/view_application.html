@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5 bg-light min-vh-100">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <!-- Breadcrumb / Back Button -->
+            <div class="mb-4">
+                <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <div class="card shadow border-0">
+                <!-- Status Header -->
+                <div class="card-header py-3 d-flex justify-content-between align-items-center bg-white border-bottom">
+                    <h5 class="mb-0 fw-bold text-primary">Application #{{ app.id }}</h5>
+                    
+                    {% if app.status == 'Pending' %}
+                        <span class="badge bg-warning text-dark px-3 py-2">Pending Review</span>
+                    {% elif app.status == 'Approved' %}
+                        <span class="badge bg-success px-3 py-2">Admitted / Approved</span>
+                    {% else %}
+                        <span class="badge bg-danger px-3 py-2">Rejected</span>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="row">
+                        
+                        <!-- Left: Photo & Key Info -->
+                        <div class="col-md-3 text-center border-end">
+                            {% if app.passport_photo %}
+                                <img src="{{ app.passport_photo.url }}" class="img-fluid rounded mb-3 border" style="max-height: 200px;">
+                            {% else %}
+                                <div class="bg-light p-4 rounded mb-3 border">
+                                    <i class="fas fa-user fa-4x text-muted"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <h6 class="fw-bold">{{ app.full_name }}</h6>
+                            <p class="text-muted small">{{ app.email }}</p>
+                            <p class="text-muted small">{{ app.phone }}</p>
+                        </div>
+
+                        <!-- Right: Detailed Info -->
+                        <div class="col-md-9 px-md-4">
+                            
+                            <!-- Program Info -->
+                            <h6 class="text-uppercase text-primary fw-bold border-bottom pb-2 mb-3">Program Details</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-2"><strong>Program:</strong> <br>{{ app.program_choice }}</div>
+                                <div class="col-md-6 mb-2"><strong>Funding:</strong> <br>{{ app.finance_method }}</div>
+                                <div class="col-md-6 mb-2"><strong>Submitted On:</strong> <br>{{ app.submitted_at|date:"M d, Y" }}</div>
+                            </div>
+
+                            <!-- Personal Details -->
+                            <h6 class="text-uppercase text-primary fw-bold border-bottom pb-2 mb-3 mt-4">Personal Details</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-4 mb-2"><strong>Gender:</strong> {{ app.get_gender_display }}</div>
+                                <div class="col-md-4 mb-2"><strong>DOB:</strong> {{ app.date_of_birth }}</div>
+                                <div class="col-md-4 mb-2"><strong>Nationality:</strong> {{ app.nationality }}</div>
+                                <div class="col-md-4 mb-2"><strong>Tribe:</strong> {{ app.tribe }}</div>
+                                <div class="col-md-8 mb-2"><strong>Address:</strong> {{ app.permanent_address }}</div>
+                            </div>
+
+                            <!-- Church Info -->
+                            <h6 class="text-uppercase text-primary fw-bold border-bottom pb-2 mb-3 mt-4">Church Information</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-2"><strong>Church:</strong> {{ app.attending_church }}</div>
+                                <div class="col-md-6 mb-2"><strong>Location:</strong> {{ app.church_location }}</div>
+                                <div class="col-md-6 mb-2"><strong>Senior Pastor:</strong> {{ app.senior_pastor }}</div>
+                            </div>
+
+                            <!-- Next of Kin -->
+                            <h6 class="text-uppercase text-primary fw-bold border-bottom pb-2 mb-3 mt-4">Next of Kin</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-4 mb-2"><strong>Name:</strong> {{ app.next_of_kin_name }}</div>
+                                <div class="col-md-4 mb-2"><strong>Relation:</strong> {{ app.next_of_kin_relationship }}</div>
+                                <div class="col-md-4 mb-2"><strong>Contact:</strong> {{ app.next_of_kin_contact }}</div>
+                            </div>
+
+                            <!-- Attachments -->
+                            <h6 class="text-uppercase text-primary fw-bold border-bottom pb-2 mb-3 mt-4">Uploaded Documents</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="{{ app.academic_documents.url }}" target="_blank" class="btn btn-outline-dark w-100">
+                                        <i class="fas fa-file-pdf me-2"></i> View Result Slips / Transcripts
+                                    </a>
+                                </div>
+                                {% if app.recommendation_letter %}
+                                <div class="col-md-6">
+                                    <a href="{{ app.recommendation_letter.url }}" target="_blank" class="btn btn-outline-dark w-100">
+                                        <i class="fas fa-file-alt me-2"></i> View Recommendation
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

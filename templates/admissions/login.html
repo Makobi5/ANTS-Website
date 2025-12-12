@@ -1,0 +1,107 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Internal CSS for this page only to ensure it works immediately -->
+<style>
+    .auth-wrapper {
+        /* Use Django to find the image. 
+           If this fails, it defaults to the purple gradient. */
+        background: linear-gradient(rgba(74, 20, 140, 0.8), rgba(74, 20, 140, 0.8)), 
+                    url("{% static 'img/chapel_bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 85vh; /* Covers most of the screen */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-card {
+        background: white;
+        width: 100%;
+        max-width: 450px; /* Limits the width so it looks like a card */
+        border-radius: 15px; /* Rounded corners */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Strong shadow for 3D effect */
+        overflow: hidden;
+        border-top: 5px solid var(--ants-gold); /* Gold line at the top */
+    }
+
+    .login-header {
+        background-color: #f8f9fa;
+        padding: 30px 20px 20px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    .form-control {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 8px;
+    }
+    
+    .form-control:focus {
+        background-color: white;
+        border-color: var(--ants-purple);
+        box-shadow: 0 0 0 3px rgba(74, 20, 140, 0.1);
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="login-card">
+        
+        <!-- 1. Logo & Header Section -->
+        <div class="login-header">
+            <!-- Add Logo Here -->
+            <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" style="height: 80px; margin-bottom: 15px;">
+            <h4 class="fw-bold text-dark mb-1">Welcome Back</h4>
+            <p class="text-muted small mb-0">Login to the Admissions Portal</p>
+        </div>
+
+        <!-- 2. The Form Section -->
+        <div class="p-4 px-5">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- Error Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger text-center small py-2">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted text-uppercase">Username or Phone</label>
+                    {{ form.username }}
+                    <!-- Force styling -->
+                    <script>document.getElementById('id_username').className += ' form-control';</script>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold small text-muted text-uppercase">Password</label>
+                    {{ form.password }}
+                    <script>document.getElementById('id_password').className += ' form-control';</script>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm" style="background-color: var(--ants-purple); border: none; font-size: 1.1rem;">
+                    LOGIN
+                </button>
+            </form>
+        </div>
+
+        <!-- 3. Footer Section -->
+        <div class="text-center bg-light py-3 border-top">
+            <p class="small text-muted mb-1">New to ANTS?</p>
+            <a href="{% url 'student_signup' %}" class="fw-bold text-decoration-none" style="color: var(--ants-purple);">
+                Create an Account &rarr;
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

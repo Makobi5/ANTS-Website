@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid bg-light min-vh-100">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 bg-dark min-vh-100 p-0 text-white">
+            <div class="p-4 text-center bg-primary">
+                <i class="fas fa-user-graduate fa-3x mb-3"></i>
+                <h6 class="fw-bold">{{ user.first_name }} {{ user.last_name }}</h6>
+                <small class="opacity-75">{{ user.email }}</small>
+            </div>
+            <div class="list-group list-group-flush mt-3">
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary active">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+                <a href="{% url 'apply_now' %}" class="list-group-item list-group-item-action bg-dark text-white border-bottom border-secondary">
+                    <i class="fas fa-edit me-2"></i> New Application
+                </a>
+                <a href="{% url 'student_logout' %}" class="list-group-item list-group-item-action bg-dark text-danger border-bottom border-secondary">
+                    <i class="fas fa-sign-out-alt me-2"></i> Log Out
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 py-5 px-md-5">
+            <h3 class="fw-bold text-primary mb-4">Welcome, {{ user.first_name }}</h3>
+            
+            <!-- Notification Box -->
+            <div class="alert alert-info border-0 shadow-sm mb-4">
+                <i class="fas fa-info-circle me-2"></i> 
+                You currently have <strong>{{ my_apps.count }}</strong> active applications.
+            </div>
+
+            {% if my_apps %}
+                <h5 class="fw-bold mb-3">Your Applications</h5>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Program</th>
+                                    <th>Date Applied</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for app in my_apps %}
+                                <tr>
+                                    <td class="ps-4 fw-bold">{{ app.program_choice }}</td>
+                                    <td>{{ app.submitted_at|date:"M d, Y" }}</td>
+                                    <td>
+                                        {% if app.status == 'Pending' %}
+                                            <span class="badge bg-warning text-dark">Pending Review</span>
+                                        {% elif app.status == 'Approved' %}
+                                            <span class="badge bg-success">Admitted</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'view_application' app.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-5 bg-white shadow-sm rounded">
+                    <i class="fas fa-folder-open fa-3x text-muted mb-3 opacity-50"></i>
+                    <h5 class="text-muted">No applications found</h5>
+                    <p>Click the button below to start your journey with ANTS.</p>
+                    <a href="{% url 'apply_now' %}" class="btn btn-primary px-4 fw-bold">APPLY NOW</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

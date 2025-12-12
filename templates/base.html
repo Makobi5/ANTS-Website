@@ -84,6 +84,7 @@
                             <li><a class="dropdown-item" href="{% url 'program_list' 'diplomas' %}">Diploma Programs</a></li>
                             <li><a class="dropdown-item" href="{% url 'program_list' 'certificates' %}">Certificate Programs</a></li>
                             <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Short Courses</a></li>
+                            <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Pastor Training Course (PTC)</a></li>
                         </ul>
                     </li>
 
@@ -230,7 +231,7 @@
 
                 <!-- Right: Apply Button -->
                 <div class="col-lg-3 col-md-6 text-center text-lg-end">
-                    <a href="#" class="btn btn-apply-custom btn-lg px-4">Apply Now</a>
+                   <a href="{% url 'student_dashboard' %}" class="btn btn-apply-custom btn-lg px-4">Apply Now</a>
                 </div>
 
             </div>
@@ -281,7 +282,7 @@
                     <a href="mailto:info@ants.ac.ug" class="fw-bold">info@ants.ac.ug</a><br>
 
                     <p class="small mt-3 mb-1">Admissions & Registry:</p>
-                    <a href="mailto:admin@ants.ac.ug" class="fw-bold">admin@ants.ac.ug</a>
+                    <a href="mailto:admin@ants.ac.ug" class="fw-bold">admissions@ants.ac.ug</a>
 
                     <div class="mt-3">
                         <a href="#" class="footer-btn">Send Us a message</a>

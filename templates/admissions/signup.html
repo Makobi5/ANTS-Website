@@ -1,0 +1,111 @@
+{% extends 'base_auth.html' %} <!-- Uses the new "No-Header" layout -->
+{% load static %}
+
+{% block content %}
+
+<!-- Internal CSS for the Portal Look -->
+<style>
+    .auth-wrapper {
+        /* Same Purple + Chapel Background */
+        background: linear-gradient(rgba(74, 20, 140, 0.85), rgba(74, 20, 140, 0.85)), 
+                    url("{% static 'img/chapel_bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px; /* Adds breathing room for scrolling */
+    }
+
+    .auth-card {
+        background: white;
+        width: 100%;
+        max-width: 500px; /* Slightly wider than login for the extra fields */
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        overflow: hidden;
+        border-top: 5px solid var(--ants-gold);
+    }
+
+    .auth-header {
+        background-color: #f8f9fa;
+        padding: 25px 20px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    .form-control {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        border-radius: 8px;
+    }
+    
+    .form-control:focus {
+        background-color: white;
+        border-color: var(--ants-purple);
+        box-shadow: 0 0 0 3px rgba(74, 20, 140, 0.1);
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        
+        <!-- 1. Logo & Header -->
+        <div class="auth-header">
+            <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" style="height: 70px; margin-bottom: 10px;">
+            <h4 class="fw-bold text-dark mb-1">Create Account</h4>
+            <p class="text-muted small mb-0">Join the ANTS Family</p>
+        </div>
+
+        <!-- 2. The Form -->
+        <div class="p-4 px-5">
+            <form method="POST">
+                {% csrf_token %}
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger text-center small py-2">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Loop through fields to style them consistently -->
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted text-uppercase">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="text-muted d-block" style="font-size: 0.75rem;">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <!-- Force Bootstrap styling on all inputs -->
+                <script>
+                    var inputs = document.querySelectorAll('input');
+                    inputs.forEach(input => input.classList.add('form-control'));
+                </script>
+
+                <button type="submit" class="btn btn-warning w-100 py-3 fw-bold shadow-sm mt-2" style="font-size: 1.1rem;">
+                    REGISTER ACCOUNT
+                </button>
+            </form>
+        </div>
+
+        <!-- 3. Footer -->
+        <div class="text-center bg-light py-3 border-top">
+            <p class="small text-muted mb-1">Already have an account?</p>
+            <a href="{% url 'student_login' %}" class="fw-bold text-decoration-none" style="color: var(--ants-purple);">
+                Login Here &rarr;
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
