@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'staff',
     'academics',
     'admissions',
+    'news',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

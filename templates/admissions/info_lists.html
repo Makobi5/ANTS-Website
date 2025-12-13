@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">{% include 'admissions/sidebar.html' %}</div>
+        <div class="col-lg-9">
+            <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Admission Lists</h2>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> The ANTS <strong> latest Admission Lists</strong> has not yet been released.
+            </div>
+            <p>Please check your <a href="{% url 'student_dashboard' %}">Student Portal</a> for your individual admission status.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

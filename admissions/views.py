@@ -74,15 +74,19 @@ def apply_now(request):
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             application = form.save(commit=False)
-            application.applicant = request.user # Link to the logged-in user
+            application.applicant = request.user
             application.save()
             messages.success(request, "Application submitted successfully!")
             return redirect('student_dashboard')
     else:
-        # Pre-fill name and email from User account
+        # Pre-fill data
         initial_data = {
             'full_name': f"{request.user.first_name} {request.user.last_name}",
-            'email': request.user.email
+            'email': request.user.email,
+            
+            # NEW: Check if the URL has a course_id (e.g. ?course_id=5)
+            # If yes, select that program automatically!
+            'program_choice': request.GET.get('course_id')
         }
         form = ApplicationForm(initial=initial_data)
 
@@ -94,3 +98,20 @@ def view_application(request, pk):
     application = get_object_or_404(StudentApplication, pk=pk, applicant=request.user)
     
     return render(request, 'admissions/view_application.html', {'app': application})
+
+
+def admission_requirements(request):
+    return render(request, 'admissions/info_requirements.html')
+
+def admission_procedure(request):
+    return render(request, 'admissions/info_procedure.html')
+
+def graduation_requirements(request):
+    return render(request, 'admissions/info_graduation.html')
+
+def admission_lists(request):
+    # This can be a placeholder for now
+    return render(request, 'admissions/info_lists.html')
+
+def why_study(request):
+    return render(request, 'admissions/why_study.html')

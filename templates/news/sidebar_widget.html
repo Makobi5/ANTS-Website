@@ -1,0 +1,68 @@
+{% load static %}
+
+<div class="mt-5">
+    <h6 class="fw-bold text-uppercase mb-3 border-start border-5 border-warning ps-2">
+        Latest News & Events
+    </h6>
+
+    <div id="newsCarouselSidebar" class="carousel slide shadow-sm rounded overflow-hidden" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            
+            <!-- This line was missing! -->
+            {% for article in latest_news %}
+            
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="position-relative">
+                    
+                    <!-- 1. IMAGE LINK -->
+                    <a href="{% url 'news_detail' article.pk %}" class="d-block text-decoration-none">
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" class="d-block w-100" style="height: 200px; object-fit: cover;" alt="{{ article.title }}">
+                        {% else %}
+                            <div class="bg-secondary" style="height: 200px;"></div>
+                        {% endif %}
+                    </a>
+
+                    <!-- Date Badge -->
+                    <div class="position-absolute top-0 start-0 bg-success text-white text-center p-2" style="width: 60px; line-height: 1; pointer-events: none;">
+                        <span class="d-block fw-bold fs-4">{{ article.date_posted|date:"d" }}</span>
+                        <span class="small text-uppercase">{{ article.date_posted|date:"M" }}</span>
+                    </div>
+
+                    <!-- Content Overlay -->
+                    <div class="bg-primary p-3 text-white">
+                        <h6 class="fw-bold mb-2">
+                            <!-- 2. TITLE LINK -->
+                            <a href="{% url 'news_detail' article.pk %}" class="text-white text-decoration-none">{{ article.title|truncatechars:40 }}</a>
+                        </h6>
+                        <p class="small mb-2 opacity-75" style="font-size: 0.85rem;">
+                            {{ article.summary|truncatechars:80 }}
+                        </p>
+                        
+                        <!-- 3. READ MORE LINK -->
+                        <a href="{% url 'news_detail' article.pk %}" class="small text-warning text-decoration-none fst-italic">Read more &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            
+            {% empty %}
+            <div class="carousel-item active">
+                <div class="p-4 bg-light text-center">
+                    <p class="text-muted">No news updates yet.</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarouselSidebar" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#newsCarouselSidebar" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>

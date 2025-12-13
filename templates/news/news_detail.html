@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Main Article -->
+        <div class="col-lg-8">
+            {% if article.image %}
+                <img src="{{ article.image.url }}" class="img-fluid rounded shadow-sm mb-4 w-100" alt="{{ article.title }}">
+            {% endif %}
+            
+            <h1 class="fw-bold text-primary mb-2">{{ article.title }}</h1>
+            <p class="text-muted small mb-4">
+                <i class="far fa-calendar-alt me-2"></i> {{ article.date_posted|date:"F d, Y" }} 
+                <span class="mx-2">|</span> 
+                <i class="far fa-user me-2"></i> {{ article.author.first_name }}
+            </p>
+            
+            <div class="article-content" style="line-height: 1.8; color: #444;">
+                {{ article.content|linebreaks }}
+            </div>
+            
+            <hr class="my-5">
+            <a href="{% url 'news_list' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Back to News
+            </a>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <h5 class="fw-bold text-uppercase border-bottom pb-2 mb-4">Recent Stories</h5>
+                
+                <div class="list-group list-group-flush">
+                    {% for recent in recent_articles %}
+                    <a href="{% url 'news_detail' recent.pk %}" class="list-group-item list-group-item-action py-3 d-flex align-items-center">
+                        {% if recent.image %}
+                            <img src="{{ recent.image.url }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-1 fw-bold text-dark small">{{ recent.title }}</h6>
+                            <small class="text-muted">{{ recent.date_posted|date:"M d, Y" }}</small>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

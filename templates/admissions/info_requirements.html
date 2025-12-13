@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-lg-3 mb-4">
+            {% include 'admissions/sidebar.html' %}
+        </div>
+        
+        <!-- Main Content Column -->
+        <div class="col-lg-9">
+            <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Qualification of Admission</h2>
+            
+            <p class="lead text-muted">Admission into the ANTS program is for people who meet the following conditions based on National Council for Higher Education (NCHE) standards.</p>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="fw-bold text-dark mb-3">1. Ordinary Certificate (2 Years)</h5>
+                    <p>The applicant for the 2-year 'Ordinary Certificate' must have completed:</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Senior Four (S4, 'O' Level) with at least <strong>3 passes</strong> in UCE (Uganda Certificate of Education) obtained at the same sitting.</li>
+                    </ul>
+
+                    <h5 class="fw-bold text-dark mb-3 mt-4">2. Ordinary Diploma (2 Years)</h5>
+                    <p>The applicant for the 2-year 'Ordinary Diploma' must have completed:</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Senior Four (S4, 'O' Level) with minimum <strong>5 passes</strong> in UCE.</li>
+                        <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Senior Six (S6, 'A' Level) with minimum <strong>1 principal pass and 2 subsidiary passes</strong> in UACE obtained at the same sitting.</li>
+                        <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> OR a Certificate Programme in ANTS.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-warning border-start border-5 border-warning">
+                <h6 class="fw-bold"><i class="fas fa-exclamation-circle me-2"></i> Note on Special Cases</h6>
+                <p class="mb-0 small">Students admitted without the minimum entry requirements as per NCHE can only receive an award of <strong>Certificate of Attendance</strong> in Biblical Studies. The applicant must be active in some form of local church or Christian ministry.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

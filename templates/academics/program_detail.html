@@ -24,7 +24,8 @@
                         <li class="mb-2"><strong>Level:</strong> {{ program.get_category_display }}</li>
                     </ul>
                     
-                    <a href="#" class="btn btn-warning w-100 fw-bold mt-2">Apply for this Course</a>
+                    <!-- We pass the program ID in the URL as a parameter -->
+<a href="{% url 'apply_now' %}?course_id={{ program.id }}" class="btn btn-warning w-100 fw-bold mt-2">Apply for this Course</a>
                     
                     {% if program.brochure %}
                         <a href="{{ program.brochure.url }}" class="btn btn-outline-secondary w-100 mt-2" target="_blank">

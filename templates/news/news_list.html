@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/banner.jpg' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">News & Events</h1>
+        <p class="mb-0 text-white-50 text-uppercase">HOME / NEWS</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        {% for article in articles %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 hover-shadow transition-all">
+                <a href="{% url 'news_detail' article.pk %}">
+                    {% if article.image %}
+                        <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="height: 220px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary card-img-top" style="height: 220px;"></div>
+                    {% endif %}
+                </a>
+                <div class="card-body">
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem;">
+                        {{ article.date_posted|date:"M d, Y" }}
+                    </small>
+                    <h5 class="fw-bold mt-2">
+                        <a href="{% url 'news_detail' article.pk %}" class="text-dark text-decoration-none">{{ article.title }}</a>
+                    </h5>
+                    <p class="card-text text-muted small">
+                        {{ article.summary|truncatewords:20 }}
+                    </p>
+                    <a href="{% url 'news_detail' article.pk %}" class="btn btn-sm btn-outline-primary mt-2">Read Article</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h3 class="text-muted">No news posted yet.</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

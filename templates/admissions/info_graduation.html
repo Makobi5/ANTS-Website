@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">{% include 'admissions/sidebar.html' %}</div>
+        
+        <div class="col-lg-9">
+            <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Graduation Requirements</h2>
+            
+            <p class="lead">Graduation is the culmination of your academic journey at ANTS. Below are the procedures and requirements to qualify.</p>
+
+            <div class="row mt-4">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-white fw-bold text-uppercase border-bottom border-warning border-3">
+                            Semesters & Credits
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Students must finish semesters and get credits suggested as below. If students do not earn the suggested credits, their graduation will be delayed.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Certificate Program
+                                    <span class="badge bg-primary rounded-pill">80 Credits</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Diploma Program
+                                    <span class="badge bg-primary rounded-pill">72 Credits</span>
+                                </li>
+                            </ul>
+                            <p class="small text-muted mt-3">Completed in four (4) semesters.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-white fw-bold text-uppercase border-bottom border-warning border-3">
+                            Bible Knowledge Test
+                        </div>
+                        <div class="card-body">
+                            <p>Students have to pass the 'Bible Knowledge Test'.</p>
+                            <div class="d-flex align-items-center mt-3">
+                                <i class="fas fa-book-bible fa-3x text-warning me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold">Requirement:</h6>
+                                    <p class="mb-0 small">Pass 3 out of 4 times during 4 semesters.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h4 class="fw-bold">Procedures of Graduation</h4>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">The Committee shall have a meeting to assess all candidates for graduation after the end of their final semester.</li>
+                    <li class="list-group-item">Transcripts shall be prepared by the registrar for review.</li>
+                    <li class="list-group-item">The Committee shall determine the day of graduation considering the academic schedule.</li>
+                    <li class="list-group-item">The result of assessment and the date of graduation ceremony will be informed to all candidates.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

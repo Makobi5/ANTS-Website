@@ -1,0 +1,48 @@
+<!-- Reusable Admissions Sidebar -->
+ {% load news_widgets %}
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white fw-bold text-uppercase py-3">
+        <i class="fas fa-bars me-2"></i> Admissions Menu
+    </div>
+    <div class="list-group list-group-flush">
+        <a href="{% url 'admission_requirements' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'admission_requirements' %}active-link{% endif %}">
+            <i class="fas fa-check-circle me-2 text-warning"></i> Admission Requirements
+        </a>
+        <a href="{% url 'admission_procedure' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'admission_procedure' %}active-link{% endif %}">
+            <i class="fas fa-list-ol me-2 text-warning"></i> Application Procedure
+        </a>
+        <a href="{% url 'student_dashboard' %}" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-laptop me-2 text-warning"></i> Apply Online
+        </a>
+        <a href="{% url 'graduation_requirements' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'graduation_requirements' %}active-link{% endif %}">
+            <i class="fas fa-graduation-cap me-2 text-warning"></i> Graduation
+        </a>
+        <a href="{% url 'admission_lists' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'admission_lists' %}active-link{% endif %}">
+            <i class="fas fa-file-alt me-2 text-warning"></i> Admission Lists
+        </a>
+    </div>
+</div>
+
+<!-- Contact Widget (Like KIU has) -->
+<div class="card shadow-sm border-0 bg-light">
+    <div class="card-body">
+        <h6 class="fw-bold text-dark">Need Help?</h6>
+        <p class="small text-muted mb-2">Contact the Registrar's Office:</p>
+        <p class="mb-1"><i class="fas fa-phone me-2 text-primary"></i> +256 707396619</p>
+        <p class="mb-0"><i class="fas fa-envelope me-2 text-primary"></i> admissions@ants.ac.ug</p>
+        <p class="mb-0"><i class="fas fa-envelope me-2 text-primary"></i> registrar@ants.ac.ug</p>
+    </div>
+</div>
+
+<!-- CSS to highlight the active page -->
+<style>
+    .active-link {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        color: var(--ants-purple);
+        border-left: 5px solid var(--ants-gold);
+    }
+</style>
+
+<!-- Insert News Widget Here -->
+{% show_latest_news 3 %}

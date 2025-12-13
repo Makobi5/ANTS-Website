@@ -13,4 +13,11 @@ urlpatterns = [
     
     # The Application Form
     path('apply/', views.apply_now, name='apply_now'),
+    
+        # Information Pages
+    path('requirements/', views.admission_requirements, name='admission_requirements'),
+    path('procedure/', views.admission_procedure, name='admission_procedure'),
+    path('graduation/', views.graduation_requirements, name='graduation_requirements'),
+    path('lists/', views.admission_lists, name='admission_lists'),
+    path('why-study/', views.why_study, name='why_study'),
 ]
