@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <!-- Reuse the News Widget for consistency -->
+            {% load news_widgets %}
+            {% show_latest_news 2 %}
+        </div>
+        
+        <div class="col-lg-9">
+            <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Who We Are</h2>
+            
+            <img src="{% static 'img/banner.jpg' %}" class="img-fluid rounded mb-4 w-100" style="height: 300px; object-fit: cover;">
+
+            <p class="lead text-muted">All Nations Theological College and Seminary (ANTS) is an interdenominational institution committed to training men and women for the Gospel ministry.</p>
+            
+            <h5 class="fw-bold text-dark mt-4">Our History</h5>
+            <p>Founded in 2004, ANTS began with a vision to equip leaders in Uganda who lacked formal theological training. From a humble beginning with just 12 students, the college has grown into a premier institution attracting students from across East Africa.</p>
+            
+            <h5 class="fw-bold text-dark mt-4">Our Philosophy</h5>
+            <p>We believe in "Head, Heart, and Hands" training. It is not enough to know the Bible intellectually; one must be transformed spiritually and equipped practically for service.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

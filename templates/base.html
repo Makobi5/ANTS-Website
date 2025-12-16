@@ -49,11 +49,21 @@
                                     <!-- Left Col: Get Informed -->
                                     <div class="col-6 px-2 border-end border-white-50">
                                         <h6 class="dropdown-header-custom">GET INFORMED</h6>
-                                        <a class="dropdown-item" href="{% url 'about' %}">Who we are</a>
+                                        
+                                        <!-- 1. Who We Are -->
+                                        <a class="dropdown-item" href="{% url 'who_we_are' %}">Who we are</a>
+                                        
+                                        <!-- 2. Vision (Keeps the old 'about' link for now) -->
                                         <a class="dropdown-item" href="{% url 'about' %}">Vision, Mission & Core Values</a>
-                                        <a class="dropdown-item" href="#">Statement of Faith</a>
-                                        <a class="dropdown-item" href="#">University Policies</a>
-                                        <a class="dropdown-item" href="#">Daily Schedule</a>
+                                        
+                                        <!-- 3. Statement of Faith -->
+                                        <a class="dropdown-item" href="{% url 'statement_of_faith' %}">Statement of Faith</a>
+                                        
+                                        <!-- 4. Policies -->
+                                        <a class="dropdown-item" href="{% url 'policies' %}">University Policies</a>
+                                        
+                                        <!-- 5. Schedule -->
+                                        <a class="dropdown-item" href="{% url 'daily_schedule' %}">Daily Schedule</a>
                                     </div>
                                     <!-- Right Col: Governance -->
                                 <div class="col-6 px-2">

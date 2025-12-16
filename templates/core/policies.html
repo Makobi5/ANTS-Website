@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- 1. Add DataTables CSS (For the table styling) -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+<div class="container py-5">
+    
+    <!-- Header -->
+    <div class="mb-5">
+        <h2 class="fw-bold text-primary mb-2">University Policies</h2>
+        <p class="text-muted">Browse and download official university documents.</p>
+    </div>
+
+    <!-- 2. The Table Structure -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            
+            <table id="policiesTable" class="table table-hover align-middle w-100">
+                <thead class="bg-light">
+                    <tr>
+                        <th style="width: 45%;">Title</th>
+                        <th style="width: 20%;">Categories</th>
+                        <th style="width: 20%;">Update Date</th>
+                        <th style="width: 15%;">Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for policy in policies %}
+                    <tr>
+                        <!-- Title Column -->
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <!-- PDF Icon -->
+                                <div class="me-3 text-center">
+                                    <i class="fas fa-file-pdf text-danger fa-2x"></i>
+                                    <small class="d-block text-muted" style="font-size: 10px;">PDF</small>
+                                </div>
+                                
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">{{ policy.title }}</h6>
+                                    <!-- Optional description showing as small text below -->
+                                    {% if policy.description %}
+                                        <small class="text-muted">{{ policy.description|truncatechars:50 }}</small>
+                                    {% else %}
+                                        <small class="text-muted">1 file</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Category Column -->
+                        <td>
+                            <span class="text-primary fw-bold">University Policies</span>
+                        </td>
+
+                        <!-- Date Column -->
+                        <td class="text-muted">
+                            {{ policy.uploaded_at|date:"F d, Y" }}
+                        </td>
+
+                        <!-- Download Button Column -->
+                        <td>
+                            <a href="{{ policy.file.url }}" target="_blank" class="btn btn-success text-white fw-bold btn-sm w-100 text-uppercase shadow-sm">
+                                <i class="fas fa-download me-2"></i> Download
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<!-- 3. Add DataTables Scripts (To make the Search & Sort work) -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#policiesTable').DataTable({
+            "pageLength": 20, // Display 20 per page as per screenshot
+            "language": {
+                "search": "Search:",
+                "lengthMenu": "Display _MENU_ downloads per page"
+            },
+            "order": [[ 2, "desc" ]] // Sort by Date (3rd column) by default
+        });
+    });
+</script>
+
+{% endblock %}
