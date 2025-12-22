@@ -13,7 +13,15 @@
         <div class="col-lg-9">
             <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Who We Are</h2>
             
-            <img src="{% static 'img/banner.jpg' %}" class="img-fluid rounded mb-4 w-100" style="height: 300px; object-fit: cover;">
+            <!-- Update the filename to match your saved image -->
+            <!-- DYNAMIC BANNER LOGIC -->
+            {% if banner %}
+                <!-- If admin uploaded an image, show it -->
+                <img src="{{ banner.image.url }}" class="img-fluid rounded mb-4 w-100 shadow-sm" style="height: 400px; object-fit: cover;" alt="{{ banner.caption|default:'ANTS Campus' }}">
+            {% else %}
+                <!-- Fallback: If no image uploaded yet, show the default static one -->
+                <img src="{% static 'img/church1.png' %}" class="img-fluid rounded mb-4 w-100 shadow-sm" style="height: 400px; object-fit: cover;" alt="ANTS Chapel">
+            {% endif %}
 
             <p class="lead text-muted">All Nations Theological College and Seminary (ANTS) is an interdenominational institution committed to training men and women for the Gospel ministry.</p>
             

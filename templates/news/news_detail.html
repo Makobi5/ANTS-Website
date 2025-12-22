@@ -4,49 +4,114 @@
 {% block content %}
 <div class="container py-5">
     <div class="row">
-        <!-- Main Article -->
+        
+        <!-- LEFT COLUMN: Main Content -->
         <div class="col-lg-8">
+            
+            <!-- Featured Image -->
             {% if article.image %}
-                <img src="{{ article.image.url }}" class="img-fluid rounded shadow-sm mb-4 w-100" alt="{{ article.title }}">
+                <img src="{{ article.image.url }}" class="img-fluid w-100 mb-4 shadow-sm" alt="{{ article.title }}">
             {% endif %}
-            
-            <h1 class="fw-bold text-primary mb-2">{{ article.title }}</h1>
-            <p class="text-muted small mb-4">
-                <i class="far fa-calendar-alt me-2"></i> {{ article.date_posted|date:"F d, Y" }} 
-                <span class="mx-2">|</span> 
-                <i class="far fa-user me-2"></i> {{ article.author.first_name }}
-            </p>
-            
-            <div class="article-content" style="line-height: 1.8; color: #444;">
+
+            <!-- Title -->
+            <h2 class="fw-bold text-dark mb-2">{{ article.title }}</h2>
+
+            <!-- Metadata (Date | Author) -->
+            <div class="text-muted small mb-4 border-bottom pb-3">
+                <span class="me-3"><i class="far fa-calendar-alt me-1"></i> {{ article.date_posted|date:"F d, Y" }}</span>
+                <span class="me-3">|</span>
+                <span class="me-3"><i class="far fa-comment me-1"></i> 0 Comments</span>
+                <span class="me-3">|</span>
+                <span><i class="far fa-user me-1"></i> {{ article.author.first_name }} {{ article.author.last_name }}</span>
+            </div>
+
+            <!-- Content -->
+            <div class="article-content text-dark" style="line-height: 1.8; font-size: 1.05rem;">
                 {{ article.content|linebreaks }}
             </div>
-            
-            <hr class="my-5">
-            <a href="{% url 'news_list' %}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i> Back to News
-            </a>
-        </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <div class="sticky-top" style="top: 100px;">
-                <h5 class="fw-bold text-uppercase border-bottom pb-2 mb-4">Recent Stories</h5>
-                
-                <div class="list-group list-group-flush">
-                    {% for recent in recent_articles %}
-                    <a href="{% url 'news_detail' recent.pk %}" class="list-group-item list-group-item-action py-3 d-flex align-items-center">
-                        {% if recent.image %}
-                            <img src="{{ recent.image.url }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
-                        {% endif %}
-                        <div>
-                            <h6 class="mb-1 fw-bold text-dark small">{{ recent.title }}</h6>
-                            <small class="text-muted">{{ recent.date_posted|date:"M d, Y" }}</small>
-                        </div>
-                    </a>
+            <!-- GALLERY SECTION (The Extra Photos) -->
+            {% if article.gallery_images.all %}
+            <div class="mt-5">
+                <h4 class="fw-bold text-uppercase border-start border-5 border-warning ps-2 mb-3">Event Gallery</h4>
+                <div class="row g-2">
+                    {% for photo in article.gallery_images.all %}
+                    <div class="col-md-4 col-6">
+                        <a href="{{ photo.image.url }}" target="_blank">
+                            <img src="{{ photo.image.url }}" class="img-fluid rounded shadow-sm hover-shadow" style="height: 150px; width: 100%; object-fit: cover;">
+                        </a>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
+
         </div>
+
+        <!-- RIGHT COLUMN: Sidebar (WordPress Style) -->
+        <div class="col-lg-4 mt-5 mt-lg-0 ps-lg-5">
+            
+            <!-- Search Widget -->
+            <div class="mb-5">
+                <form action="" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Recent Posts Widget -->
+            <div class="mb-5">
+                <h6 class="fw-bold text-uppercase mb-3">Recent Posts</h6>
+                <ul class="list-unstyled">
+                    {% for recent in recent_articles %}
+                    <li class="mb-3 pb-3 border-bottom border-light">
+                        <a href="{% url 'news_detail' recent.pk %}" class="text-decoration-none text-dark fw-bold d-block mb-1">
+                            {{ recent.title }}
+                        </a>
+                        <small class="text-muted text-uppercase" style="font-size: 0.75rem;">
+                            {{ recent.date_posted|date:"F d, Y" }}
+                        </small>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Archives Widget (Static for now) -->
+            <div class="mb-5">
+                <h6 class="fw-bold text-uppercase mb-3">Archives</h6>
+                <ul class="list-unstyled text-muted small">
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">December 2025</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">November 2025</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">October 2025</a></li>
+                </ul>
+            </div>
+
+            <!-- Categories Widget -->
+            <!-- Dynamic Categories Widget -->
+                        <div class="mb-5">
+                            <h6 class="fw-bold text-uppercase mb-3">Category: {{ article.category }}</h6>
+                            <div class="mb-4">
+                                <span class="badge bg-primary fs-6">{{ article.category.name }}</span>
+                            </div>
+
+                            <h6 class="fw-bold text-uppercase mb-3">Tags / Keywords</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for tag in article.tags.all %}
+                                    <span class="badge bg-light text-dark border">#{{ tag.name }}</span>
+                                {% empty %}
+                                    <small class="text-muted">No tags.</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+        </div>
+
     </div>
 </div>
+
+<style>
+    .hover-shadow:hover { transform: translateY(-3px); transition: 0.3s; }
+</style>
 {% endblock %}

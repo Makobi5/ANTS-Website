@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'events_list' %}">Events</a></li>
+                    <li class="breadcrumb-item active">{{ event.title }}</li>
+                </ol>
+            </nav>
+
+            <!-- Event Image -->
+            {% if event.image %}
+                <img src="{{ event.image.url }}" class="img-fluid rounded shadow w-100 mb-4" style="max-height: 400px; object-fit: cover;">
+            {% endif %}
+
+            <!-- Title & Date Box -->
+            <div class="d-flex align-items-start mb-4">
+                <div class="bg-primary text-white text-center rounded p-3 me-3 shadow-sm" style="min-width: 80px;">
+                    <span class="d-block h2 fw-bold mb-0">{{ event.date|date:"d" }}</span>
+                    <span class="text-uppercase small fw-bold">{{ event.date|date:"M" }}</span>
+                </div>
+                <div>
+                    <h1 class="fw-bold text-dark mb-2">{{ event.title }}</h1>
+                    <div class="text-muted">
+                        <i class="far fa-clock text-warning me-2"></i> {{ event.time|time:"h:i A" }}
+                        <span class="mx-2">|</span>
+                        <i class="fas fa-map-marker-alt text-danger me-2"></i> {{ event.location }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Description -->
+            <div class="bg-white p-4 rounded shadow-sm border-top border-5 border-primary">
+                <h5 class="fw-bold mb-3">Event Details</h5>
+                <div class="text-muted" style="line-height: 1.8;">
+                    {{ event.description|linebreaks }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+            <!-- NEW: Principal's Message Section -->
+            {% if event.principal_message %}
+            <div class="mt-5 p-4 bg-light border-start border-5 border-warning shadow-sm rounded">
+                <h4 class="fw-bold text-primary mb-3">
+                    <i class="fas fa-quote-left me-2 text-warning"></i> 
+                     Principal's Message
+                </h4>
+                <p class="fst-italic text-dark lead" style="font-family: 'Georgia', serif;">
+                    "{{ event.principal_message }}"
+                </p>
+                <div class="d-flex align-items-center mt-3">
+                    <!-- You can swap this with a real photo of the principal if you have one -->
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3" style="width: 50px; height: 50px;">
+                        P
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0 text-dark">The Principal</h6>
+                        <small class="text-muted">All Nations Theological College</small>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+{% endblock %}
+

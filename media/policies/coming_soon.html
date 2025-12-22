@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas | ANTS</title>
+
+    <!-- Google Fonts for that Christmas Feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            /* The KAB-style Green Gradient */
+            background: linear-gradient(135deg, #0f3d28 0%, #1a5c3d 50%, #0f3d28 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* --- Snow Animation --- */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            animation: fall linear forwards;
+            font-size: 1em;
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+
+        /* --- Main Card --- */
+        .christmas-card {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Logo Styling */
+        .logo-glow {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6);
+            /* Gold Glow */
+            margin-bottom: 2rem;
+            object-fit: contain;
+        }
+
+        /* Festive Typography */
+        .greeting-script {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: #ffca28;
+            /* ANTS Gold */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: -10px;
+            line-height: 1.2;
+        }
+
+        .year-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        /* The Coming Soon Message Box */
+        .info-box {
+            background: rgba(0, 0, 0, 0.4);
+            /* Glass effect */
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(5px);
+            margin-top: 2rem;
+        }
+
+        .info-box h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .highlight-text {
+            color: #ffca28;
+        }
+
+        /* Decorative Gold Line */
+        .separator {
+            height: 4px;
+            width: 100px;
+            background: #ffca28;
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        /* Bauble Decoration (CSS Only) */
+        .bauble {
+            position: absolute;
+            top: -20px;
+            width: 3px;
+            height: 100px;
+            background: #ffca28;
+            z-index: 5;
+        }
+
+        .bauble::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -13px;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 10px 10px, #ff5e62, #ff0000);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .b1 {
+            left: 10%;
+            height: 120px;
+        }
+
+        .b2 {
+            left: 80%;
+            height: 150px;
+            animation-delay: 1s;
+        }
+
+        .b3 {
+            left: 20%;
+            height: 80px;
+        }
+
+        .b4 {
+            right: 15%;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hanging Decorations -->
+    <div class="bauble b1"></div>
+    <div class="bauble b2"></div>
+    <div class="bauble b3 d-none d-md-block"></div>
+    <div class="bauble b4 d-none d-md-block"></div>
+
+    <div class="christmas-card">
+        <!-- Logo (Make sure this path matches your live server) -->

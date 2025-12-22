@@ -46,3 +46,27 @@ class DailySchedule(models.Model):
 
     def __str__(self):
         return f"{self.day_category} - {self.activity}"
+class PageBanner(models.Model):
+    PAGE_CHOICES = [
+        ('WHO_WE_ARE', 'Who We Are'),
+        ('STATEMENT', 'Statement of Faith'),
+        ('POLICIES', 'University Policies'),
+        ('SCHEDULE', 'Daily Schedule'),
+    ]
+    
+    page = models.CharField(max_length=50, choices=PAGE_CHOICES, unique=True, help_text="Select which page this banner belongs to")
+    image = models.ImageField(upload_to='page_banners/', help_text="Upload a wide image (approx 1200x400px)")
+    caption = models.CharField(max_length=200, blank=True, help_text="Optional text to display on the image")
+
+    def __str__(self):
+        return self.get_page_display()    
+class SliderImage(models.Model):
+    title = models.CharField(max_length=100, blank=True, help_text="Main heading on the slide")
+    subtitle = models.CharField(max_length=200, blank=True, help_text="Smaller text below heading")
+    image = models.ImageField(upload_to='home_slider/', help_text="Upload a large, high-quality image (1920x800px recommended)")
+    link = models.CharField(max_length=200, blank=True, help_text="Link for the button (e.g., /admissions/apply/)")
+    button_text = models.CharField(max_length=50, default="Learn More", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title or "Untitled Slide"    

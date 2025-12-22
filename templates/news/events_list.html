@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.95), rgba(74, 20, 140, 0.95)), url('{% static 'img/banner.jpg' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">ANTS Events</h1>
+        <p class="mb-0 text-white-50 text-uppercase">HOME / EVENTS</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    
+    <!-- UPCOMING EVENTS SECTION -->
+    <h3 class="fw-bold text-primary mb-4 border-start border-5 border-warning ps-3">Upcoming Events</h3>
+    
+    {% if upcoming_events %}
+    <div class="row">
+        {% for event in upcoming_events %}
+        <div class="col-lg-6 mb-4">
+            <!-- Make the whole card clickable -->
+            <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none">
+                <div class="card h-100 border shadow-sm overflow-hidden hover-shadow transition-all">
+                    <div class="row g-0 h-100">
+                        
+                        <!-- 1. Date Column (Purple) -->
+                        <div class="col-2 d-flex flex-column align-items-center justify-content-center p-2 text-center text-white" 
+                             style="background-color: var(--ants-purple);">
+                            <span class="display-6 fw-bold">{{ event.date|date:"d" }}</span>
+                            <span class="text-uppercase fw-bold small" style="color: var(--ants-gold);">{{ event.date|date:"M" }}</span>
+                        </div>
+
+                        <!-- 2. Image Column (New!) -->
+                        <div class="col-4 bg-light position-relative">
+                            {% if event.image %}
+                                <img src="{{ event.image.url }}" class="img-fluid h-100 w-100" style="object-fit: cover; position: absolute;">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                                    <i class="fas fa-calendar-alt fa-2x"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- 3. Details Column -->
+                        <div class="col-6">
+                            <div class="card-body h-100 d-flex flex-column justify-content-center py-2 px-3">
+                                <h6 class="card-title fw-bold text-dark mb-1 lh-sm">{{ event.title|truncatechars:40 }}</h6>
+                                
+                                <div class="text-muted small mb-2" style="font-size: 0.8rem;">
+                                    <i class="far fa-clock text-warning"></i> {{ event.time|time:"h:i A" }} <br>
+                                    <i class="fas fa-map-marker-alt text-danger"></i> {{ event.location|truncatechars:15 }}
+                                </div>
+                                
+                                <span class="badge bg-light text-primary border mt-auto align-self-start">View Details</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="alert alert-info">
+        <i class="fas fa-calendar-times me-2"></i> No upcoming events scheduled at the moment.
+    </div>
+    {% endif %}
+
+    <!-- PAST EVENTS SECTION -->
+    <div class="mt-5 pt-4 border-top">
+        <h4 class="fw-bold text-muted mb-4">Past Events Archive</h4>
+        
+        {% if past_events %}
+        <div class="row">
+            {% for event in past_events %}
+            <div class="col-md-4 mb-3">
+                <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm border">
+                    <div class="me-3 text-center text-muted" style="min-width: 60px;">
+                        <div class="fw-bold fs-5">{{ event.date|date:"d M" }}</div>
+                        <small>{{ event.date|date:"Y" }}</small>
+                    </div>
+                    <div>
+                        <h6 class="mb-1 fw-bold text-dark">{{ event.title }}</h6>
+                        <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> {{ event.location }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted fst-italic">No past events found.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

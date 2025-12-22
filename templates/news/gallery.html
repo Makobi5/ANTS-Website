@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold text-primary mb-5 text-center">ANTS Photo Gallery</h2>
+    
+    {% for article in articles %}
+        <!-- Only show section if article has photos (Featured OR Gallery) -->
+        {% if article.image or article.gallery_images.all %}
+        
+        <div class="mb-5 pb-4 border-bottom">
+            <h4 class="fw-bold text-dark mb-3 border-start border-5 border-warning ps-3">
+                {{ article.title }} <small class="text-muted fw-normal fs-6 ms-2">({{ article.date_posted|date:"M Y" }})</small>
+            </h4>
+            
+            <div class="row g-3">
+                <!-- 1. The Featured Image -->
+                {% if article.image %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="overflow-hidden rounded shadow-sm h-100 group">
+                        <img src="{{ article.image.url }}" class="img-fluid w-100 h-100 object-fit-cover transition-transform" style="min-height: 200px;">
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- 2. The Gallery Images -->
+                {% for photo in article.gallery_images.all %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="overflow-hidden rounded shadow-sm h-100 group">
+                        <img src="{{ photo.image.url }}" class="img-fluid w-100 h-100 object-fit-cover transition-transform" style="min-height: 200px;">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="text-end mt-2">
+                <a href="{% url 'news_detail' article.pk %}" class="small text-decoration-none">View Post &rarr;</a>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<style>
+    .object-fit-cover { object-fit: cover; }
+    .transition-transform { transition: transform 0.5s ease; }
+    .group:hover .transition-transform { transform: scale(1.05); }
+</style>
+{% endblock %}

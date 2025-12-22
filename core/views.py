@@ -1,16 +1,32 @@
 from django.shortcuts import render
 # Make sure to import the new models
+from django.utils import timezone
 from .models import Policy, DailySchedule
 from django.db.models import Case, When, Value, IntegerField
+from .models import Policy, DailySchedule, PageBanner, SliderImage
+from news.models import NewsArticle, Event # Import the News model
 
 def home(request):
-    return render(request, 'core/home.html')
-
+    # 1. Get 5 Latest News for the Big Slider
+    slider_news = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
+    
+    # 2. Get Upcoming Events for the section below
+    today = timezone.now().date()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:6]
+    
+    return render(request, 'core/home.html', {
+        'slider_news': slider_news,
+        'upcoming_events': upcoming_events
+    })
+    
 def about(request):
     return render(request, 'core/about.html')
 
 def who_we_are(request):
-    return render(request, 'core/who_we_are.html')
+    # Fetch the banner specifically for the "Who We Are" page
+    banner = PageBanner.objects.filter(page='WHO_WE_ARE').first()
+    
+    return render(request, 'core/who_we_are.html', {'banner': banner})
 
 def statement_of_faith(request):
     return render(request, 'core/statement_of_faith.html')

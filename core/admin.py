@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import Policy, DailySchedule
-from django.db import models  # <--- Import this
-from django import forms 
+from .models import Policy, DailySchedule, PageBanner,SliderImage  # Import it here
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -11,10 +9,20 @@ class PolicyAdmin(admin.ModelAdmin):
 @admin.register(DailySchedule)
 class DailyScheduleAdmin(admin.ModelAdmin):
     list_display = ('day_category', 'period', 'start_time', 'activity', 'location')
-    list_filter = ('day_category', 'period') # Adds a sidebar filter
+    list_filter = ('day_category', 'period')
     list_editable = ('activity', 'location')
     
-    # ⬇️ ADD THIS BLOCK ⬇️
+    # Modern Time Picker override
+    from django.db import models
+    from django import forms
     formfield_overrides = {
         models.TimeField: {'widget': forms.TimeInput(attrs={'type': 'time'})},
     }
+
+@admin.register(PageBanner)
+class PageBannerAdmin(admin.ModelAdmin):
+    list_display = ('page', 'caption')
+
+@admin.register(SliderImage)
+class SliderImageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')    
