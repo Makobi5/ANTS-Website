@@ -6,6 +6,10 @@ from django.db.models import Case, When, Value, IntegerField
 from .models import Policy, DailySchedule, PageBanner, SliderImage
 from news.models import NewsArticle, Event # Import the News model
 from django.db.models import Q # Needed for advanced queries
+from staff.models import StaffMember  # <--- New Import
+from academics.models import Program  # <--- New Import
+from .models import Policy 
+
 
 def home(request):
     # 1. Get 5 Latest News for the Big Slider
@@ -67,21 +71,45 @@ def global_search(request):
     query = request.GET.get('q')
     
     if query:
-        # Search in News Titles OR Content
+        # 1. Search News
         news_results = NewsArticle.objects.filter(
             Q(title__icontains=query) | Q(content__icontains=query)
         )
         
-        # Search in Events Titles OR Descriptions
+        # 2. Search Events
         event_results = Event.objects.filter(
             Q(title__icontains=query) | Q(description__icontains=query)
         )
-    else:
-        news_results = []
-        event_results = []
 
-    return render(request, 'core/search_results.html', {
+        # 3. Search Staff (This will find "Principal")
+        staff_results = StaffMember.objects.filter(
+            Q(name__icontains=query) | Q(role__icontains=query) | Q(bio__icontains=query)
+        )
+
+        # 4. Search Programs (Courses)
+        program_results = Program.objects.filter(
+            Q(title__icontains=query) | Q(summary__icontains=query)
+        )
+
+        # 5. Search Documents/Policies
+        policy_results = Policy.objects.filter(
+            Q(title__icontains=query)
+        )
+
+    else:
+        news_results = event_results = staff_results = program_results = policy_results = []
+
+    # Check if we found anything at all
+    results_found = any([news_results, event_results, staff_results, program_results, policy_results])
+
+    context = {
         'query': query,
+        'results_found': results_found,
         'news_results': news_results,
-        'event_results': event_results
-    })
+        'event_results': event_results,
+        'staff_results': staff_results,
+        'program_results': program_results,
+        'policy_results': policy_results,
+    }
+
+    return render(request, 'core/search_results.html', context)

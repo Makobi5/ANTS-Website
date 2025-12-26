@@ -141,18 +141,17 @@
 }
 
 /* =========================================
-   5. MAIN NAVIGATION (Sticky)
-   ========================================= */
+/* --- MAIN NAVIGATION (Sticky with Forced Yellow Line) --- */
+/* --- MAIN NAVIGATION --- */
 .top-navbar {
-    background-color: var(--ants-purple);
+    background-color: #4a148c !important; /* ANTS Purple */
     font-size: 0.9rem;
     font-weight: 500;
     padding: 0;
-    z-index: 1020;
     
-    /* THE GOLD LINE FIX: Attached to the navbar so it sticks */
-    border-bottom: 5px solid var(--ants-gold) !important; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    /* Removed sticky and border from here because the HTML Wrapper handles it now */
+    border: none !important;
+    box-shadow: none !important; 
 }
 
 .top-navbar .nav-item {

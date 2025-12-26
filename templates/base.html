@@ -51,7 +51,7 @@
                                 </li>
                                 <li class="list-inline-item me-2">|</li>
                                 <li class="list-inline-item">
-                                    <a href="#" class="text-decoration-none text-muted hover-purple">Staff Webmail</a>
+                                    <a href="https://webmail.ants.ac.ug/" class="text-decoration-none text-muted hover-purple">Staff Webmail</a>
                                 </li>
                             </ul>
                         </div>
@@ -121,161 +121,173 @@
 
     <!-- ============================================ -->
     <!-- 2. MAIN NAVIGATION BAR (Sticky Menu)         -->
+<!-- ============================================ -->
+    <!-- 2. MAIN NAVIGATION (Sticky Wrapper)          -->
     <!-- ============================================ -->
-    <nav class="navbar navbar-expand-lg top-navbar sticky-top">
-        <div class="container">
-            
-            <!-- Mobile Toggle Button -->
-            <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <!-- This wrapper holds both the Menu AND the Gold Line so they stick together -->
+    <div class="sticky-top shadow-sm" style="z-index: 1020;">
+        
+        <!-- A. The Purple Menu Section -->
+        <nav class="navbar navbar-expand-lg top-navbar">
+            <div class="container">
+                
+                <!-- Mobile Toggle Button -->
+                <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <!-- Menu Links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav w-100 justify-content-center">
-                    
-                    <!-- === 1. HOME === -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
+                <!-- Menu Links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav w-100 justify-content-center">
+                        
+                        <!-- === 1. HOME === -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}">Home</a>
+                        </li>
 
-                    <!-- === 2. ABOUT ANTS (Mega Menu) === -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'about' %}" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            About ANTS
-                        </a>
-                        <ul class="dropdown-menu megamenu-custom" aria-labelledby="aboutDropdown">
-                            <li>
-                                <div class="d-flex p-2">
-                                    <!-- Left Col: Get Informed -->
-                                    <div class="col-6 px-2 border-end border-white-50">
-                                        <h6 class="dropdown-header-custom">GET INFORMED</h6>
-                                        <a class="dropdown-item" href="{% url 'who_we_are' %}">Who we are</a>
-                                        <a class="dropdown-item" href="{% url 'about' %}">Vision, Mission & Core Values</a>
-                                        <a class="dropdown-item" href="{% url 'statement_of_faith' %}">Statement of Faith</a>
-                                        <a class="dropdown-item" href="{% url 'policies' %}">University Policies</a>
-                                        <a class="dropdown-item" href="{% url 'daily_schedule' %}">Daily Schedule</a>
+                        <!-- === 2. ABOUT ANTS === -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{% url 'about' %}" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                About ANTS
+                            </a>
+                            <ul class="dropdown-menu megamenu-custom" aria-labelledby="aboutDropdown">
+                                <li>
+                                    <div class="d-flex p-2">
+                                        <div class="col-6 px-2 border-end border-white-50">
+                                            <h6 class="dropdown-header-custom">GET INFORMED</h6>
+                                            <a class="dropdown-item" href="{% url 'who_we_are' %}">Who we are</a>
+                                            <a class="dropdown-item" href="{% url 'about' %}">Vision, Mission & Core Values</a>
+                                            <a class="dropdown-item" href="{% url 'statement_of_faith' %}">Statement of Faith</a>
+                                            <a class="dropdown-item" href="{% url 'policies' %}">University Policies</a>
+                                            <a class="dropdown-item" href="{% url 'daily_schedule' %}">Daily Schedule</a>
+                                        </div>
+                                        <div class="col-6 px-2">
+                                            <h6 class="dropdown-header-custom">GOVERNANCE</h6>
+                                            <a class="dropdown-item" href="#">Governance Structure</a>
+                                            <a class="dropdown-item" href="{% url 'principal_profile' %}">The Principal</a>
+                                            <a class="dropdown-item" href="#">Governing Council</a>
+                                            <a class="dropdown-item" href="{% url 'management_list' %}">Management</a>
+                                            <a class="dropdown-item" href="{% url 'staff_list' %}">Staff Directory</a>
+                                        </div>
                                     </div>
-                                    <!-- Right Col: Governance -->
-                                    <div class="col-6 px-2">
-                                        <h6 class="dropdown-header-custom">GOVERNANCE</h6>
-                                        <a class="dropdown-item" href="#">Governance Structure</a>
-                                        <a class="dropdown-item" href="{% url 'principal_profile' %}">The Principal</a>
-                                        <a class="dropdown-item" href="#">Governing Council</a>
-                                        <a class="dropdown-item" href="{% url 'management_list' %}">Management</a>
-                                        <a class="dropdown-item" href="{% url 'staff_list' %}">Staff Directory</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- === 3. PROGRAMS === -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Programs
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="programsDropdown">
+                                <li><a class="dropdown-item" href="{% url 'program_list' 'bachelors' %}">Bachelor Programs</a></li>
+                                <li><a class="dropdown-item" href="{% url 'program_list' 'diplomas' %}">Diploma Programs</a></li>
+                                <li><a class="dropdown-item" href="{% url 'program_list' 'certificates' %}">Certificate Programs</a></li>
+                                <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Short Courses</a></li>
+                                <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Pastor Training Course (PTC)</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- === 4. STUDY AT ANTS === -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="studyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Study at ANTS
+                            </a>
+                            <ul class="dropdown-menu megamenu-custom" aria-labelledby="studyDropdown">
+                                <li>
+                                    <div class="d-flex p-2">
+                                        <div class="col-6 px-2 border-end border-white-50">
+                                            <h6 class="dropdown-header-custom">DISCOVER</h6>
+                                           <a class="dropdown-item" href="{% url 'why_study' %}">Why Study at ANTS</a>
+                                            <a class="dropdown-item" href="#">Academic Calendar</a>
+                                        </div>
+                                        <div class="col-6 px-2">
+                                            <h6 class="dropdown-header-custom">ADMISSIONS</h6>
+                                            <a class="dropdown-item" href="{% url 'admission_requirements' %}">Admission Requirements</a>
+                                            <a class="dropdown-item" href="{% url 'admission_procedure' %}">Application Procedure</a>
+                                            <a class="dropdown-item" href="{% url 'student_dashboard' %}">Apply Online</a>
+                                            <a class="dropdown-item" href="{% url 'graduation_requirements' %}">Graduation</a>
+                                            <a class="dropdown-item" href="{% url 'admission_lists' %}">Admission Lists</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+                                </li>
+                            </ul>
+                        </li>
 
-                    <!-- === 3. PROGRAMS === -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Programs
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="programsDropdown">
-                            <li><a class="dropdown-item" href="{% url 'program_list' 'bachelors' %}">Bachelor Programs</a></li>
-                            <li><a class="dropdown-item" href="{% url 'program_list' 'diplomas' %}">Diploma Programs</a></li>
-                            <li><a class="dropdown-item" href="{% url 'program_list' 'certificates' %}">Certificate Programs</a></li>
-                            <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Short Courses</a></li>
-                            <li><a class="dropdown-item" href="{% url 'program_list' 'short-courses' %}">Pastor Training Course (PTC)</a></li>
-                        </ul>
-                    </li>
+                        <!-- === 5. STUDENTS === -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Students
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
+                                <li><a class="dropdown-item" href="#">Students Manual</a></li>
+                                <li><a class="dropdown-item" href="#">Students Guild</a></li>
+                                <li><a class="dropdown-item" href="#">Alumni</a></li>
+                                <li><a class="dropdown-item" href="#">Life at ANTS</a></li>
+                                <li><a class="dropdown-item" href="#">Fees Structure</a></li>
+                            </ul>
+                        </li>
 
-                    <!-- === 4. STUDY AT ANTS === -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="studyDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Study at ANTS
-                        </a>
-                        <ul class="dropdown-menu megamenu-custom" aria-labelledby="studyDropdown">
-                            <li>
-                                <div class="d-flex p-2">
-                                    <!-- Left Col: Discover -->
-                                    <div class="col-6 px-2 border-end border-white-50">
-                                        <h6 class="dropdown-header-custom">DISCOVER</h6>
-                                       <a class="dropdown-item" href="{% url 'why_study' %}">Why Study at ANTS</a>
-                                        <a class="dropdown-item" href="#">Academic Calendar</a>
+                        <!-- === 6. SERVICES === -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Services
+                            </a>
+                            <ul class="dropdown-menu megamenu-custom" aria-labelledby="servicesDropdown">
+                                <li>
+                                    <div class="d-flex p-2">
+                                        <div class="col-6 px-2 border-end border-white-50">
+                                            <h6 class="dropdown-header-custom">UNIVERSITY SERVICES</h6>
+                                            <a class="dropdown-item" href="#">University Library</a>
+                                            <a class="dropdown-item" href="#">Quality Assurance</a>
+                                            <a class="dropdown-item" href="#">Computing Services</a>
+                                            <a class="dropdown-item" href="#">Financial Services</a>
+                                            <a class="dropdown-item" href="#">Health Services</a>
+                                        </div>
+                                        <div class="col-6 px-2">
+                                            <h6 class="dropdown-header-custom">KEY OFFICES</h6>
+                                            <a class="dropdown-item" href="#">The Principal</a>
+                                            <a class="dropdown-item" href="#">University Secretary</a>
+                                            <a class="dropdown-item" href="#">Academic Registrar</a>
+                                            <a class="dropdown-item" href="#">Human Resource</a>
+                                            <a class="dropdown-item" href="#">Dean of Students</a>
+                                        </div>
                                     </div>
-                                    <!-- Right Col: Admissions -->
-                                    <div class="col-6 px-2">
-                                        <h6 class="dropdown-header-custom">ADMISSIONS</h6>
-                                        <a class="dropdown-item" href="{% url 'admission_requirements' %}">Admission Requirements</a>
-                                        <a class="dropdown-item" href="{% url 'admission_procedure' %}">Application Procedure</a>
-                                        <a class="dropdown-item" href="{% url 'student_dashboard' %}">Apply Online</a>
-                                        <a class="dropdown-item" href="{% url 'graduation_requirements' %}">Graduation</a>
-                                        <a class="dropdown-item" href="{% url 'admission_lists' %}">Admission Lists</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+                                </li>
+                            </ul>
+                        </li>
 
-                    <!-- === 5. STUDENTS === -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Students
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
-                            <li><a class="dropdown-item" href="#">Students Manual</a></li>
-                            <li><a class="dropdown-item" href="#">Students Guild</a></li>
-                            <li><a class="dropdown-item" href="#">Alumni</a></li>
-                            <li><a class="dropdown-item" href="#">Life at ANTS</a></li>
-                            <li><a class="dropdown-item" href="#">Fees Structure</a></li>
-                        </ul>
-                    </li>
+                        <!-- === 9. ANTS CHAPEL === -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">ANTS Chapel</a>
+                        </li>
 
-                    <!-- === 6. SERVICES === -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
-                        </a>
-                        <ul class="dropdown-menu megamenu-custom" aria-labelledby="servicesDropdown">
-                            <li>
-                                <div class="d-flex p-2">
-                                    <!-- Left Col: University Services -->
-                                    <div class="col-6 px-2 border-end border-white-50">
-                                        <h6 class="dropdown-header-custom">UNIVERSITY SERVICES</h6>
-                                        <a class="dropdown-item" href="#">University Library</a>
-                                        <a class="dropdown-item" href="#">Quality Assurance</a>
-                                        <a class="dropdown-item" href="#">Computing Services</a>
-                                        <a class="dropdown-item" href="#">Financial Services</a>
-                                        <a class="dropdown-item" href="#">Health Services</a>
-                                    </div>
-                                    <!-- Right Col: Key Offices -->
-                                    <div class="col-6 px-2">
-                                        <h6 class="dropdown-header-custom">KEY OFFICES</h6>
-                                        <a class="dropdown-item" href="#">The Principal</a>
-                                        <a class="dropdown-item" href="#">University Secretary</a>
-                                        <a class="dropdown-item" href="#">Academic Registrar</a>
-                                        <a class="dropdown-item" href="#">Human Resource</a>
-                                        <a class="dropdown-item" href="#">Dean of Students</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- === 9. ANTS CHAPEL === -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">ANTS Chapel</a>
-                    </li>
+                        <!-- === 10. Donations=== -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Donations</a>
+                        </li>
 
-                    <!-- === 10. CONTACTS === -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contacts</a>
-                    </li>
+                        <!-- === 11. CONTACTS === -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contacts</a>
+                        </li>
 
-                </ul> <!-- End Navbar Nav -->
-            </div> <!-- End Collapse -->
-        </div> <!-- End Container -->
-    </nav>
+                    </ul> <!-- End Navbar Nav -->
+                </div> <!-- End Collapse -->
+            </div> <!-- End Container -->
+        </nav>
+
+        <!-- B. The Gold Line (Physical HTML Element) -->
+        <!-- This is now part of the sticky wrapper, so it CANNOT fail to scroll -->
+        <div class="ants-gold-bar" style="height: 6px; background-color: #ffca28; width: 100%;"></div>
+        
+    </div>
 
 
     <!-- ============================================ -->
     <!-- 3. DECORATIVE SEPARATOR LINE                 -->
     <!-- ============================================ -->
-    <div class="brand-separator"></div>
+    {% comment %} <div class="brand-separator"></div> {% endcomment %}
 
 
     <!-- ============================================ -->
