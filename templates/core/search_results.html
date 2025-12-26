@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold text-primary mb-4">Search Results for: "{{ query }}"</h2>
+
+    {% if not news_results and not event_results %}
+        <div class="alert alert-warning">
+            No results found. Try using different keywords.
+        </div>
+    {% endif %}
+
+    <!-- News Results -->
+    {% if news_results %}
+    <h4 class="border-bottom pb-2 mb-3 mt-4">News Articles</h4>
+    <div class="list-group mb-4">
+        {% for news in news_results %}
+        <a href="{% url 'news_detail' news.pk %}" class="list-group-item list-group-item-action">
+            <h5 class="mb-1 text-primary">{{ news.title }}</h5>
+            <p class="mb-1 small text-muted">{{ news.summary|truncatewords:20 }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Event Results -->
+    {% if event_results %}
+    <h4 class="border-bottom pb-2 mb-3 mt-4">Events</h4>
+    <div class="list-group">
+        {% for event in event_results %}
+        <a href="{% url 'event_detail' event.pk %}" class="list-group-item list-group-item-action">
+            <h5 class="mb-1 text-success">{{ event.title }}</h5>
+            <p class="mb-1 small text-muted">
+                <i class="far fa-calendar-alt me-1"></i> {{ event.date }} | 
+                <i class="fas fa-map-marker-alt me-1"></i> {{ event.location }}
+            </p>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

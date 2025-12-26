@@ -1,98 +1,133 @@
-/* --- START OF FILE style.css --- */
-
-/* ANTS Brand Colors */
+/* =========================================
+   1. BRAND COLORS & VARIABLES
+   ========================================= */
 :root {
     --ants-purple: #4a148c;
     --ants-gold: #ffca28;
     --footer-bg: #002147;
 }
 
-/* --- 1. Top Navigation Bar (The "ANTS Identity") --- */
-.top-navbar {
-    background-color: var(--ants-purple);
-    border-bottom: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0;
-    
-    /* Ensures it stays on top of everything else */
-    z-index: 1020; 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-/* --- 1. Top Navigation Bar Updates --- */
-
-.top-navbar .nav-item {
-    position: relative; /* Anchor for the dropdown */
+/* =========================================
+   2. TOP UTILITY BAR (Secondary Menu)
+   ========================================= */
+.top-utility-bar {
+    background-color: #f8f9fa; /* Light Gray background */
+    padding: 8px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-/* LINK STYLING */
-.top-navbar .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 12px 25px !important;
-    position: relative; /* Anchor for the yellow line */
-    transition: all 0.3s ease;
-    display: flex; /* Helps align the text and arrow */
+.hover-purple:hover {
+    color: var(--ants-purple) !important;
+    text-decoration: underline !important;
+}
+
+/* =========================================
+   FIXED SOCIAL ICONS & SEARCH BAR
+   ========================================= */
+
+/* container for right side of top bar */
+.top-right-container {
+    display: flex;
     align-items: center;
+    justify-content: flex-end;
+    gap: 15px; /* Space between icons group and search bar */
 }
 
-/* 
-   FIX: The "Gold Underline" Hover Effect 
-   Moved to ::before so it doesn't conflict with the dropdown arrow (::after)
-*/
-.top-navbar .nav-link::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 4px; /* Thickness of the yellow line */
-    width: 0;    /* Hidden by default */
+.social-utility-icons {
+    display: flex;
+    gap: 5px; /* Space between individual icons */
+}
+
+/* The Icon Circle */
+.social-circle {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+    text-decoration: none !important;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.social-circle:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* BRAND COLORS - FORCE APPLY */
+.sc-facebook { background-color: #1877F2 !important; }
+.sc-twitter  { background-color: #1DA1F2 !important; }
+.sc-x        { background-color: #000000 !important; }
+.sc-youtube  { background-color: #FF0000 !important; }
+.sc-linkedin { background-color: #0A66C2 !important; }
+.sc-tiktok   { background-color: #000000 !important; }
+.sc-telegram { background-color: #0088cc !important; }
+
+/* SEARCH BAR FIX */
+.top-search-form {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #ccc;
+    padding-left: 15px;
+}
+
+.search-input-top {
+    border: 1px solid #ccc;
+    border-right: none; /* Merge with button */
+    border-radius: 20px 0 0 20px; /* Round left side only */
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    outline: none;
+    width: 120px;
+    height: 30px;
+}
+
+.search-btn-circle {
+    width: 35px;
+    height: 30px;
+    border-radius: 0 20px 20px 0; /* Round right side only */
+    background-color: var(--ants-purple); /* Match Theme */
+    color: white;
+    border: 1px solid var(--ants-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-btn-circle:hover {
     background-color: var(--ants-gold);
-    transition: width 0.3s ease;
-    z-index: 10;
+    border-color: var(--ants-gold);
+    color: black;
 }
 
-.top-navbar .nav-link:hover {
-    color: #ffffff !important;
-    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker on hover */
+/* =========================================
+   4. BRAND HEADER (Logo Area)
+   ========================================= */
+.brand-header {
+    background-color: #ffffff;
+    padding: 15px 0;
 }
 
-.top-navbar .nav-link:hover:before {
-    width: 100%; /* The gold line expands across */
-}
-
-/* Dropdown Arrow Styling (Bootstrap uses ::after) */
-.top-navbar .dropdown-toggle::after {
-    color: rgba(255, 255, 255, 0.7);
-    margin-left: 8px; /* Space between text and arrow */
-    font-size: 0.8em;
-}
-
-/* Ensure the arrow turns white on hover too */
-.top-navbar .nav-link:hover::after {
-    color: #ffffff;
-}
-
-/* --- 2. Header & Logo Area --- */
 .brand-logo {
-    height: 90px;  /* Limits the height strictly */
-    width: auto;   /* Maintains aspect ratio */
+    height: 85px;  
+    width: auto;   
     object-fit: contain;
 }
 
-.brand-header {
-    background-color: #ffffff;
-    padding: 20px 0;
-}
-
-/* --- 3. The Custom "Apply Now" Button --- */
 .btn-apply-custom {
     background-color: var(--ants-gold);
     color: var(--ants-purple);
-    font-weight: 800; /* Extra Bold */
+    font-weight: 800; 
     text-transform: uppercase;
     padding: 12px 30px;
-    border-radius: 50px; /* "Pill" shape */
+    border-radius: 50px; 
     border: 2px solid var(--ants-gold);
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -102,232 +137,159 @@
     background-color: white;
     color: var(--ants-purple);
     border: 2px solid var(--ants-purple);
-    transform: translateY(-2px); /* Slight lift effect */
+    transform: translateY(-2px);
 }
 
-/* --- 4. The Solid Gold Anchor Line --- */
-.brand-separator {
-    height: 8px;
-    background-color: var(--ants-gold); /* Solid Gold Bar */
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); /* Shadow below the line */
-}
-
-/* --- 5. Footer & Buttons --- */
-.btn-primary {
+/* =========================================
+   5. MAIN NAVIGATION (Sticky)
+   ========================================= */
+.top-navbar {
     background-color: var(--ants-purple);
-    border-color: var(--ants-purple);
-}
-
-.btn-warning {
-    background-color: var(--ants-gold);
-    color: #000;
-    font-weight: bold;
-}
-
-footer {
-    background-color: var(--footer-bg);
-    color: white;
-    padding-top: 3rem;
-    padding-bottom: 1rem;
-}
-
-footer a { color: white; text-decoration: none; }
-
-/* --- 6. Social Media Icons (Header) --- */
-.social-header-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px; /* Space between icons */
-}
-
-.social-icon-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* Makes it a perfect circle */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white !important; /* Force icon color to white */
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: transform 0.3s ease, opacity 0.3s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.social-icon-circle:hover {
-    transform: translateY(-3px); /* Floats up slightly on hover */
-    opacity: 0.9;
-}
-
-/* Brand Colors */
-.bg-facebook { background-color: #1877F2; }
-.bg-youtube  { background-color: #FF0000; }
-.bg-linkedin { background-color: #0A66C2; }
-.bg-tiktok   { background-color: #000000; }
-.bg-x { 
-    background-color: #000000 !important;
-    color: white;
-}
-
-/* --- 7. Dropdown Menu Styling (The Fixes) --- */
-
-/* Style the container */
-.top-navbar .dropdown-menu {
-    border: none;
-    border-radius: 0 0 5px 5px;
-    background-color: var(--ants-purple);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    font-weight: 500;
     padding: 0;
-    margin-top: 0; /* Remove gap so mouse doesn't fall through */
+    z-index: 1020;
+    
+    /* THE GOLD LINE FIX: Attached to the navbar so it sticks */
+    border-bottom: 5px solid var(--ants-gold) !important; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Style individual items */
-.top-navbar .dropdown-item {
-    color: rgba(255, 255, 255, 0.9);
-    padding: 12px 25px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+.top-navbar .nav-item {
     position: relative;
 }
 
-.top-navbar .dropdown-item:last-child {
-    border-bottom: none;
+.top-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 20px !important;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
-/* Hover effect for dropdown items */
-.top-navbar .dropdown-item:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+/* Gold Underline Effect on Hover */
+.top-navbar .nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px; 
+    width: 0;    
+    background-color: var(--ants-gold);
+    transition: width 0.3s ease;
+    z-index: 10;
+}
+
+.top-navbar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.top-navbar .nav-link:hover:before {
+    width: 100%; 
+}
+
+/* Dropdown Arrow */
+.top-navbar .dropdown-toggle::after {
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 6px;
+    font-size: 0.75em;
+    vertical-align: middle;
+}
+.top-navbar .nav-link:hover::after {
     color: #ffffff;
 }
 
-/* Gold underline inside dropdown items */
-.top-navbar .dropdown-item:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 4px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--ants-gold);
-    transition: width 0.3s;
-}
-
-.top-navbar .dropdown-item:hover:after {
-    width: 100%;
-}
-
-/* HOVER TRIGGER: Show dropdown on hover (Desktop Only) */
-@media all and (min-width: 992px) {
-    .navbar .nav-item.dropdown:hover .dropdown-menu {
-        display: block;
-        animation: fadeIn 0.3s ease; /* Optional smooth entrance */
+/* =========================================
+   6. DROPDOWN MENUS
+   ========================================= */
+@media (min-width: 992px) {
+    .top-navbar .nav-item.dropdown:hover .dropdown-menu {
+        display: block !important;
+        animation: fadeIn 0.2s ease-out;
+        margin-top: 0;
     }
 }
 
-/* Optional: Smooth Fade In Animation */
+.top-navbar .dropdown-menu {
+    border: none;
+    border-radius: 0 0 4px 4px;
+    background-color: var(--ants-purple);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    padding: 0;
+}
+
+.top-navbar .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
+
+.top-navbar .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding-left: 25px; /* Slight slide effect */
+}
+
+/* Mega Menu Headers */
+.dropdown-header-custom {
+    color: var(--ants-gold);
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 15px 20px 5px 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.top-navbar .megamenu-custom {
+    min-width: 550px;
+    padding-bottom: 10px;
+}
+
+/* =========================================
+   7. FOOTER
+   ========================================= */
+footer {
+    background-color: var(--footer-bg);
+    color: white;
+    padding-top: 4rem;
+    padding-bottom: 1.5rem;
+}
+footer a { color: rgba(255,255,255,0.7); text-decoration: none; transition: 0.3s; }
+footer a:hover { color: var(--ants-gold); }
+
+/* =========================================
+   8. ANIMATIONS & AUTH
+   ========================================= */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 
-   CRITICAL FIX: HOVER BEHAVIOR
-   This forces the menu to appear on Desktop (screens > 992px)
-*/
-@media (min-width: 992px) {
-    /* Target the dropdown menu when hovering the parent LI */
-    .top-navbar .nav-item.dropdown:hover .dropdown-menu {
-        display: block !important; /* Force display */
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-}
-
-/* --- Mega Menu / 2-Column Dropdown Styling --- */
-
-/* 1. Make the "About" dropdown wider to fit 2 columns */
-.top-navbar .megamenu-custom {
-    min-width: 500px; /* Adjust this if you want it wider */
-    padding: 15px 0;
-}
-
-/* 2. Style the headers (Get Informed / Governance) */
-.dropdown-header-custom {
-    color: var(--ants-gold);
-    font-weight: 800; /* Extra bold */
-    font-size: 0.85rem;
-    padding: 5px 25px 10px 25px; /* Spacing around the header */
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: block;
-}
-
-/* 3. Adjust the vertical white line separator */
-.border-white-50 {
-    border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* 4. Fix dropdown items inside the columns to line up correctly */
-.top-navbar .megamenu-custom .dropdown-item {
-    padding-left: 25px; /* Indent the links slightly under the header */
-}
-
-/* 5. Mobile Responsive Adjustment */
-/* On mobile, we stack them instead of side-by-side */
-@media (max-width: 991px) {
-    .top-navbar .megamenu-custom {
-        min-width: 100%;
-    }
-    .top-navbar .megamenu-custom .d-flex {
-        flex-direction: column;
-    }
-    .top-navbar .megamenu-custom .col-6 {
-        width: 100%;
-        border-right: none !important; /* Remove separator on mobile */
-        margin-bottom: 15px;
-    }
-}
-
-/* --- Authentication Page Background --- */
+/* Auth Background (Login/Signup) */
 .auth-background {
-    /* We use 'static/img/chapel_bg.jpg' relative to the CSS file */
-    background: linear-gradient(rgba(74, 20, 140, 0.7), rgba(74, 20, 140, 0.7)), url('../img/chapel_bg.jpg');
+    background: linear-gradient(rgba(74, 20, 140, 0.8), rgba(74, 20, 140, 0.8)), url('../img/chapel_bg.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
-    min-height: 100vh; /* Forces it to fill the screen */
-    width: 100%;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute; /* Ensures it sits behind everything */
-    top: 0;
-    left: 0;
-    z-index: 0; /* Behind the menu */
 }
 
-/* Fix for the Sticky Navbar covering the content */
-.auth-background .container {
-    position: relative;
-    z-index: 2;
-    padding-top: 80px; /* Pushes content down so it's not hidden by the header */
-}
-
-/* --- The Purple Header Fix --- */
 .bg-ants-header {
-    background-color: var(--ants-purple) !important; /* Forces ANTS Purple */
+    background-color: var(--ants-purple) !important;
     color: white;
-    border-bottom: 4px solid var(--ants-gold); /* Adds that nice gold line */
+    border-bottom: 4px solid var(--ants-gold);
 }
 
-/* Glassy Card Effect */
 .auth-card {
     background-color: rgba(255, 255, 255, 0.98);
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-    overflow: hidden; /* Keeps the corners rounded */
+    overflow: hidden;
 }
-

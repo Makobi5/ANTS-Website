@@ -5,6 +5,7 @@ from .models import Policy, DailySchedule
 from django.db.models import Case, When, Value, IntegerField
 from .models import Policy, DailySchedule, PageBanner, SliderImage
 from news.models import NewsArticle, Event # Import the News model
+from django.db.models import Q # Needed for advanced queries
 
 def home(request):
     # 1. Get 5 Latest News for the Big Slider
@@ -60,3 +61,27 @@ def daily_schedule(request):
     ).order_by('day_rank', 'start_time')
     
     return render(request, 'core/schedule.html', {'items': schedule_items})
+
+
+def global_search(request):
+    query = request.GET.get('q')
+    
+    if query:
+        # Search in News Titles OR Content
+        news_results = NewsArticle.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        )
+        
+        # Search in Events Titles OR Descriptions
+        event_results = Event.objects.filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        )
+    else:
+        news_results = []
+        event_results = []
+
+    return render(request, 'core/search_results.html', {
+        'query': query,
+        'news_results': news_results,
+        'event_results': event_results
+    })
