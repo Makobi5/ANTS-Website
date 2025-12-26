@@ -26,7 +26,8 @@ class NewsArticle(models.Model):
     # Content
     image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image")
     date_posted = models.DateTimeField(auto_now_add=True)
-    summary = models.TextField(max_length=500, help_text="Short summary for the sidebar")
+    # Allow blank summary so we can have "Image Only" banners
+    summary = models.TextField(max_length=500, blank=True, help_text="Leave blank if you want an Image-Only banner (no text overlay).")
     content = RichTextUploadingField(help_text="Full article content")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 

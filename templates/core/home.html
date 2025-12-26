@@ -5,93 +5,80 @@
 {% block content %}
 
 <!-- ============================================ -->
-<!-- 1. HERO SLIDER (SPLIT VIEW STYLE)            -->
+<!-- 1. HERO SLIDER (KYAMBOGO STYLE - REFINED)    -->
 <!-- ============================================ -->
 <div id="heroNewsCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     
-    <!-- Indicators (Moved to bottom of image area) -->
-    <div class="carousel-indicators" style="bottom: auto; top: 480px;">
-        {% for news in slider_news %}
-        <button type="button" data-bs-target="#heroNewsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true"></button>
-        {% endfor %}
-    </div>
-
     <div class="carousel-inner">
         {% for news in slider_news %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
             
-            <div class="row g-0">
-                <!-- A. The Image Section (Top) -->
-                <div class="col-12">
-                    <div class="slider-image-wrapper">
-                        <a href="{% url 'news_detail' news.pk %}">
-                            {% if news.image %}
-                                <img src="{{ news.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ news.title }}">
-                            {% else %}
-                                <div class="bg-secondary w-100 h-100 d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-university fa-5x text-white-50"></i>
-                                </div>
-                            {% endif %}
-                        </a>
-                    </div>
-                </div>
+            <!-- A. The Image Wrapper -->
+            <div class="slider-image-wrapper">
+                <a href="{% url 'news_detail' news.pk %}">
+                    {% if news.image %}
+                        <img src="{{ news.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ news.title }}">
+                    {% else %}
+                        <div class="bg-secondary w-100 h-100 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-university fa-5x text-white-50"></i>
+                        </div>
+                    {% endif %}
+                </a>
+                
+                <!-- B. The Gradient Overlay (Only show if there is text!) -->
+                {% if news.summary %}
+                <div class="kyambogo-gradient"></div>
+                {% endif %}
+            </div>
 
-                <!-- B. The Content Section (Bottom Bar) -->
-                <div class="col-12">
-                    <div class="slider-caption-bar">
-                        <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-lg-9">
-                                    <!-- Date Badge -->
-                                    <span class="badge bg-gold text-dark fw-bold mb-2">
-                                        NEWS | {{ news.date_posted|date:"M d, Y" }}
-                                    </span>
-                                    
-                                    <!-- Title -->
-                                    <h2 class="text-white fw-bold mb-2">
-                                        <a href="{% url 'news_detail' news.pk %}" class="text-white text-decoration-none hover-gold">
-                                            {{ news.title }}
-                                        </a>
-                                    </h2>
-                                    
-                                    <!-- Summary -->
-                                    <p class="text-white-50 mb-0 d-none d-md-block">
-                                        {{ news.summary|truncatewords:25 }}
-                                    </p>
-                                </div>
-                                
-                                <div class="col-lg-3 text-lg-end mt-3 mt-lg-0">
-                                    <!-- Button -->
-                                    <a href="{% url 'news_detail' news.pk %}" class="btn btn-outline-light rounded-pill px-4 fw-bold">
-                                        Read Full Story &rarr;
-                                    </a>
-                                </div>
-                            </div>
+            <!-- C. The Content (Conditional: Only shows if Summary is not empty) -->
+            {% if news.summary %}
+            <div class="carousel-caption d-flex flex-column justify-content-end text-start">
+                <div class="container pb-5 mb-2" style="position: relative; z-index: 2;">
+                    <div class="row">
+                        <div class="col-lg-9 col-md-10">
+                            <!-- Title -->
+                            <h1 class="display-5 fw-bold text-white mb-2 slider-title">
+                                <a href="{% url 'news_detail' news.pk %}" class="text-white text-decoration-none hover-underline">
+                                    {{ news.title }}
+                                </a>
+                            </h1>
+                            
+                            <!-- Summary -->
+                            <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="font-weight: 400; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+                                {{ news.summary|truncatewords:30 }}
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
 
         </div>
         {% empty %}
         <!-- Fallback Slide -->
         <div class="carousel-item active">
             <div class="slider-image-wrapper bg-primary"></div>
-            <div class="slider-caption-bar text-center">
-                <h2 class="text-white fw-bold">Welcome to ANTS</h2>
-                <p class="text-white-50">Preparing Servants for the Harvest.</p>
+            <div class="carousel-caption d-flex flex-column justify-content-end text-start">
+                <div class="container pb-5">
+                    <h1 class="text-white fw-bold">Welcome to ANTS</h1>
+                    <p class="text-white opacity-75">Preparing Servants for the Harvest.</p>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
 
-    <!-- Controls (Centered on the Image area only) -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="prev" style="height: 500px; width: 5%;">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="next" style="height: 500px; width: 5%;">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    </button>
+    <!-- D. Controls (Bottom Right) -->
+    <div class="slider-controls">
+        <button class="carousel-control-prev custom-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next custom-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+    </div>
+
 </div>
 
 
@@ -165,58 +152,73 @@
 <!-- 3. PAGE SPECIFIC CSS                         -->
 <!-- ============================================ -->
 <style>
-    /* 1. Slider Image Area */
+    /* 1. Slider Height (Reduced to ~550px like Kyambogo) */
     .slider-image-wrapper {
-        height: 520px; /* Fixed height for image */
+        height: 550px; 
         position: relative;
-    }
-
-    /* 2. The New Bottom Bar (Where text lives) */
-    .slider-caption-bar {
-        background-color: var(--ants-purple);
-        padding: 2rem 0;
-        border-top: 5px solid var(--ants-gold); /* Gold separation line */
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        position: relative;
-        z-index: 10;
-    }
-
-    /* 3. Typography Updates */
-    .bg-gold {
-        background-color: var(--ants-gold);
-    }
-    .hover-gold:hover {
-        color: var(--ants-gold) !important;
-        transition: 0.3s;
-    }
-
-    /* 4. Controls Positioning */
-    .carousel-control-prev, .carousel-control-next {
-        width: 8%;
-        opacity: 0.7;
-    }
-    .carousel-control-prev:hover, .carousel-control-next:hover {
-        opacity: 1;
-        background: rgba(0,0,0,0.1);
-    }
-
-    /* 5. Mobile Adjustments */
-    @media (max-width: 768px) {
-        .slider-image-wrapper { height: 350px; }
-        .slider-caption-bar { padding: 1.5rem 0; text-align: center; }
-        .col-lg-3 { margin-top: 15px; } /* Space for button on mobile */
     }
     
-    /* 6. Event Card Hover Effects */
-    .hover-shadow:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    /* 2. The Refined Gradient */
+    .kyambogo-gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%; /* Reduced from 70% to 50% so it covers less image */
+        /* Smooth fade from Transparent to ANTS Purple */
+        background: linear-gradient(to bottom, rgba(27, 29, 78, 0) 0%, rgba(27, 29, 78, 0.6) 40%, rgba(27, 29, 78, 0.95) 100%);
+        z-index: 1;
+        pointer-events: none; /* Lets you click the image through the gradient */
     }
-    .event-card img {
-        transition: transform 0.5s ease;
+
+    /* 3. Typography */
+    .carousel-caption {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        padding-bottom: 0;
     }
-    .event-card:hover img {
-        transform: scale(1.05);
+    
+    .slider-title {
+        text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        line-height: 1.1;
+        font-size: 2.5rem; /* Slightly smaller for elegance */
+    }
+    
+    .hover-underline:hover {
+        text-decoration: underline !important;
+    }
+
+    /* 4. Square Controls */
+    .slider-controls {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+    }
+
+    .custom-control {
+        position: relative;
+        width: 50px; /* Slightly smaller controls */
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.15);
+        border: none;
+        opacity: 1;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .custom-control:hover {
+        background-color: var(--ants-gold);
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+        .slider-image-wrapper { height: 400px; } /* Even smaller on mobile */
+        .kyambogo-gradient { height: 70%; } /* Increase gradient on mobile for text readability */
+        .display-5 { font-size: 1.4rem; }
     }
 </style>
 
