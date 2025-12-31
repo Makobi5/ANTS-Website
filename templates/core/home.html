@@ -4,55 +4,80 @@
 
 {% block content %}
 
-<!-- ============================================ -->
-<!-- 1. HERO SLIDER (KYAMBOGO STYLE - REFINED)    -->
-<!-- ============================================ -->
+<!-- Indicators -->
 <div id="heroNewsCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     
-    <div class="carousel-inner">
-        {% for news in slider_news %}
+<div class="carousel-inner">
+        {% for slide in combined_slides %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
             
             <!-- A. The Image Wrapper -->
             <div class="slider-image-wrapper">
-                <a href="{% url 'news_detail' news.pk %}">
-                    {% if news.image %}
-                        <img src="{{ news.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ news.title }}">
-                    {% else %}
-                        <div class="bg-secondary w-100 h-100 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-university fa-5x text-white-50"></i>
-                        </div>
-                    {% endif %}
-                </a>
+                <!-- Check if it is News (has PK) or Manual Slide (has image field) -->
+                {% if slide.date_posted %}
+                    <!-- IT IS NEWS -->
+                    <a href="{% url 'news_detail' slide.pk %}">
+                        <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                    </a>
+                {% else %}
+                    <!-- IT IS A MANUAL SLIDE -->
+                    <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                {% endif %}
                 
-                <!-- B. The Gradient Overlay (Only show if there is text!) -->
-                {% if news.summary %}
+                <!-- B. The Gradient Overlay (Kyambogo Style) -->
+                <!-- Show gradient if there is text to display -->
+                {% if slide.summary or slide.subtitle %}
                 <div class="kyambogo-gradient"></div>
                 {% endif %}
             </div>
 
-            <!-- C. The Content (Conditional: Only shows if Summary is not empty) -->
-            {% if news.summary %}
+            <!-- C. The Content -->
             <div class="carousel-caption d-flex flex-column justify-content-end text-start">
                 <div class="container pb-5 mb-2" style="position: relative; z-index: 2;">
                     <div class="row">
                         <div class="col-lg-9 col-md-10">
-                            <!-- Title -->
-                            <h1 class="display-5 fw-bold text-white mb-2 slider-title">
-                                <a href="{% url 'news_detail' news.pk %}" class="text-white text-decoration-none hover-underline">
-                                    {{ news.title }}
-                                </a>
-                            </h1>
                             
-                            <!-- Summary -->
-                            <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="font-weight: 400; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
-                                {{ news.summary|truncatewords:30 }}
-                            </p>
+                            <!-- LOGIC: Different content based on Type -->
+                            {% if slide.date_posted %}
+                                <!-- === NEWS ARTICLE LAYOUT === -->
+                                <span class="badge bg-warning text-dark mb-2 fw-bold shadow-sm">NEWS UPDATE</span>
+                                
+                                <h1 class="display-5 fw-bold text-white mb-2 slider-title">
+                                    <a href="{% url 'news_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">
+                                        {{ slide.title }}
+                                    </a>
+                                </h1>
+                                {% if slide.summary %}
+                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+                                    {{ slide.summary|truncatewords:30 }}
+                                </p>
+                                {% endif %}
+
+                            {% else %}
+                                <!-- === MANUAL SLIDER LAYOUT === -->
+                                {% if slide.title %}
+                                <h1 class="display-4 fw-bold text-white mb-2 slider-title" style="border-left-color: #fff;">
+                                    {{ slide.title }}
+                                </h1>
+                                {% endif %}
+                                
+                                {% if slide.subtitle %}
+                                <p class="lead text-warning fw-bold mb-3" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                                    {{ slide.subtitle }}
+                                </p>
+                                {% endif %}
+                                
+                                {% if slide.link %}
+                                <a href="{{ slide.link }}" class="btn btn-outline-light rounded-pill px-4 fw-bold mt-2">
+                                    {{ slide.button_text|default:"Learn More" }} &rarr;
+                                </a>
+                                {% endif %}
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
 
         </div>
         {% empty %}

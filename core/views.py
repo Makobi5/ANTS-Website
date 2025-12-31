@@ -9,18 +9,25 @@ from django.db.models import Q # Needed for advanced queries
 from staff.models import StaffMember  # <--- New Import
 from academics.models import Program  # <--- New Import
 from .models import Policy 
-
+from itertools import chain
 
 def home(request):
-    # 1. Get 5 Latest News for the Big Slider
-    slider_news = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
+    # 1. Fetch Manual Slides (Created in Admin)
+    manual_slides = SliderImage.objects.all().order_by('-created_at')
     
-    # 2. Get Upcoming Events for the section below
+    # 2. Fetch Latest News (Automated)
+    news_slides = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
+    
+    # 3. Combine them (Manual slides first, then News)
+    # We convert to list() so the template can loop through both easily
+    combined_slides = list(chain(manual_slides, news_slides))
+    
+    # 4. Get Upcoming Events
     today = timezone.now().date()
     upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:6]
     
     return render(request, 'core/home.html', {
-        'slider_news': slider_news,
+        'combined_slides': combined_slides, # Send the combined list
         'upcoming_events': upcoming_events
     })
     
