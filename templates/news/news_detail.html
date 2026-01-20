@@ -27,9 +27,32 @@
 
             <!-- Content -->
             <div class="article-content text-dark" style="line-height: 1.8; font-size: 1.05rem;">
-                {{ article.content|linebreaks }}
+                {{ article.content|safe }}
             </div>
-
+            <!-- DOCUMENTS / ATTACHMENTS SECTION -->
+            {% if article.documents.all %}
+            <div class="mt-4 mb-5">
+                <h5 class="fw-bold text-uppercase border-bottom pb-2 mb-3">
+                    <i class="fas fa-paperclip text-warning me-2"></i> Related Documents
+                </h5>
+                <div class="list-group">
+                    {% for doc in article.documents.all %}
+                    <a href="{{ doc.file.url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                        <div class="me-3 text-danger">
+                            <i class="fas fa-file-pdf fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold text-dark">{{ doc.title }}</h6>
+                            <small class="text-muted">Click to download</small>
+                        </div>
+                        <div class="ms-auto">
+                            <i class="fas fa-download text-muted"></i>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             <!-- GALLERY SECTION (The Extra Photos) -->
             {% if article.gallery_images.all %}
             <div class="mt-5">

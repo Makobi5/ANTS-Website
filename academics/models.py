@@ -9,11 +9,18 @@ class Program(models.Model):
         ('CERTIFICATE', 'Certificate Programs'),
         ('SHORT', 'Short Courses'),
     ]
+    
+    is_featured_in_menu = models.BooleanField(
+        default=False, 
+        help_text="Check this box if you want this specific course to appear directly in the Main Menu dropdown (e.g. ESL, PTC)"
+    )
+
+  
 
     # Basic Info
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True, help_text="Auto-generated URL name (e.g. bachelor-of-theology)")
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, blank=True, null=True)
     
     # Details
     duration = models.CharField(max_length=100, help_text="e.g. 3 Years")

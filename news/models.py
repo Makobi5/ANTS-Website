@@ -67,3 +67,10 @@ class Event(models.Model):
     @property
     def is_past(self):
         return self.date < timezone.now().date()
+class NewsDocument(models.Model):
+    article = models.ForeignKey(NewsArticle, default=None, on_delete=models.CASCADE, related_name='documents')
+    title = models.CharField(max_length=200, help_text="Name of the file (e.g. 'Graduation List PDF')")
+    file = models.FileField(upload_to='news_documents/')
+    
+    def __str__(self):
+        return self.title    

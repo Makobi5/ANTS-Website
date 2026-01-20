@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import NewsArticle, Event, NewsImage, Category
+from .models import NewsArticle, Event, NewsImage, Category, NewsDocument
 
 # 1. Register Category
 @admin.register(Category)
@@ -14,6 +14,12 @@ class NewsImageInline(admin.TabularInline):
     max_num = 20
     verbose_name = "Gallery Photo"
     verbose_name_plural = "Add Gallery Photos (Select one for each row)"
+    
+class NewsDocumentInline(admin.TabularInline):
+    model = NewsDocument
+    extra = 2 # Shows 2 empty slots by default
+    verbose_name = "Attachment"
+    verbose_name_plural = "Attach Documents (PDF, Word, etc.)"
 
 # 3. Register Article with the Inline
 @admin.register(NewsArticle)
@@ -35,7 +41,7 @@ class NewsArticleAdmin(admin.ModelAdmin):
         }),
     )
     
-    inlines = [NewsImageInline]
+    inlines = [NewsDocumentInline, NewsImageInline]
 
 # 4. Register Event
 @admin.register(Event)
