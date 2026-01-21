@@ -107,52 +107,81 @@
 </div>
 
 <!-- ============================================ -->
-<!-- 1.5. PRINCIPAL'S WELCOME MESSAGE             -->
+<!-- 1.5. OFFICE OF THE PRINCIPAL                 -->
 <!-- ============================================ -->
 <div class="bg-white py-5">
     <div class="container">
         <div class="row align-items-center">
-            <!-- Text Side -->
-            <div class="col-lg-7 mb-4 mb-lg-0">
-                <h5 class="text-warning fw-bold text-uppercase ls-2">Welcome Message</h5>
-                <h2 class="fw-bold text-primary display-6 mb-4">A Word from the Principal</h2>
+            
+<!-- Text Side -->
+            <div class="col-lg-7 mb-4 mb-lg-0 pe-lg-5">
+                <!-- Title -->
+                <h2 class="fw-bold text-primary display-5 mb-3" style="font-family: 'Georgia', serif;">Office of the Principal</h2>
                 
-                <div class="border-start border-4 border-warning ps-4">
-                    <p class="lead text-dark fst-italic mb-3">
-                        "Our driving philosophy is <strong>'From Learning to Ministry'</strong>. It is not enough to simply acquire knowledge; we are driven to inspire students to apply what they learn from ANTS directly into church ministries as they serve God."
-                    </p>
-                    <p class="text-muted">
-                        Uganda being a God-loving nation needs well-nourished people who are able to contribute honestly to the education and evangelization of the nation. ANTS is uniquely designed to build up confident church leaders by combining spirituality and academics to make a well-balanced minister for the Gospel.
+                <!-- 1. New Welcome Message -->
+                <p class="lead text-dark mb-4">
+                    "I warmly welcome you to All Nations Theological College and Seminary (ANTS). Whether you are a prospective student, a partner in ministry, or a visitor seeking to know more about us, we are delighted to have you connect with our community."
+                </p>
+
+                <!-- 2. The Core Philosophy (Highlighted) -->
+                <div class="border-start border-4 border-warning ps-4 mb-4 bg-light py-3 pe-3 rounded-end">
+                    <p class="fst-italic text-dark mb-0">
+                        <strong>"Our driving philosophy is 'From Learning to Ministry'.</strong> It is not enough to simply acquire knowledge; we are driven to inspire students to apply what they learn from ANTS directly into church ministries as they serve God."
                     </p>
                 </div>
                 
+                <!-- 3. Contextual Text -->
+                <p class="text-muted">
+                    Uganda needs well-nourished people who are able to contribute honestly to the education and evangelization of the nation. ANTS is uniquely designed to build up confident church leaders by combining spirituality and academics to make a well-balanced minister for the Gospel.
+                </p>
+                
+                <!-- Principal Name -->
                 <div class="mt-4">
                     {% if principal %}
                         <h5 class="fw-bold text-dark mb-0">{{ principal.name }}</h5>
                         <small class="text-uppercase text-muted fw-bold">Principal, ANTS</small>
                     {% endif %}
                 </div>
+
+                <!-- Button -->
+                <div class="mt-5">
+                    <a href="{% url 'principal_profile' %}" class="btn btn-primary w-100 py-3 fw-bold text-uppercase text-start ps-4 shadow-sm mb-2" style="background-color: var(--ants-purple); border: none; border-radius: 0;">
+                        Read Principal's Full Biography <i class="fas fa-arrow-right float-end pe-4 mt-1"></i>
+                    </a>
+                </div>
             </div>
 
             <!-- Image Side -->
-            <div class="col-lg-5 text-center">
-                <div class="position-relative d-inline-block">
-                    <!-- Decorate Box -->
-                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-warning rounded" style="transform: translate(15px, 15px); z-index: 0;"></div>
+            <div class="col-lg-5">
+                <!-- Added padding-bottom and padding-right to make room for the frame -->
+                <div class="position-relative mt-5 mt-lg-0 pe-4 pb-4">
+                    
+                    <!-- DESIGN TWIST: The Floating Outline Frame -->
+                    <!-- Transparent background, thick Gold border, offset to the bottom-right -->
+                    <div class="position-absolute rounded" 
+                         style="top: 25px; left: 25px; width: 100%; height: 100%; z-index: 0; 
+                                border: 6px solid #ffca28; background: transparent;">
+                    </div>
                     
                     {% if principal and principal.photo %}
-                        <img src="{{ principal.photo.url }}" class="img-fluid rounded shadow position-relative" style="z-index: 1; max-height: 400px; object-fit: cover;" alt="Principal">
+                        <!-- Image with Fixed Height & Cover Crop -->
+                        <img src="{{ principal.photo.url }}" 
+                             class="img-fluid shadow-lg position-relative w-100 rounded" 
+                             style="z-index: 1; height: 500px; object-fit: cover; object-position: top center;" 
+                             alt="Principal">
                     {% else %}
-                        <div class="bg-secondary rounded shadow position-relative d-flex align-items-center justify-content-center" style="width: 350px; height: 400px; z-index: 1;">
+                        <!-- Fallback Placeholder -->
+                        <div class="bg-secondary shadow-lg position-relative d-flex align-items-center justify-content-center w-100 rounded" 
+                             style="height: 500px; z-index: 1;">
                             <i class="fas fa-user-tie fa-5x text-white-50"></i>
                         </div>
                     {% endif %}
+                    
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- ============================================ -->
 <!-- 1.6. WHY ANTS? (UCU/KABALE HYBRID STYLE)     -->
@@ -176,12 +205,21 @@
 
             <!-- RIGHT: Stats & Content (UCU Style) -->
             <div class="col-lg-7 ps-lg-5">
-                <h2 class="fw-bold text-primary mb-3">Why Study at ANTS?</h2>
+                
+                <!-- 1. Changed Title -->
+                <h2 class="fw-bold text-primary mb-3">Why ANTS?</h2>
+                
                 <p class="text-muted mb-4">
                     Established in 1993, ANTS is uniquely designed to build up confident church leaders for Africa by training spirituality and academics to make a well-balanced minister for the Gospel.
+                    
+                    <!-- 2. Added Link to Full Page -->
+                    <br>
+                    <a href="{% url 'why_study' %}" class="fw-bold text-decoration-none mt-2 d-inline-block" style="color: var(--ants-purple);">
+                        Read full story &rarr;
+                    </a>
                 </p>
 
-                <!-- Stats Grid (From your handwritten notes) -->
+                <!-- Stats Grid -->
                 <div class="row text-center mb-4">
                     <div class="col-6 col-md-3 mb-3">
                         <h2 class="fw-bold text-success mb-0">1993</h2>
