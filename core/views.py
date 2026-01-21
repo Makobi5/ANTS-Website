@@ -10,25 +10,29 @@ from staff.models import StaffMember  # <--- New Import
 from academics.models import Program  # <--- New Import
 from .models import Policy 
 from itertools import chain
+from staff.models import StaffMember 
 
 def home(request):
-    # 1. Fetch Manual Slides (Created in Admin)
+    # 1. Fetch Manual Slides
     manual_slides = SliderImage.objects.all().order_by('-created_at')
     
-    # 2. Fetch Latest News (Automated)
+    # 2. Fetch Latest News
     news_slides = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
     
-    # 3. Combine them (Manual slides first, then News)
-    # We convert to list() so the template can loop through both easily
+    # 3. Combine them
     combined_slides = list(chain(manual_slides, news_slides))
     
     # 4. Get Upcoming Events
     today = timezone.now().date()
     upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:6]
+
+    # 5. NEW: Fetch the Principal for the Welcome Message
+    principal = StaffMember.objects.filter(category='PRINCIPAL').first()
     
     return render(request, 'core/home.html', {
-        'combined_slides': combined_slides, # Send the combined list
-        'upcoming_events': upcoming_events
+        'combined_slides': combined_slides,
+        'upcoming_events': upcoming_events,
+        'principal': principal, # <--- Pass this to the template
     })
     
 def about(request):
