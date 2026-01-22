@@ -13,28 +13,30 @@ from itertools import chain
 from staff.models import StaffMember 
 
 def home(request):
-    # 1. Fetch Manual Slides
+    # 1. Slider (Manual + News)
     manual_slides = SliderImage.objects.all().order_by('-created_at')
-    
-    # 2. Fetch Latest News
     news_slides = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
-    
-    # 3. Combine them
     combined_slides = list(chain(manual_slides, news_slides))
     
-    # 4. Get Upcoming Events
-    today = timezone.now().date()
-    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:6]
+    # 2. News Grid
+    latest_news_list = NewsArticle.objects.all().order_by('-date_posted')[:5]
+    featured_news = latest_news_list[0] if latest_news_list else None
+    other_news = latest_news_list[1:] if len(latest_news_list) > 1 else []
 
-    # 5. NEW: Fetch the Principal for the Welcome Message
+    # 3. Upcoming Events
+    today = timezone.now().date()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:3]
+
+    # 4. FETCH THE PRINCIPAL (This was missing!)
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()
-    
+
     return render(request, 'core/home.html', {
         'combined_slides': combined_slides,
+        'featured_news': featured_news,
+        'other_news': other_news,
         'upcoming_events': upcoming_events,
-        'principal': principal, # <--- Pass this to the template
+        'principal': principal,  # Now this variable exists!
     })
-    
 def about(request):
     return render(request, 'core/about.html')
 

@@ -367,66 +367,120 @@
     </div>
 </div>
 <!-- ============================================ -->
-<!-- 2. UPCOMING EVENTS SECTION                   -->
+<!-- 2. UNIVERSITY NEWS (KABALE GRID STYLE)       -->
 <!-- ============================================ -->
-<div class="bg-light py-5">
+<div class="py-5 bg-light">
     <div class="container">
         
-        <div class="d-flex justify-content-between align-items-end mb-5 border-bottom pb-2">
-            <div>
-                <h6 class="text-warning fw-bold text-uppercase mb-1">Stay Connected</h6>
-                <h2 class="fw-bold text-primary mb-0">Upcoming Events</h2>
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary">ANTS News & Updates</h2>
+            <div class="d-flex justify-content-center">
+                <div style="height: 4px; width: 60px; background-color: var(--ants-gold);"></div>
             </div>
-            <a href="{% url 'events_list' %}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">View All Events &rarr;</a>
+            <p class="text-muted mt-2 lead" style="font-size: 1.1rem;">
+                Stay connected with stories of transformation, ministry impact, and academic life at the Seminary.
+            </p>
         </div>
 
-        {% if upcoming_events %}
         <div class="row g-4">
-            {% for event in upcoming_events %}
-            <div class="col-md-6 col-lg-4">
-                <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none">
-                    <div class="card h-100 border-0 shadow-sm hover-shadow transition-all overflow-hidden event-card">
-                        
-                        <!-- Image Container -->
-                        <div class="position-relative">
-                            {% if event.image %}
-                                <img src="{{ event.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                            {% else %}
-                                <div class="bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-                                    <i class="fas fa-calendar-alt fa-4x text-white-50"></i>
-                                </div>
-                            {% endif %}
-                            
-                            <!-- Date Badge Overlay -->
-                            <div class="position-absolute bottom-0 start-0 bg-white p-2 m-2 rounded shadow text-center" style="min-width: 65px;">
-                                <span class="d-block fw-bold text-primary fs-4 lh-1">{{ event.date|date:"d" }}</span>
-                                <span class="d-block small fw-bold text-uppercase text-muted">{{ event.date|date:"M" }}</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Content -->
-                        <div class="card-body">
-                            <div class="small text-warning fw-bold mb-2">
-                                <i class="far fa-clock me-1"></i> {{ event.time|time:"h:i A" }}
-                            </div>
-                            <h5 class="card-title fw-bold text-dark mb-2 lh-sm">{{ event.title|truncatechars:50 }}</h5>
-                            <p class="card-text text-muted small">
-                                <i class="fas fa-map-marker-alt me-1 text-danger"></i> {{ event.location }}
-                            </p>
+            
+            <!-- LEFT: Featured Big Article -->
+            {% if featured_news %}
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100 overflow-hidden news-card-main">
+                    <div class="position-relative h-100">
+                        {% if featured_news.image %}
+                            <img src="{{ featured_news.image.url }}" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 400px;">
+                        {% endif %}
+                        <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+                            <h3 class="fw-bold text-white mb-2">
+                                <a href="{% url 'news_detail' featured_news.pk %}" class="text-white text-decoration-none">{{ featured_news.title }}</a>
+                            </h3>
+                            <small class="text-white-50 text-uppercase fw-bold">{{ featured_news.date_posted|date:"F d, Y" }}</small>
                         </div>
                     </div>
-                </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- RIGHT: Grid of Smaller Articles -->
+            <div class="col-lg-6">
+                <div class="row g-4">
+                    {% for news in other_news %}
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100 news-card-small">
+                            {% if news.image %}
+                                <img src="{{ news.image.url }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-2">
+                                    <a href="{% url 'news_detail' news.pk %}" class="text-dark text-decoration-none">{{ news.title|truncatechars:50 }}</a>
+                                </h6>
+                                <small class="text-muted d-block mb-2">{{ news.date_posted|date:"F d, Y" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'news_list' %}" class="btn btn-warning fw-bold px-4 py-2 shadow-sm">MORE ANTS NEWS</a>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- 3. UPCOMING EVENTS (PARALLAX STYLE)          -->
+<!-- ============================================ -->
+<!-- Background image needs to be fixed. Replace 'church1.png' with a graduation/crowd photo if possible -->
+<div class="py-5 text-white position-relative" style="background: linear-gradient(rgba(10, 40, 10, 0.8), rgba(10, 40, 10, 0.8)), url('{% static 'img/church1.png' %}'); background-size: cover; background-attachment: fixed; background-position: center;">
+    
+    <div class="container py-4">
+        
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-warning display-5">Upcoming Events</h2>
+            <p class="lead opacity-75">Explore opportunities to engage with people, ideas, and education across campus.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for event in upcoming_events %}
+            <div class="col-md-4">
+                <div class="card border-0 shadow h-100 event-card-kabale">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h5 class="fw-bold text-primary mb-3">
+                            <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none text-primary">{{ event.title }}</a>
+                        </h5>
+                        
+                        <p class="small text-muted mb-4 flex-grow-1">
+                            {{ event.description|truncatewords:20 }}
+                        </p>
+                        
+                        <div class="text-dark small fw-bold mb-2">
+                            <i class="fas fa-calendar-alt text-warning me-2"></i> {{ event.date|date:"F d, Y" }}
+                        </div>
+                        <div class="text-dark small mb-3">
+                            <i class="fas fa-map-marker-alt text-danger me-2"></i> {{ event.location }}
+                        </div>
+
+                        <a href="{% url 'event_detail' event.pk %}" class="btn btn-primary w-100 fw-bold btn-sm">LEARN MORE</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="opacity-50">No upcoming events scheduled.</p>
             </div>
             {% endfor %}
         </div>
-        {% else %}
-        <div class="text-center py-5">
-            <div class="py-5 bg-white rounded shadow-sm">
-                <i class="far fa-calendar-times fa-3x text-muted mb-3 opacity-50"></i>
-                <p class="text-muted mb-0">No upcoming events scheduled at the moment.</p>
-            </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'events_list' %}" class="btn btn-warning fw-bold px-4 py-2 shadow">MORE ANTS EVENTS</a>
         </div>
-        {% endif %}
 
     </div>
 </div>
@@ -538,6 +592,27 @@
     background-repeat: no-repeat;
     height: 300px;
     width: 100%;
+}
+
+/* News Cards Hover */
+.news-card-main:hover img, .news-card-small:hover img {
+    transform: scale(1.05);
+    transition: transform 0.5s ease;
+}
+.news-card-main, .news-card-small {
+    transition: transform 0.3s;
+}
+.news-card-small:hover {
+    transform: translateY(-5px);
+}
+
+/* Kabale Style Event Cards */
+.event-card-kabale {
+    border-top: 5px solid var(--ants-gold) !important; /* The Yellow Top Border */
+    transition: transform 0.3s ease;
+}
+.event-card-kabale:hover {
+    transform: translateY(-10px); /* Lifts up on hover */
 }
 </style>
 
