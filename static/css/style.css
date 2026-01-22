@@ -357,3 +357,77 @@ footer a:hover { color: var(--ants-gold); }
 
 /* Letter Spacing for headers */
 .ls-2 { letter-spacing: 2px; }
+
+/* --- Program Pathways (Background Image Fix) --- */
+
+.pathway-card {
+    display: block;
+    margin-top: 40px; 
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-radius: 0; 
+    border-bottom: 5px solid var(--ants-gold);
+    transition: transform 0.3s ease;
+    height: 100%; /* Ensures equal height in row */
+}
+
+.pathway-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* Header Box */
+.pathway-header {
+    background-color: var(--ants-purple);
+    padding: 50px 15px 25px 15px; 
+    text-align: center;
+    position: relative;
+    min-height: 130px; 
+}
+
+/* Floating Icon */
+.pathway-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    position: absolute;
+    top: -35px; left: 50%; transform: translateX(-50%);
+    border: 4px solid #ffffff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+/* THE FIX: Background Image Div */
+.pathway-img {
+    height: 300px; /* STRICT HEIGHT LIMIT */
+    width: 100%;
+    background-size: cover; /* Zooms to fill */
+    background-position: center top; /* Focuses on faces/top part */
+    background-repeat: no-repeat; /* Prevents tiling */
+    position: relative;
+    transition: background-size 5s ease; /* Subtle zoom effect */
+}
+
+/* Overlay Button */
+.pathway-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.pathway-card:hover .pathway-overlay { opacity: 1; }
+
+/* Icon Colors */
+.icon-bg-red   { background-color: #e63946; }
+.icon-bg-gold  { background-color: var(--ants-gold); color: black !important; }
+.icon-bg-blue  { background-color: #00aaff; }
+.icon-bg-green { background-color: #2a9d8f; }

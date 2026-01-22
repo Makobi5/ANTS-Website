@@ -270,7 +270,102 @@
     </div>
 </div>
 
+<!-- ============================================ -->
+<!-- 1.7. PROGRAM PATHWAYS (FINAL FIX)            -->
+<!-- ============================================ -->
+<div class="py-5 bg-white">
+    <div class="container">
+        
+<!-- Section Header -->
+        <div class="text-center mb-5 mx-auto" style="max-width: 850px;">
+            <h5 class="text-warning fw-bold text-uppercase ls-2 mb-2">Academic Programmes</h5>
+            <h2 class="fw-bold text-primary display-5 mb-3">Your Ministry Journey Begins Here</h2>
+            
+            <!-- Decorative Divider -->
+            <div class="d-flex justify-content-center mb-4">
+                <div style="width: 60px; height: 4px; background-color: var(--ants-gold); border-radius: 2px;"></div>
+            </div>
 
+            <p class="lead text-muted px-md-4" style="line-height: 1.8;">
+                Experience a transformative theological education designed for global impact. Why settle for less when you can be fully equipped for the Great Commission? 
+                We have got you covered with biblically grounded programs, ranging from 
+                <strong class="text-dark">Bachelor Degrees</strong> and <strong class="text-dark">Diplomas</strong> 
+                to <strong class="text-dark">Certificates</strong> and specialized <strong class="text-dark">Short Courses</strong>.
+                <br>
+                <span class="text-success fw-bold">Applications for the 2026 Intake are now open.</span>
+            </p>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- 1. BACHELORS -->
+            <div class="col-md-6 col-lg-3">
+                <a href="{% url 'program_list' 'bachelors' %}" class="pathway-card text-decoration-none d-block">
+                    <div class="pathway-header bg-purple">
+                        <div class="pathway-icon icon-bg-red"><i class="fas fa-graduation-cap"></i></div>
+                        <h5 class="text-uppercase fw-bold mb-1 text-white">Bachelor<br>Programs</h5>
+                        <small class="text-white-50 text-uppercase">Degree Level</small>
+                    </div>
+                    <!-- Background Image Div -->
+                    <div class="pathway-img bg-bachelor">
+                        <div class="pathway-overlay">
+                            <span class="btn btn-sm btn-light fw-bold rounded-pill px-3">View Courses</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 2. DIPLOMAS -->
+            <div class="col-md-6 col-lg-3">
+                <a href="{% url 'program_list' 'diplomas' %}" class="pathway-card text-decoration-none d-block">
+                    <div class="pathway-header bg-purple">
+                        <div class="pathway-icon icon-bg-gold"><i class="fas fa-scroll"></i></div>
+                        <h5 class="text-uppercase fw-bold mb-1 text-white">Diploma<br>Programs</h5>
+                        <small class="text-white-50 text-uppercase">Professional</small>
+                    </div>
+                    <div class="pathway-img bg-diploma">
+                        <div class="pathway-overlay">
+                            <span class="btn btn-sm btn-light fw-bold rounded-pill px-3">View Courses</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 3. CERTIFICATES -->
+            <div class="col-md-6 col-lg-3">
+                <a href="{% url 'program_list' 'certificates' %}" class="pathway-card text-decoration-none d-block">
+                    <div class="pathway-header bg-purple">
+                        <div class="pathway-icon icon-bg-blue"><i class="fas fa-certificate"></i></div>
+                        <h5 class="text-uppercase fw-bold mb-1 text-white">Certificate<br>Programs</h5>
+                        <small class="text-white-50 text-uppercase">Foundational</small>
+                    </div>
+                    <div class="pathway-img bg-certificate">
+                        <div class="pathway-overlay">
+                            <span class="btn btn-sm btn-light fw-bold rounded-pill px-3">View Courses</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 4. SHORT COURSES -->
+            <div class="col-md-6 col-lg-3">
+                <a href="{% url 'program_list' 'short-courses' %}" class="pathway-card text-decoration-none d-block">
+                    <div class="pathway-header bg-purple">
+                        <div class="pathway-icon icon-bg-green"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h5 class="text-uppercase fw-bold mb-1 text-white">Short<br>Courses</h5>
+                        <small class="text-white-50 text-uppercase">ESL & PTC</small>
+                    </div>
+                    <div class="pathway-img bg-short">
+                        <div class="pathway-overlay">
+                            <span class="btn btn-sm btn-light fw-bold rounded-pill px-3">View Courses</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!-- ============================================ -->
 <!-- 2. UPCOMING EVENTS SECTION                   -->
 <!-- ============================================ -->
@@ -409,6 +504,41 @@
         .kyambogo-gradient { height: 70%; } /* Increase gradient on mobile for text readability */
         .display-5 { font-size: 1.4rem; }
     }
+
+
+/* --- Custom Background Images for Pathways --- */
+
+/* 1. Bachelor Card Image */
+.bg-bachelor {
+    /* Replace 'bachelor_student.jpg' with your actual file name */
+    background-image: url('{% static "img/barch.png" %}'); 
+}
+
+/* 2. Diploma Card Image */
+.bg-diploma {
+    /* Based on your previous code, maybe this is 'faraja.png'? */
+    background-image: url('{% static "img/dipl.png" %}'); 
+}
+
+/* 3. Certificate Card Image (The one from your screenshot) */
+.bg-certificate {
+    /* Ensure 'marc.jpg' exists in your static/img folder! */
+    background-image: url('{% static "img/cert.png" %}'); 
+}
+
+/* 4. Short Courses Image */
+.bg-short {
+    background-image: url('{% static "img/esl.png" %}'); 
+}
+
+/* Ensure settings apply to all */
+.bg-bachelor, .bg-diploma, .bg-certificate, .bg-short {
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 100%;
+}
 </style>
 
 {% endblock %}
