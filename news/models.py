@@ -18,7 +18,17 @@ class Category(models.Model):
 # 2. News Article Model (Must come BEFORE NewsImage)
 class NewsArticle(models.Model):
     title = models.CharField(max_length=200)
+    # 1. Main Wide Image (For Sliders & Detail Page Header)
+    image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image (Wide)")
     
+    # 2. NEW: Thumbnail Image (For Cards, Lists, and Sidebar)
+    thumbnail = models.ImageField(
+        upload_to='news_thumbnails/', 
+        blank=True, 
+        null=True, 
+        verbose_name="Thumbnail (Card Image)",
+        help_text="Upload a smaller, clean photo for lists and grids. If left blank, the Featured Image will be used."
+    )
     # Metadata
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = TaggableManager(help_text="A comma-separated list of tags (e.g. Graduation, Theology)")

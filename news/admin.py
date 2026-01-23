@@ -37,7 +37,7 @@ class NewsArticleAdmin(admin.ModelAdmin):
             'fields': ('tags', 'summary')
         }),
         ('Featured Image', {
-            'fields': ('image', 'author'),
+            'fields': ('image','thumbnail', 'author'),
         }),
     )
     
