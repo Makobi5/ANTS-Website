@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Policy, DailySchedule, PageBanner,SliderImage  # Import it here
 from django.utils.html import mark_safe
+from .models import  Partner, Testimonial # <--- Add imports
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -40,3 +41,13 @@ class SliderImageAdmin(admin.ModelAdmin):
         return "No Image"
     
     image_preview.short_description = 'Slide Preview'   
+    
+    
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'role', 'created_at') # Added created_at to see when it was added
+    list_display_links = ('name',) # <--- This makes the name clickable for editing  

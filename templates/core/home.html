@@ -506,7 +506,85 @@
     </div>
 </div>
 
+<!-- ============================================ -->
+<!-- 4. TESTIMONIALS (KABALE STYLE)               -->
+<!-- ============================================ -->
+<div class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary">Voices of ANTS</h2>
+            <div class="d-flex justify-content-center">
+                <div style="height: 4px; width: 60px; background-color: var(--ants-gold);"></div>
+            </div>
+            <p class="text-muted mt-2">Hear from our alumni students, and visitors about their experience with us.</p>
+        </div>
 
+        <div class="row g-4 pt-4"> 
+            {% for t in testimonials %} <!-- Check this variable name -->
+            <div class="col-md-4">
+                <div class="kabale-testimonial-card">
+                    <!-- Image -->
+                    <div class="testimonial-img-wrapper">
+                        <!-- Add fallback if no photo -->
+                        {% if t.photo %}
+                            <img src="{{ t.photo.url }}" alt="{{ t.name }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" alt="Placeholder">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body text-center pt-5 px-4 pb-4">
+                        <h5 class="fw-bold text-primary mb-1">{{ t.name }}</h5>
+                        <small class="text-success fw-bold d-block mb-3">{{ t.role }}</small>
+                        
+                        <i class="fas fa-quote-left text-warning fs-4 mb-2"></i>
+                        <p class="text-muted small mb-3">
+                            {{ t.quote|truncatewords:25 }}
+                        </p>
+                        
+                        <a href="{% url 'testimonial_detail' t.pk %}" class="btn-read-more">
+                            Read More <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <!-- Debugging Message: If this shows, the loop is working but list is empty -->
+                <p class="text-center text-muted">No testimonials added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 5. PARTNERS & COLLABORATORS                  -->
+<!-- ============================================ -->
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h4 class="fw-bold text-dark text-uppercase">Our Partners & Collaborators</h4>
+            <p class="small text-muted">Advancing research, innovation, and academic excellence together.</p>
+        </div>
+
+        <div class="row align-items-center justify-content-center g-5">
+            {% for partner in partners %}
+            <div class="col-6 col-md-3 col-lg-2 text-center">
+                {% if partner.website %}
+                <a href="{{ partner.website }}" target="_blank" class="partner-logo-link">
+                    <img src="{{ partner.logo.url }}" class="img-fluid partner-logo" alt="{{ partner.name }}">
+                </a>
+                {% else %}
+                    <img src="{{ partner.logo.url }}" class="img-fluid partner-logo" alt="{{ partner.name }}">
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary btn-sm px-4 fw-bold">EXPLORE OUR NETWORK</a>
+        </div>
+    </div>
+</div>
 <!-- ============================================ -->
 <!-- 3. PAGE SPECIFIC CSS                         -->
 <!-- ============================================ -->
@@ -635,6 +713,62 @@
 .event-card-kabale:hover {
     transform: translateY(-10px); /* Lifts up on hover */
 }
+
+    /* Testimonial Card (Kabale Style) */
+    .kabale-testimonial-card {
+        background: white;
+        border-radius: 20px;
+        border-bottom-right-radius: 50px; /* The distinct shape */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+        margin-top: 50px; /* Space for head */
+        transition: transform 0.3s ease;
+        border-top: 5px solid var(--ants-gold);
+    }
+    
+    .kabale-testimonial-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .testimonial-img-wrapper {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 5px solid white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .testimonial-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .btn-read-more {
+        color: var(--ants-purple);
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    .btn-read-more:hover { text-decoration: underline; color: var(--ants-gold); }
+
+    /* Partner Logos */
+    .partner-logo {
+        filter: grayscale(100%);
+        opacity: 0.7;
+        transition: all 0.3s;
+        max-height: 80px;
+    }
+    .partner-logo:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+        transform: scale(1.1);
+    }
 </style>
 
 {% endblock %}

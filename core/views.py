@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # Make sure to import the new models
 from django.utils import timezone
 from .models import Policy, DailySchedule
@@ -11,32 +11,58 @@ from academics.models import Program  # <--- New Import
 from .models import Policy 
 from itertools import chain
 from staff.models import StaffMember 
+from .models import SliderImage, PageBanner, Partner, Testimonial 
 
 def home(request):
-    # 1. Slider (Manual + News)
+    # --- 1. HERO SLIDER LOGIC ---
+    # Fetch Manual Slides (Created in Admin)
     manual_slides = SliderImage.objects.all().order_by('-created_at')
+    # Fetch Latest News for Slider (Only those with images)
     news_slides = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
+    # Combine them into one list for the template
     combined_slides = list(chain(manual_slides, news_slides))
     
-    # 2. News Grid
+    # --- 2. OFFICE OF THE PRINCIPAL ---
+    # Fetch the staff member marked as 'PRINCIPAL'
+    principal = StaffMember.objects.filter(category='PRINCIPAL').first()
+
+    # --- 3. UNIVERSITY NEWS GRID ---
+    # Fetch latest 5 articles
     latest_news_list = NewsArticle.objects.all().order_by('-date_posted')[:5]
+    # Split them: First one is "Featured" (Big), the rest are "Other" (Small)
     featured_news = latest_news_list[0] if latest_news_list else None
     other_news = latest_news_list[1:] if len(latest_news_list) > 1 else []
 
-    # 3. Upcoming Events
+    # --- 4. UPCOMING EVENTS (Parallax Section) ---
     today = timezone.now().date()
+    # Fetch events happening today or in the future, limit to 3 for the row
     upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:3]
 
-    # 4. FETCH THE PRINCIPAL (This was missing!)
-    principal = StaffMember.objects.filter(category='PRINCIPAL').first()
+    # --- 5. TESTIMONIALS ---
+    # Fetch latest 3 testimonials for the "Voices of ANTS" section
+    testimonials = Testimonial.objects.all().order_by('-created_at')[:3]
 
+    # --- 6. PARTNERS ---
+    # Fetch all partners
+    partners = Partner.objects.all()
+
+    # Pass everything to the template
     return render(request, 'core/home.html', {
         'combined_slides': combined_slides,
+        'principal': principal,
         'featured_news': featured_news,
         'other_news': other_news,
         'upcoming_events': upcoming_events,
-        'principal': principal,  # Now this variable exists!
+        'testimonials': testimonials,
+        'partners': partners,
     })
+    
+# New View for the Notebook Page
+def testimonial_detail(request, pk):
+    testimonial = get_object_or_404(Testimonial, pk=pk)
+    # Get other testimonials for the sidebar
+    others = Testimonial.objects.exclude(pk=pk)[:4]
+    return render(request, 'core/testimonial_detail.html', {'testimonial': testimonial, 'others': others})    
 def about(request):
     return render(request, 'core/about.html')
 

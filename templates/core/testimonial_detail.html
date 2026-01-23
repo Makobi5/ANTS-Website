@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-primary py-5 text-center text-white" style="background: var(--ants-purple);">
+    <h1 class="fw-bold">{{ testimonial.name }}</h1>
+    <p class="mb-0 opacity-75">{{ testimonial.role }}</p>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        
+        <!-- NOTEBOOK CONTENT (Left) -->
+        <div class="col-lg-8">
+            <div class="notebook-paper shadow">
+                <!-- Spiral Binding Visuals -->
+                <div class="spiral-holes"></div>
+                
+                <div class="notebook-content">
+                    <i class="fas fa-quote-left fa-3x text-success mb-3 opacity-50"></i>
+                    <h3 class="fw-bold text-primary mb-4" style="line-height: 1.6;">
+                        "{{ testimonial.quote }}"
+                    </h3>
+                    
+                    <div class="notebook-text text-dark">
+                        {{ testimonial.full_story|safe }}
+                    </div>
+
+                    <div class="mt-5 text-end">
+                        <img src="{{ testimonial.photo.url }}" class="rounded-circle shadow-sm border border-3 border-white" width="100" height="100" style="object-fit: cover;">
+                        <div class="mt-2">
+                            <h6 class="fw-bold text-primary mb-0">{{ testimonial.name }}</h6>
+                            <small class="text-muted">{{ testimonial.role }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR (Right) -->
+        <div class="col-lg-4 mt-5 mt-lg-0">
+            <h5 class="fw-bold text-primary mb-4 border-bottom pb-2">More Stories</h5>
+            {% for t in others %}
+            <div class="d-flex align-items-center mb-4">
+                <img src="{{ t.photo.url }}" class="rounded-circle me-3" width="60" height="60" style="object-fit: cover;">
+                <div>
+                    <h6 class="mb-1 fw-bold">
+                        <a href="{% url 'testimonial_detail' t.pk %}" class="text-dark text-decoration-none">{{ t.name }}</a>
+                    </h6>
+                    <small class="text-muted d-block">{{ t.role }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* THE NOTEBOOK EFFECT */
+    .notebook-paper {
+        background-color: #fff;
+        background-image: linear-gradient(#e1e1e1 1px, transparent 1px);
+        background-size: 100% 2rem; /* The spacing of the lines */
+        padding: 2rem 3rem 2rem 5rem; /* Left padding for holes */
+        position: relative;
+        min-height: 600px;
+        border-left: 2px solid rgba(0,0,0,0.1);
+    }
+    
+    /* The Red Margin Line */
+    .notebook-paper::before {
+        content: '';
+        position: absolute;
+        top: 0; bottom: 0; left: 4rem;
+        width: 2px;
+        background-color: #ff9999;
+    }
+
+    /* Text styling to sit on lines */
+    .notebook-text, .notebook-content h3 {
+        line-height: 2rem; /* Matches background-size height */
+        font-family: 'Georgia', serif;
+    }
+
+    /* Spiral Holes */
+    .spiral-holes {
+        position: absolute;
+        left: 10px; top: 0; bottom: 0; width: 30px;
+        background: radial-gradient(circle at center, #333 30%, transparent 35%);
+        background-size: 100% 2rem; /* Match lines */
+        opacity: 0.1;
+    }
+</style>
+{% endblock %}

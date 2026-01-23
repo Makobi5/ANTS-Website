@@ -1,5 +1,5 @@
 from django.db import models
-
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 class Policy(models.Model):
     title = models.CharField(max_length=200, help_text="e.g. Academic Integrity Policy")
@@ -70,3 +70,24 @@ class SliderImage(models.Model):
 
     def __str__(self):
         return self.title or "Untitled Slide"    
+    
+    
+class Partner(models.Model):
+    name = models.CharField(max_length=100)
+    logo = models.ImageField(upload_to='partners/')
+    website = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100, help_text="e.g. Journalism Alumnus (2024)")
+    photo = models.ImageField(upload_to='testimonials/')
+    quote = models.TextField(help_text="Short quote for the card (approx 30 words)")
+    full_story = RichTextUploadingField(help_text="The full detailed story (Notebook view)") # Uses CKEditor
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name    
