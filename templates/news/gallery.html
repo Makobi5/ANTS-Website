@@ -2,49 +2,104 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <h2 class="fw-bold text-primary mb-5 text-center">ANTS Photo Gallery</h2>
-    
-    {% for article in articles %}
-        <!-- Only show section if article has photos (Featured OR Gallery) -->
-        {% if article.image or article.gallery_images.all %}
-        
-        <div class="mb-5 pb-4 border-bottom">
-            <h4 class="fw-bold text-dark mb-3 border-start border-5 border-warning ps-3">
-                {{ article.title }} <small class="text-muted fw-normal fs-6 ms-2">({{ article.date_posted|date:"M Y" }})</small>
-            </h4>
-            
-            <div class="row g-3">
-                <!-- 1. The Featured Image -->
-                {% if article.image %}
-                <div class="col-md-3 col-sm-6">
-                    <div class="overflow-hidden rounded shadow-sm h-100 group">
-                        <img src="{{ article.image.url }}" class="img-fluid w-100 h-100 object-fit-cover transition-transform" style="min-height: 200px;">
-                    </div>
-                </div>
-                {% endif %}
 
-                <!-- 2. The Gallery Images -->
-                {% for photo in article.gallery_images.all %}
-                <div class="col-md-3 col-sm-6">
-                    <div class="overflow-hidden rounded shadow-sm h-100 group">
-                        <img src="{{ photo.image.url }}" class="img-fluid w-100 h-100 object-fit-cover transition-transform" style="min-height: 200px;">
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            
-            <div class="text-end mt-2">
-                <a href="{% url 'news_detail' article.pk %}" class="small text-decoration-none">View Post &rarr;</a>
-            </div>
+<!-- 1. HEADER SECTION (Kabale Style) -->
+<div class="gallery-header py-5 text-center text-white position-relative" style="background: linear-gradient(rgba(30, 144, 255, 0.9), rgba(0, 110, 255, 0.9)), url('{% static 'img/church1.png' %}'); background-size: cover; background-position: center;">
+    <div class="container py-4">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" width="80" class="mb-3 bg-white rounded-circle p-1">
+        <h1 class="fw-bold mb-4">ANTS Gallery</h1>
+        
+        <!-- Search Bar -->
+        <div class="mx-auto" style="max-width: 600px;">
+            <form action="" method="GET" class="position-relative">
+                <input type="text" class="form-control rounded-pill py-3 px-4 shadow-sm" placeholder="Search albums..." style="border: none;">
+                <button class="btn btn-warning rounded-circle position-absolute top-50 end-0 translate-middle-y me-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
-        {% endif %}
-    {% endfor %}
+    </div>
 </div>
 
+<!-- 2. ALBUMS GRID -->
+<div class="container py-5">
+    <div class="row g-4">
+        
+        {% for album in albums %}
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm album-card">
+                <!-- Cover Image -->
+                <div class="position-relative overflow-hidden">
+                    <a href="{% url 'news_detail' album.pk %}">
+                        {% if album.thumbnail %}
+                            <img src="{{ album.thumbnail.url }}" class="card-img-top album-img" alt="{{ album.title }}">
+                        {% elif album.image %}
+                            <img src="{{ album.image.url }}" class="card-img-top album-img" alt="{{ album.title }}">
+                        {% else %}
+                            <div class="bg-secondary card-img-top album-img d-flex align-items-center justify-content-center">
+                                <i class="fas fa-images fa-3x text-white-50"></i>
+                            </div>
+                        {% endif %}
+                    </a>
+                </div>
+
+                <!-- Yellow Date Bar -->
+                <div class="bg-warning text-dark text-center py-1 fw-bold small text-uppercase">
+                    {{ album.date_posted|date:"F d, Y" }}
+                </div>
+
+                <!-- Content -->
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="fw-bold text-primary mb-3">
+                        <a href="{% url 'news_detail' album.pk %}" class="text-decoration-none text-primary">
+                            {{ album.title|truncatechars:60 }}
+                        </a>
+                    </h5>
+                    
+                    <div class="mt-auto">
+                        <span class="badge bg-success rounded-pill px-3 py-2">
+                            <i class="fas fa-camera me-1"></i> {{ album.photo_count|add:"1" }} Photos
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5">
+            <p class="text-muted">No photo albums found.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- 3. VIEW MORE BUTTON -->
+    <div class="text-center mt-5">
+        <a href="#" class="btn btn-outline-primary rounded-pill px-5 fw-bold">View More Albums</a>
+    </div>
+</div>
+
+<!-- CSS Styles -->
 <style>
-    .object-fit-cover { object-fit: cover; }
-    .transition-transform { transition: transform 0.5s ease; }
-    .group:hover .transition-transform { transform: scale(1.05); }
+    .album-img {
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .album-card {
+        transition: transform 0.3s ease;
+    }
+    .album-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    }
+    .album-card:hover .album-img {
+        transform: scale(1.05);
+    }
+    /* Logo animation on hover */
+    .gallery-header img:hover {
+        transform: rotate(10deg);
+        transition: 0.3s;
+    }
 </style>
+
 {% endblock %}

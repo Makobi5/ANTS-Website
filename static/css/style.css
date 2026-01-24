@@ -431,3 +431,84 @@ footer a:hover { color: var(--ants-gold); }
 .icon-bg-gold  { background-color: var(--ants-gold); color: black !important; }
 .icon-bg-blue  { background-color: #00aaff; }
 .icon-bg-green { background-color: #2a9d8f; }
+
+/* --- Footer Links (Top Section) --- */
+.footer-nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-nav-links a:hover {
+    color: var(--ants-gold);
+    text-decoration: underline;
+}
+
+/* Ensure they stack nicely on mobile */
+@media (max-width: 768px) {
+    .footer-nav-links li {
+        display: block;
+        margin-bottom: 10px;
+    }
+}
+
+/* Share Icons Styling */
+.share-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    text-decoration: none;
+    transition: transform 0.2s;
+    font-size: 0.9rem;
+}
+.share-icon:hover { transform: translateY(-3px); opacity: 0.9; }
+
+/* Colors matching your screenshot */
+.bg-facebook { background-color: #1877F2; }
+.bg-black    { background-color: #000000; }
+.bg-grey     { background-color: #666666; }
+.bg-linkedin { background-color: #0077b5; }
+.bg-pinterest{ background-color: #bd081c; }
+.bg-telegram { background-color: #0088cc; }
+.bg-whatsapp { background-color: #25D366; }
+/* --- Floating Newsletter Styles (FINAL YELLOW FIX) --- */
+
+.newsletter-floating {
+    background-color: #ffca28 !important; /* ANTS Gold - Forced */
+    color: #333333;
+    
+    /* Layout & Positioning */
+    margin-bottom: -80px; 
+    position: relative;
+    z-index: 20; 
+    border-radius: 0;
+}
+
+/* Force the Input Field to be WHITE */
+.newsletter-floating input.form-control {
+    background-color: #ffffff !important; /* White background */
+    color: #333 !important;
+    border: none !important;
+}
+
+/* Input Focus State */
+.newsletter-floating input.form-control:focus {
+    background-color: #ffffff !important;
+    box-shadow: none !important; /* Removes blue glow */
+    border: 2px solid #2d76b1 !important; /* Blue border on click */
+}
+
+/* The Footer Adjustment (Keeps box floating) */
+footer {
+    padding-top: 120px !important; 
+    background-color: var(--footer-bg);
+    position: relative;
+    z-index: 10;
+}
+

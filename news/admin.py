@@ -1,5 +1,7 @@
+import csv
+from django.http import HttpResponse
 from django.contrib import admin
-from .models import NewsArticle, Event, NewsImage, Category, NewsDocument
+from .models import NewsArticle, Event, NewsImage, Category, NewsDocument, Subscriber # Import Subscriber
 
 # 1. Register Category
 @admin.register(Category)
@@ -49,3 +51,24 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'time', 'location')
     list_filter = ('date',)
     search_fields = ('title',)
+    
+# --- Custom Action to Export Emails to CSV ---
+def export_subscribers_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ants_subscribers.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Email', 'Date Subscribed']) # Header row
+
+    for subscriber in queryset:
+        writer.writerow([subscriber.email, subscriber.date_subscribed])
+    return response
+
+export_subscribers_csv.short_description = "Export Selected to CSV"
+
+# --- Subscriber Admin Configuration ---
+@admin.register(Subscriber)
+class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('email', 'date_subscribed') # Show columns
+    search_fields = ('email',)      # Enable search bar
+    list_filter = ('date_subscribed',) # Enable date filtering sidebar
+    actions = [export_subscribers_csv] # Add the export button    

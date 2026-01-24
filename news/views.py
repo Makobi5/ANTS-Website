@@ -1,24 +1,40 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from .models import NewsArticle
 from .models import NewsArticle, Event # <--- Import Event
 from django.utils import timezone # <--- Import timezone
-
-
+from django.db.models import Count
+from django.db.models import Q
+from django.contrib import messages
+from .models import Subscriber # Import the new model
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Subscriber
+ 
 def news_list(request):
     # Get all news, newest first
     articles = NewsArticle.objects.all().order_by('-date_posted')
     return render(request, 'news/news_list.html', {'articles': articles})
 
 def news_detail(request, pk):
-    # Get specific article by ID (pk)
     article = get_object_or_404(NewsArticle, pk=pk)
     
-    # Get recent articles for the sidebar (excluding the current one)
+    # Get recent articles for the sidebar
     recent_articles = NewsArticle.objects.exclude(pk=pk).order_by('-date_posted')[:3]
+
+    # NEW: Get "Related Gallery Albums" (Articles with photos)
+    # We filter for articles that have EITHER a main image OR gallery images
+    related_albums = NewsArticle.objects.annotate(
+        photo_count=Count('gallery_images')
+    ).filter(
+        Q(image__isnull=False) | Q(photo_count__gt=0)
+    ).exclude(pk=pk).order_by('-date_posted')[:3] # Show 3 recent albums
     
     context = {
         'article': article,
-        'recent_articles': recent_articles
+        'recent_articles': recent_articles,
+        'related_albums': related_albums, # <--- Pass this to template
     }
     return render(request, 'news/news_detail.html', context)
 
@@ -42,7 +58,36 @@ def event_detail(request, pk):
     return render(request, 'news/event_detail.html', {'event': event})
 
 def gallery(request):
-    # Fetch articles that have at least one gallery image OR a featured image
-    # We prefetch_related to allow grabbing the sub-images efficiently
-    articles = NewsArticle.objects.prefetch_related('gallery_images').order_by('-date_posted')
-    return render(request, 'news/gallery.html', {'articles': articles})
+    # 1. Get Articles that have at least one photo (Featured OR Gallery)
+    # 2. Annotate them with the count of gallery images
+    albums = NewsArticle.objects.annotate(
+        photo_count=Count('gallery_images')
+    ).filter(
+        Q(image__isnull=False) | Q(photo_count__gt=0)
+    ).order_by('-date_posted')
+
+    # Pagination: You can limit this in the template or use Paginator later
+    # For now, let's just send all of them, but the template will limit the view.
+    
+    return render(request, 'news/gallery.html', {'albums': albums})
+
+def subscribe_newsletter(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        
+        if email:
+            if Subscriber.objects.filter(email=email).exists():
+                # Add extra_tags='newsletter'
+                messages.warning(request, "You are already subscribed!", extra_tags='newsletter')
+            else:
+                Subscriber.objects.create(email=email)
+                
+                # Send email logic here (keep your existing send_mail code)...
+                
+                # Add extra_tags='newsletter'
+                msg = "Success! An email was just sent to confirm your subscription. Please find the email now and click 'Confirm' to start subscribing."
+                messages.success(request, msg, extra_tags='newsletter')
+        
+        return redirect(request.META.get('HTTP_REFERER', 'home'))
+    
+    return redirect('home')

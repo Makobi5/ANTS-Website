@@ -1,67 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
+<!-- SOCIAL MEDIA PREVIEW CARDS -->
+{% block social_meta %}
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@antsuganda">
+    <meta name="twitter:title" content="{{ article.title }}">
+    <meta name="twitter:description" content="{{ article.summary|striptags|truncatechars:150 }}">
+    <meta name="twitter:creator" content="@antsuganda">
+    <!-- Twitter Summary card images must be at least 120x120px -->
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.image.url }}">
 
+    <!-- Open Graph data (Facebook, LinkedIn, WhatsApp) -->
+    <meta property="og:title" content="{{ article.title }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.image.url }}" />
+    <meta property="og:description" content="{{ article.summary|striptags|truncatechars:150 }}" />
+    <meta property="og:site_name" content="ANTS" />
+{% endblock %}
 {% block content %}
 <div class="container py-5">
     <div class="row">
         
-        <!-- LEFT COLUMN: Main Content -->
+        <!-- ========================== -->
+        <!-- LEFT COLUMN: MAIN CONTENT  -->
+        <!-- ========================== -->
         <div class="col-lg-8">
             
-            <!-- Featured Image -->
+            <!-- 1. Featured Image -->
             {% if article.image %}
-                <img src="{{ article.image.url }}" class="img-fluid w-100 mb-4 shadow-sm" alt="{{ article.title }}">
+                <div class="overflow-hidden rounded shadow-sm mb-4">
+                    <img src="{{ article.image.url }}" class="img-fluid w-100" alt="{{ article.title }}" style="object-fit: cover;">
+                </div>
             {% endif %}
 
-            <!-- Title -->
-            <h2 class="fw-bold text-dark mb-2">{{ article.title }}</h2>
+            <!-- 2. Title & Meta -->
+            <h1 class="fw-bold text-dark mb-3 display-6">{{ article.title }}</h1>
 
-            <!-- Metadata (Date | Author) -->
-            <div class="text-muted small mb-4 border-bottom pb-3">
-                <span class="me-3"><i class="far fa-calendar-alt me-1"></i> {{ article.date_posted|date:"F d, Y" }}</span>
+            <div class="d-flex align-items-center text-muted small mb-4 border-bottom pb-3">
+                <span class="me-3"><i class="far fa-calendar-alt text-warning me-2"></i> {{ article.date_posted|date:"F d, Y" }}</span>
                 <span class="me-3">|</span>
-                <span class="me-3"><i class="far fa-comment me-1"></i> 0 Comments</span>
-                <span class="me-3">|</span>
-                <span><i class="far fa-user me-1"></i> {{ article.author.first_name }} {{ article.author.last_name }}</span>
+                <span class="me-3"><i class="far fa-user text-primary me-2"></i> {{ article.author.first_name }} {{ article.author.last_name }}</span>
+                <span class="badge bg-light text-dark border">{{ article.category.name|default:"General" }}</span>
             </div>
 
-            <!-- Content -->
-            <div class="article-content text-dark" style="line-height: 1.8; font-size: 1.05rem;">
+            <!-- 3. Article Body -->
+            <div class="article-content text-dark mb-5" style="line-height: 1.8; font-size: 1.1rem; font-family: 'Georgia', serif;">
                 {{ article.content|safe }}
             </div>
-            <!-- DOCUMENTS / ATTACHMENTS SECTION -->
+
+            <!-- 4. Documents (Attachments) -->
             {% if article.documents.all %}
-            <div class="mt-4 mb-5">
-                <h5 class="fw-bold text-uppercase border-bottom pb-2 mb-3">
-                    <i class="fas fa-paperclip text-warning me-2"></i> Related Documents
-                </h5>
-                <div class="list-group">
-                    {% for doc in article.documents.all %}
-                    <a href="{{ doc.file.url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <div class="me-3 text-danger">
-                            <i class="fas fa-file-pdf fa-lg"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-0 fw-bold text-dark">{{ doc.title }}</h6>
-                            <small class="text-muted">Click to download</small>
-                        </div>
-                        <div class="ms-auto">
-                            <i class="fas fa-download text-muted"></i>
-                        </div>
-                    </a>
-                    {% endfor %}
+            <div class="card bg-light border-0 mb-5">
+                <div class="card-body">
+                    <h6 class="fw-bold text-uppercase mb-3"><i class="fas fa-paperclip text-warning me-2"></i> Downloads</h6>
+                    <div class="list-group">
+                        {% for doc in article.documents.all %}
+                        <a href="{{ doc.file.url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <i class="fas fa-file-pdf text-danger fa-lg me-3"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold">{{ doc.title }}</h6>
+                                <small class="text-muted">Click to download</small>
+                            </div>
+                            <i class="fas fa-download ms-auto text-muted"></i>
+                        </a>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             {% endif %}
-            <!-- GALLERY SECTION (The Extra Photos) -->
+
+            <!-- 5. Internal Gallery -->
             {% if article.gallery_images.all %}
-            <div class="mt-5">
-                <h4 class="fw-bold text-uppercase border-start border-5 border-warning ps-2 mb-3">Event Gallery</h4>
+            <div class="mb-5">
+                <h4 class="fw-bold border-start border-5 border-warning ps-3 mb-4">Event Gallery</h4>
                 <div class="row g-2">
                     {% for photo in article.gallery_images.all %}
                     <div class="col-md-4 col-6">
                         <a href="{{ photo.image.url }}" target="_blank">
-                            <img src="{{ photo.image.url }}" class="img-fluid rounded shadow-sm hover-shadow" style="height: 150px; width: 100%; object-fit: cover;">
+                            <img src="{{ photo.image.url }}" class="img-fluid rounded shadow-sm hover-zoom" style="height: 150px; width: 100%; object-fit: cover;">
                         </a>
                     </div>
                     {% endfor %}
@@ -69,72 +87,238 @@
             </div>
             {% endif %}
 
+            <!-- 6. SHARE & LIKE (Moved Inside Column for better alignment) -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 py-4 border-top border-bottom">
+                
+<!-- Share Buttons -->
+                <div class="d-flex align-items-center mb-4 flex-wrap gap-2">
+                    <span class="text-muted small fw-bold me-3">Share this:</span>
+                    
+                    <!-- X (Twitter) - Updated -->
+                    <a href="https://twitter.com/intent/tweet?text={{ article.title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}&via=antsuganda" target="_blank" class="share-btn twitter" title="Share on X">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                    
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn facebook" title="Share on Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    
+                    <!-- WhatsApp - Updated -->
+                    <a href="https://api.whatsapp.com/send?text=*{{ article.title|urlencode }}*%0A{{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn whatsapp" title="Share on WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    
+                    <!-- LinkedIn -->
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}" target="_blank" class="share-btn bg-linkedin" title="Share on LinkedIn" style="background-color: #0077b5;">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    
+                    <!-- Email -->
+                    <a href="mailto:?subject={{ article.title|urlencode }}&body=Check out this article: {{ request.build_absolute_uri|urlencode }}" class="share-btn email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+
+                </div>
+
+                <!-- Like Button -->
+                <button class="btn btn-outline-danger rounded-pill px-4 btn-sm" onclick="this.innerHTML='<i class=\'fas fa-heart\'></i> Liked'; this.classList.toggle('active');">
+                    <i class="far fa-heart me-1"></i> Like
+                </button>
+            </div>
+
         </div>
 
-        <!-- RIGHT COLUMN: Sidebar (WordPress Style) -->
+        <!-- ========================== -->
+        <!-- RIGHT COLUMN: SIDEBAR      -->
+        <!-- ========================== -->
         <div class="col-lg-4 mt-5 mt-lg-0 ps-lg-5">
             
-            <!-- Search Widget -->
+            <!-- Search -->
             <div class="mb-5">
-                <form action="" method="GET">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
-                    </div>
+                <form action="" method="GET" class="position-relative">
+                    <input type="text" class="form-control rounded-pill py-2 ps-4 pe-5" placeholder="Search news...">
+                    <button class="btn text-primary position-absolute top-50 end-0 translate-middle-y me-2"><i class="fas fa-search"></i></button>
                 </form>
             </div>
 
-            <!-- Recent Posts Widget -->
+            <!-- Recent Posts -->
             <div class="mb-5">
-                <h6 class="fw-bold text-uppercase mb-3">Recent Posts</h6>
+                <h5 class="fw-bold text-uppercase border-bottom pb-2 mb-3">Recent Posts</h5>
                 <ul class="list-unstyled">
                     {% for recent in recent_articles %}
-                    <li class="mb-3 pb-3 border-bottom border-light">
-                        <a href="{% url 'news_detail' recent.pk %}" class="text-decoration-none text-dark fw-bold d-block mb-1">
+                    <li class="mb-3">
+                        <a href="{% url 'news_detail' recent.pk %}" class="text-decoration-none text-dark fw-bold d-block hover-gold">
                             {{ recent.title }}
                         </a>
-                        <small class="text-muted text-uppercase" style="font-size: 0.75rem;">
-                            {{ recent.date_posted|date:"F d, Y" }}
-                        </small>
+                        <small class="text-muted">{{ recent.date_posted|date:"F d, Y" }}</small>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
 
-            <!-- Archives Widget (Static for now) -->
+            <!-- Tags -->
+            {% if article.tags.all %}
             <div class="mb-5">
-                <h6 class="fw-bold text-uppercase mb-3">Archives</h6>
-                <ul class="list-unstyled text-muted small">
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">December 2025</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">November 2025</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">October 2025</a></li>
-                </ul>
+                <h5 class="fw-bold text-uppercase border-bottom pb-2 mb-3">Tags</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for tag in article.tags.all %}
+                        <span class="badge bg-light text-dark border rounded-pill px-3 fw-normal">#{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
             </div>
-
-            <!-- Categories Widget -->
-            <!-- Dynamic Categories Widget -->
-                        <div class="mb-5">
-                            <h6 class="fw-bold text-uppercase mb-3">Category: {{ article.category }}</h6>
-                            <div class="mb-4">
-                                <span class="badge bg-primary fs-6">{{ article.category.name }}</span>
-                            </div>
-
-                            <h6 class="fw-bold text-uppercase mb-3">Tags / Keywords</h6>
-                            <div class="d-flex flex-wrap gap-2">
-                                {% for tag in article.tags.all %}
-                                    <span class="badge bg-light text-dark border">#{{ tag.name }}</span>
-                                {% empty %}
-                                    <small class="text-muted">No tags.</small>
-                                {% endfor %}
-                            </div>
-                        </div>
+            {% endif %}
 
         </div>
 
     </div>
 </div>
 
+
+<!-- ============================================ -->
+<!-- RELATED GALLERY ALBUMS (KABALE STYLE)        -->
+<!-- ============================================ -->
+{% if related_albums %}
+<div class="py-5 bg-light border-top">
+    <div class="container">
+        <h3 class="text-center fw-bold text-success mb-5">Recent Photos</h3>
+        
+        <div class="row g-4">
+            {% for album in related_albums %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm album-card">
+                    <!-- Image -->
+                    <div class="position-relative overflow-hidden">
+                        <a href="{% url 'news_detail' album.pk %}">
+                            <!-- Thumbnail Logic -->
+                            {% if album.thumbnail %}
+                                <img src="{{ album.thumbnail.url }}" class="card-img-top album-img" alt="{{ album.title }}">
+                            {% elif album.image %}
+                                <img src="{{ album.image.url }}" class="card-img-top album-img" alt="{{ album.title }}">
+                            {% else %}
+                                <div class="bg-secondary card-img-top album-img d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-images fa-3x text-white-50"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    <!-- Yellow Date Bar -->
+                    <div class="bg-warning text-dark text-center py-1 fw-bold small text-uppercase" style="font-size: 0.8rem;">
+                        {{ album.date_posted|date:"F d, Y" }}
+                    </div>
+
+                    <!-- Content -->
+                    <div class="card-body text-center d-flex flex-column pt-4 px-3 pb-4 bg-white">
+                        <h6 class="fw-bold mb-3">
+                            <a href="{% url 'news_detail' album.pk %}" class="text-decoration-none" style="color: #0088cc;">
+                                {{ album.title|truncatechars:60 }}
+                            </a>
+                        </h6>
+                        
+                        <div class="mt-auto">
+                            <span class="badge bg-success rounded-pill px-3 py-1 fw-bold" style="font-size: 0.8rem;">
+                                {{ album.photo_count|add:"1" }} Photos
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+{% endif %}
+
+
+<!-- ============================================ -->
+<!-- GALLERY SUBSCRIPTION SECTION (Refined)       -->
+<!-- ============================================ -->
+<div class="py-5 bg-white border-top">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9 text-center">
+                
+                <div class="mb-3">
+                    <span class="d-inline-block p-3 rounded-circle bg-light shadow-sm text-primary">
+                        <i class="fas fa-envelope-open-text fa-2x"></i>
+                    </span>
+                </div>
+
+                <h3 class="fw-bold text-primary mb-2">Stay Connected with ANTS</h3>
+                <p class="text-muted mb-4">Subscribe to our newsletter to receive the latest updates.</p>
+                
+                <form action="{% url 'subscribe' %}" method="POST" class="subscription-form">
+                    {% csrf_token %}
+                    <div class="input-group input-group-lg shadow-sm">
+                        <input type="email" name="email" class="form-control border-0 px-4" placeholder="Enter your email address..." required aria-label="Email">
+                        <button type="submit" class="btn btn-warning text-dark fw-bold px-5">
+                            SUBSCRIBE
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================ -->
+<!-- PAGE SPECIFIC CSS                            -->
+<!-- ============================================ -->
 <style>
-    .hover-shadow:hover { transform: translateY(-3px); transition: 0.3s; }
+    /* 1. Share Buttons */
+    .share-btn {
+        width: 35px; height: 35px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: white !important;
+        text-decoration: none;
+        transition: transform 0.2s;
+        margin-right: 5px;
+        font-size: 0.9rem;
+    }
+    .share-btn:hover { transform: translateY(-3px); }
+    
+    .facebook { background-color: #1877F2; }
+    .twitter { background-color: #000000; }
+    .whatsapp { background-color: #25D366; }
+    .email { background-color: #888; }
+
+    /* 2. Hover Zoom Effect */
+    .hover-zoom { transition: transform 0.3s; }
+    .hover-zoom:hover { transform: scale(1.05); }
+
+    /* 3. Text Hover */
+    .hover-gold:hover { color: var(--ants-gold) !important; transition: 0.3s; }
+
+    /* 4. Related Album Styles */
+    .album-img {
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .album-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    }
+    .album-card:hover .album-img {
+        transform: scale(1.05);
+    }
+
+    /* 5. Subscription Form */
+    .subscription-form .input-group {
+        border-radius: 50px;
+        overflow: hidden;
+        background-color: white;
+        border: 1px solid #e0e0e0;
+    }
+    .subscription-form button:hover {
+        background-color: #eec111;
+        transform: translateX(-2px);
+    }
 </style>
+
 {% endblock %}
