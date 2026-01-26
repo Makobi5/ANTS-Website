@@ -11,7 +11,9 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Subscriber
- 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags 
 def news_list(request):
     # Get all news, newest first
     articles = NewsArticle.objects.all().order_by('-date_posted')
@@ -77,17 +79,40 @@ def subscribe_newsletter(request):
         
         if email:
             if Subscriber.objects.filter(email=email).exists():
-                # Add extra_tags='newsletter'
                 messages.warning(request, "You are already subscribed!", extra_tags='newsletter')
             else:
                 Subscriber.objects.create(email=email)
                 
-                # Send email logic here (keep your existing send_mail code)...
+                # --- NEW EMAIL LOGIC ---
+                subject = "Welcome to All Nations Theological College!"
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to = [email]
+
+                # 1. Render the HTML template with data
+                html_content = render_to_string('emails/welcome_email.html', {'email': email})
                 
-                # Add extra_tags='newsletter'
-                msg = "Success! An email was just sent to confirm your subscription. Please find the email now and click 'Confirm' to start subscribing."
-                messages.success(request, msg, extra_tags='newsletter')
+                # 2. Create a plain text version (for old email clients)
+                text_content = strip_tags(html_content)
+
+                # 3. Construct the email
+                msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+                msg.attach_alternative(html_content, "text/html")
+                
+                # 4. Send
+                try:
+                    msg.send()
+                except Exception as e:
+                    print(f"Error sending email: {e}")
+
+                # Success Message
+                success_msg = "Success! An email was just sent to confirm your subscription. Please check your inbox."
+                messages.success(request, success_msg, extra_tags='newsletter')
+        # Get the page the user came from
+        next_url = request.META.get('HTTP_REFERER', '/')
         
-        return redirect(request.META.get('HTTP_REFERER', 'home'))
+        # Clean up existing anchors if any (prevents #newsletter#newsletter)
+        if '#' in next_url:
+            next_url = next_url.split('#')[0]
+        return redirect(f"{next_url}#newsletter")
     
     return redirect('home')

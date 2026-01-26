@@ -12,6 +12,11 @@ from .models import Policy
 from itertools import chain
 from staff.models import StaffMember 
 from .models import SliderImage, PageBanner, Partner, Testimonial 
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import ContactForm
+from django.contrib import messages
+from .models import ContactDepartment
 
 def home(request):
     # --- 1. HERO SLIDER LOGIC ---
@@ -152,3 +157,48 @@ def global_search(request):
     }
 
     return render(request, 'core/search_results.html', context)
+
+
+def contact(request):
+    # 1. Fetch Contact Departments for the top grid
+    # We use prefetch_related('people') so it grabs the names efficiently
+    departments = ContactDepartment.objects.prefetch_related('people').all()
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Extract clean data from the form
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            
+            # Construct the email body
+            full_message = f"Message from: {name} ({email})\n\n{message}"
+            
+            try:
+                # Attempt to send the email
+                send_mail(
+                    f"Website Inquiry: {subject}",
+                    full_message,
+                    email,                         # From User
+                    [settings.DEFAULT_FROM_EMAIL], # To Admin
+                    fail_silently=False
+                )
+                
+                # Success Message (Tagged for the contact form only)
+                messages.success(request, "Thank you! Your message has been sent. We will contact you shortly.", extra_tags='contact_form')
+                return redirect('contact')
+                
+            except Exception as e:
+                # Error Message (Tagged for the contact form only)
+                print(f"Email sending failed: {e}") # Print error to console for debugging
+                messages.error(request, "Something went wrong. Please try again later.", extra_tags='contact_form')
+    else:
+        form = ContactForm()
+
+    # Render the template with both the Form and the Departments data
+    return render(request, 'core/contact.html', {
+        'form': form,
+        'departments': departments
+    })

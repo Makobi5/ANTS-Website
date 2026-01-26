@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Helvetica, Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .email-container { max-width: 600px; margin: 20px auto; background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo img { height: 80px; width: auto; }
+        h1 { color: #333; font-size: 24px; text-align: center; margin-bottom: 20px; }
+        p { color: #555; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
+        .btn-container { text-align: center; margin: 35px 0; }
+        .btn { 
+            background-color: #0f6c36; /* Using a Green similar to your screenshot, or use #4a148c for Purple */
+            color: #ffffff !important; 
+            padding: 12px 25px; 
+            text-decoration: none; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 16px;
+            display: inline-block;
+        }
+        .unsubscribe-link { color: #0f6c36; text-decoration: underline; font-size: 14px; margin-left: 15px; }
+        .footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 12px; color: #999; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="email-container">
+        
+        <!-- LOGO -->
+        <div class="logo">
+            <!-- IMPORTANT: For emails, images must be hosted online. Localhost images won't show in Gmail. -->
+            <!-- Once you deploy, change this to: https://ants.ac.ug/static/img/logo.png -->
+            <img src="https://via.placeholder.com/100x100.png?text=ANTS+Logo" alt="ANTS Logo">
+        </div>
+
+        <!-- HEADLINE -->
+        <h1>Welcome to ANTS!</h1>
+
+        <!-- BODY -->
+        <p>
+            Cool, you are now subscribed to <strong>www.ants.ac.ug</strong> and will receive an email notification when a new post is published.
+        </p>
+
+        <!-- BUTTONS -->
+        <div class="btn-container">
+            <a href="#" class="btn">Manage subscriptions</a>
+            <a href="#" class="unsubscribe-link">Unsubscribe</a>
+        </div>
+
+        <!-- FOOTER / TROUBLESHOOTING -->
+        <div class="footer">
+            <p>
+                <strong>Trouble clicking?</strong> Copy and paste this URL into your browser:<br>
+                <a href="https://ants.ac.ug/news/" style="color: #666;">https://ants.ac.ug/news/</a>
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>

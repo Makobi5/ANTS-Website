@@ -86,9 +86,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# Email Settings (Development)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'info@ants.ac.ug'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -153,3 +151,7 @@ CKEDITOR_CONFIGS = {
         'height': 400, # Matches the large writing area in WP
     }
 }
+
+# Email Settings (Development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'info@ants.ac.ug'

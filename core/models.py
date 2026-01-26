@@ -91,3 +91,23 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return self.name    
+# ... existing imports ...
+
+class ContactDepartment(models.Model):
+    name = models.CharField(max_length=100, help_text="e.g. Admissions, Students' Welfare")
+    order = models.IntegerField(default=0, help_text="Order of display on the page")
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.name
+
+class ContactPerson(models.Model):
+    department = models.ForeignKey(ContactDepartment, on_delete=models.CASCADE, related_name='people')
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100, help_text="e.g. 077... / 070...")
+    email = models.EmailField()
+    
+    def __str__(self):
+        return self.name    

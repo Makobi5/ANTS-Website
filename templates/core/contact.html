@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Header Banner with Church Background -->
+<div class="bg-primary py-5 text-white text-center" 
+     style="background: linear-gradient(rgba(74, 20, 140, 0.85), rgba(74, 20, 140, 0.85)), url('{% static 'img/church1.png' %}') center/cover no-repeat;">
+    <div class="container">
+        <h1 class="fw-bold display-5">Contact Us</h1>
+        <p class="mb-0 text-white-50 text-uppercase">HOME / CONNECT / CONTACT US</p>
+    </div>
+</div>
+<div class="container py-5">
+    
+<!-- 1. KEY CONTACT PERSONNEL (Masonry Layout) -->
+    {% if departments %}
+    <div class="text-center mb-5">
+        <h3 class="fw-bold text-primary">Key Contact Personnel</h3>
+        <div style="width: 50px; height: 3px; background: var(--ants-gold); margin: 10px auto;"></div>
+    </div>
+
+    <!-- Masonry Container -->
+    <div class="contact-masonry mb-5">
+        {% for dept in departments %}
+        <div class="contact-item">
+            <div class="card border-0 shadow-sm">
+                <!-- Header -->
+                <div class="card-header text-white fw-bold text-uppercase py-2" style="background-color: var(--ants-purple); border-bottom: 3px solid var(--ants-gold);">
+                    {{ dept.name }}
+                </div>
+                <!-- Body -->
+                <div class="card-body bg-light">
+                    {% for person in dept.people.all %}
+                    <div class="{% if not forloop.last %}mb-3{% endif %}">
+                        <h6 class="fw-bold text-dark mb-0">{{ person.name }}</h6>
+                        <small class="d-block text-muted">Phone: <span class="text-dark">{{ person.phone }}</span></small>
+                        <small class="d-block text-muted">Email: <a href="mailto:{{ person.email }}" class="text-primary text-decoration-none">{{ person.email }}</a></small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <hr class="my-5">
+
+    <!-- 2. FORM & INFO SECTION (Split View) -->
+    <div class="row g-5">
+        
+        <!-- LEFT: Contact Form -->
+        <div class="col-lg-5">
+            <div class="bg-white p-4 shadow rounded border">
+                <h4 class="fw-bold text-primary mb-3">Send us a Message</h4>
+                <p class="text-muted small mb-4">We are eager to hear from you. Please fill in your details and we will contact you shortly.</p>
+                
+                <!-- Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if 'contact_form' in message.tags %}
+                            <div class="alert alert-{{ message.tags }} small py-2">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-6">{{ form.name }}</div>
+                        <div class="col-6">{{ form.email }}</div>
+                        <div class="col-12">{{ form.subject }}</div>
+                        <div class="col-12">{{ form.message }}</div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100 fw-bold text-uppercase py-2" style="background-color: #0077b5;">
+                                Send Message
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- RIGHT: Get In Touch Info -->
+        <div class="col-lg-7 ps-lg-5">
+            <h6 class="text-uppercase text-warning fw-bold mb-2">HAVE ANY QUESTIONS?</h6>
+            <h2 class="fw-bold text-primary mb-4">Get In Touch</h2>
+            <p class="text-muted mb-5">Please let us know if you have a question, want to leave a comment, or would like further information about ANTS.</p>
+
+            <div class="row">
+                <!-- Main Campus -->
+                <div class="col-md-6 mb-4">
+                    <h5 class="fw-bold text-success mb-3">Main Campus</h5>
+                    <p class="small text-muted mb-2">
+                        Bwerenga Kawuku, 5km off Entebbe Road.<br>P.O. Box 84, Kisubi, Uganda
+                    </p>
+                    <p class="small mb-1"><i class="fab fa-whatsapp text-success me-2"></i> +256 707 396 619</p>
+                    <p class="small mb-1"><i class="fas fa-phone text-primary me-2"></i> +256 752 399 699</p>
+                    <p class="small"><i class="fas fa-envelope text-warning me-2"></i> info@ants.ac.ug</p>
+                </div>
+
+                <!-- Liaison Office (Optional/Example) -->
+                <div class="col-md-6 mb-4">
+                    <h5 class="fw-bold text-success mb-3">Admissions Office</h5>
+                    <p class="small text-muted mb-2">
+                        Office of the Academic Registrar<br>Main Administration Block
+                    </p>
+                    <p class="small mb-1"><i class="fas fa-phone text-primary me-2"></i> +256 707 396 619</p>
+                    <p class="small"><i class="fas fa-envelope text-warning me-2"></i> admissions@ants.ac.ug</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="fw-bold text-dark mb-3">Social Media</h5>
+                <p class="small text-muted mb-3">Keep yourself updated about our activities by following us on social media.</p>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-primary btn-sm rounded-circle social-btn bg-facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="btn btn-dark btn-sm rounded-circle social-btn bg-x"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="btn btn-danger btn-sm rounded-circle social-btn bg-youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="btn btn-info btn-sm rounded-circle social-btn bg-linkedin text-white"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="btn btn-dark btn-sm rounded-circle social-btn bg-tiktok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Google Map (Fixed: Pin with Name) -->
+            <div class="rounded overflow-hidden shadow-lg border border-3 border-white">
+                <iframe 
+                    width="100%" 
+                    height="400" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    /* We add the name in brackets ( ) to force the label on the pin */
+                    src="https://maps.google.com/maps?q=4HVF%2BRGF%2C%20Bwerenga+(All%20Nations%20Theological%20College)&t=&z=17&ie=UTF8&iwloc=B&output=embed"
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+
+<!-- 4. FLOATING NEWSLETTER (Reusing Homepage Style) -->
+<div class="container position-relative z-index-20">
+    <div class="newsletter-floating p-5 shadow-lg">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h6 class="text-uppercase fw-bold mb-1" style="color: #333;">Subscribe to our Newsletter</h6>
+                <h2 class="fw-bold display-6 mb-0" style="color: #002147;">Get updates on News & Events</h2>
+            </div>
+            <div class="col-lg-6">
+                <form action="{% url 'subscribe' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group input-group-lg">
+                        <input type="email" name="email" class="form-control border-0 rounded-0 px-4" placeholder="Email Address" required>
+                        <button type="submit" class="btn btn-primary fw-bold text-uppercase px-4 rounded-0" style="background-color: #2d76b1; border: none;">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .social-btn { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .bg-facebook { background: #1877F2; border:none; }
+    .bg-x { background: #000; border:none; }
+    .bg-youtube { background: #FF0000; border:none; }
+    .bg-linkedin { background: #0077b5; border:none; }
+    .bg-tiktok { background: #000; border:none; }
+
+    .contact-masonry {
+            column-count: 1; /* Mobile: 1 column */
+            column-gap: 1.5rem; /* Space between columns */
+        }
+        
+        .contact-item {
+            break-inside: avoid; /* Prevents a card from being split in half */
+            margin-bottom: 1.5rem; /* Space between cards vertically */
+        }
+
+        /* Tablet & Desktop: 2 Columns (Like your screenshot) */
+        @media (min-width: 768px) {
+            .contact-masonry {
+                column-count: 2; 
+            }
+        }
+
+        /* Large Screens: 3 Columns */
+        @media (min-width: 1200px) {
+            .contact-masonry {
+                column-count: 3;
+            }
+        }
+</style>
+
+{% endblock %}
