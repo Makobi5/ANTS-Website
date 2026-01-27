@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 # Make sure to import the new models
 from django.utils import timezone
 from .models import Policy, DailySchedule
@@ -17,6 +17,7 @@ from django.conf import settings
 from .forms import ContactForm
 from django.contrib import messages
 from .models import ContactDepartment
+from django.urls import reverse
 
 def home(request):
     # --- 1. HERO SLIDER LOGIC ---
@@ -160,44 +161,41 @@ def global_search(request):
 
 
 def contact(request):
-    # 1. Fetch Contact Departments for the top grid
-    # We use prefetch_related('people') so it grabs the names efficiently
     departments = ContactDepartment.objects.prefetch_related('people').all()
 
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Extract clean data from the form
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
             
-            # Construct the email body
             full_message = f"Message from: {name} ({email})\n\n{message}"
             
             try:
-                # Attempt to send the email
+                # 1. Send Email to info@ants.ac.ug
                 send_mail(
                     f"Website Inquiry: {subject}",
                     full_message,
-                    email,                         # From User
-                    [settings.DEFAULT_FROM_EMAIL], # To Admin
+                    email, # From User
+                    ['info@ants.ac.ug'], # To Official School Email
                     fail_silently=False
                 )
                 
-                # Success Message (Tagged for the contact form only)
+                # 2. Success Message
                 messages.success(request, "Thank you! Your message has been sent. We will contact you shortly.", extra_tags='contact_form')
-                return redirect('contact')
+                
+                # 3. Redirect to the Anchor (Keeps user at the form, Clears the inputs)
+                return redirect(reverse('contact') + '#contact-section')
                 
             except Exception as e:
-                # Error Message (Tagged for the contact form only)
-                print(f"Email sending failed: {e}") # Print error to console for debugging
+                print(f"Email Error: {e}") # Print error to terminal
                 messages.error(request, "Something went wrong. Please try again later.", extra_tags='contact_form')
+                
     else:
         form = ContactForm()
 
-    # Render the template with both the Form and the Departments data
     return render(request, 'core/contact.html', {
         'form': form,
         'departments': departments

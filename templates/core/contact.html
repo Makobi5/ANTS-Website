@@ -50,17 +50,29 @@
     <!-- 2. FORM & INFO SECTION (Split View) -->
     <div class="row g-5">
         
-        <!-- LEFT: Contact Form -->
-        <div class="col-lg-5">
-            <div class="bg-white p-4 shadow rounded border">
-                <h4 class="fw-bold text-primary mb-3">Send us a Message</h4>
-                <p class="text-muted small mb-4">We are eager to hear from you. Please fill in your details and we will contact you shortly.</p>
+<!-- 2. FORM & INFO SECTION (Split View) -->
+    <div class="row g-5">
+        
+        <!-- LEFT COLUMN: Contact Form (Takes 5/12 width) -->
+        <div class="col-lg-5" id="contact-section">
+            <div class="bg-white p-4 shadow rounded border border-top border-5 border-warning">
+                <h4 class="fw-bold text-dark mb-4">Send us a Message</h4>
                 
-                <!-- Messages -->
+                <!-- Messages Block -->
                 {% if messages %}
                     {% for message in messages %}
                         {% if 'contact_form' in message.tags %}
-                            <div class="alert alert-{{ message.tags }} small py-2">{{ message }}</div>
+                            {% if message.level_tag == 'success' %}
+                                <div class="alert alert-success shadow-sm border-0 d-flex align-items-center mb-3 p-2">
+                                    <i class="fas fa-check-circle me-2 fs-5"></i>
+                                    <small>{{ message }}</small>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger shadow-sm border-0 d-flex align-items-center mb-3 p-2">
+                                    <i class="fas fa-exclamation-circle me-2 fs-5"></i>
+                                    <small>{{ message }}</small>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -68,13 +80,26 @@
                 <form method="POST">
                     {% csrf_token %}
                     <div class="row g-3">
-                        <div class="col-6">{{ form.name }}</div>
-                        <div class="col-6">{{ form.email }}</div>
-                        <div class="col-12">{{ form.subject }}</div>
-                        <div class="col-12">{{ form.message }}</div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">First Name</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted">Email</label>
+                            {{ form.email }}
+                        </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary w-100 fw-bold text-uppercase py-2" style="background-color: #0077b5;">
-                                Send Message
+                            <label class="form-label fw-bold small text-muted">Subject</label>
+                            {{ form.subject }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold small text-muted">Message</label>
+                            {{ form.message }}
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold text-uppercase shadow-sm" 
+                                    style="background-color: #0077b5; border:none;">
+                                SEND MESSAGE <i class="fas fa-paper-plane ms-2"></i>
                             </button>
                         </div>
                     </div>
@@ -82,10 +107,10 @@
             </div>
         </div>
 
-        <!-- RIGHT: Get In Touch Info -->
+        <!-- RIGHT COLUMN: Get In Touch Info (Takes 7/12 width) -->
         <div class="col-lg-7 ps-lg-5">
-            <h6 class="text-uppercase text-warning fw-bold mb-2">HAVE ANY QUESTIONS?</h6>
-            <h2 class="fw-bold text-primary mb-4">Get In Touch</h2>
+            <h6 class="text-uppercase text-warning fw-bold mb-2 ls-1">HAVE ANY QUESTIONS?</h6>
+            <h2 class="fw-bold text-primary mb-4 display-6">Get In Touch</h2>
             <p class="text-muted mb-5">Please let us know if you have a question, want to leave a comment, or would like further information about ANTS.</p>
 
             <div class="row">
@@ -100,7 +125,7 @@
                     <p class="small"><i class="fas fa-envelope text-warning me-2"></i> info@ants.ac.ug</p>
                 </div>
 
-                <!-- Liaison Office (Optional/Example) -->
+                <!-- Liaison Office -->
                 <div class="col-md-6 mb-4">
                     <h5 class="fw-bold text-success mb-3">Admissions Office</h5>
                     <p class="small text-muted mb-2">
@@ -111,7 +136,8 @@
                 </div>
             </div>
 
-            <div class="mt-4">
+            <!-- Social Media -->
+            <div class="mt-4 pt-4 border-top">
                 <h5 class="fw-bold text-dark mb-3">Social Media</h5>
                 <p class="small text-muted mb-3">Keep yourself updated about our activities by following us on social media.</p>
                 <div class="d-flex gap-2">
@@ -125,7 +151,6 @@
         </div>
 
     </div>
-</div>
 
 <!-- Google Map (Fixed: Pin with Name) -->
             <div class="rounded overflow-hidden shadow-lg border border-3 border-white">
