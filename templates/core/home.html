@@ -424,15 +424,26 @@
             </div>
             {% endif %}
 
-            <!-- RIGHT: Grid of Smaller Articles -->
+<!-- RIGHT: Grid of Smaller Articles -->
             <div class="col-lg-6">
                 <div class="row g-4">
                     {% for news in other_news %}
                     <div class="col-md-6">
                         <div class="card border-0 shadow-sm h-100 news-card-small">
-                            {% if news.image %}
-                                <img src="{{ news.image.url }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                            
+                            <!-- UPDATED IMAGE LOGIC: Check Thumbnail First -->
+                            {% if news.thumbnail %}
+                                <img src="{{ news.thumbnail.url }}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="{{ news.title }}">
+                            {% elif news.image %}
+                                <!-- Fallback to main image if no thumbnail -->
+                                <img src="{{ news.image.url }}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="{{ news.title }}">
+                            {% else %}
+                                <!-- Fallback if NO image at all -->
+                                <div class="bg-secondary card-img-top d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="fas fa-newspaper fa-2x text-white-50"></i>
+                                </div>
                             {% endif %}
+                            
                             <div class="card-body">
                                 <h6 class="fw-bold mb-2">
                                     <a href="{% url 'news_detail' news.pk %}" class="text-dark text-decoration-none">{{ news.title|truncatechars:50 }}</a>
@@ -689,50 +700,134 @@
     }
     .custom-control:hover { background-color: var(--ants-gold); }
 
-    /* --- 2. Program Pathways (Cards) --- */
-    .pathway-card {
-        display: block; margin-top: 40px; background: white;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-radius: 0;
-        border-bottom: 5px solid var(--ants-gold);
-        transition: transform 0.3s ease; height: 100%;
-    }
-    .pathway-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-    
-    .pathway-header {
-        background-color: var(--ants-purple); padding: 50px 15px 25px 15px;
-        text-align: center; position: relative; min-height: 130px;
-    }
-    
-    .pathway-icon {
-        width: 70px; height: 70px; border-radius: 50%; color: white;
-        display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
-        position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
-        border: 4px solid #ffffff; box-shadow: 0 5px 15px rgba(0,0,0,0.15); z-index: 10;
-    }
-    
-    /* Background Images for Pathways */
-    .bg-bachelor { background-image: url('{% static "img/barch.png" %}'); }
-    .bg-diploma { background-image: url('{% static "img/dipl.png" %}'); }
-    .bg-certificate { background-image: url('{% static "img/cert.png" %}'); }
-    .bg-short { background-image: url('{% static "img/esl.png" %}'); }
-    
-    .pathway-img {
-        height: 300px; width: 100%; background-size: cover;
-        background-position: top center; background-repeat: no-repeat;
-        position: relative; transition: background-size 5s ease;
-    }
-    .pathway-overlay {
-        position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px;
-        background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-        display: flex; justify-content: center; opacity: 0; transition: opacity 0.3s;
-    }
-    .pathway-card:hover .pathway-overlay { opacity: 1; }
+/* --- Program Pathways (VU TALL STYLE & IMAGES) --- */
 
-    /* Icon Colors */
-    .icon-bg-red { background-color: #e63946; }
-    .icon-bg-gold { background-color: var(--ants-gold); color: black !important; }
-    .icon-bg-blue { background-color: #00aaff; }
-    .icon-bg-green { background-color: #2a9d8f; }
+.pathway-card {
+    display: block;
+    margin-top: 50px; /* More space for the bigger icon */
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 0; 
+    /* Removed border-bottom to match VU style cleaner look */
+    transition: transform 0.3s ease;
+    height: 100%;
+    position: relative;
+}
+
+.pathway-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* 1. Header Box */
+.pathway-header {
+    background-color: var(--ants-purple);
+    padding: 60px 15px 30px 15px; 
+    text-align: center;
+    position: relative;
+    z-index: 2; /* Sits on top of image */
+}
+
+/* 2. Floating Icon (Bigger) */
+.pathway-icon {
+    width: 80px;  /* Bigger */
+    height: 80px; /* Bigger */
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    
+    position: absolute;
+    top: -40px; /* Half of height */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    border: 5px solid #ffffff; /* Thicker border */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+/* 3. Image Sizing (Generic Class) */
+.pathway-img {
+    height: 350px; /* Reduced from 500px to 350px for a cleaner look */
+    width: 100%;
+    background-size: cover; 
+    background-position: top center; /* Keeps faces visible */
+    background-repeat: no-repeat;
+    position: relative;
+    transition: background-size 0.5s ease;
+}
+
+/* 4. Specific Background Images */
+.bg-bachelor { background-image: url('{% static "img/barch.png" %}'); }
+.bg-diploma { background-image: url('{% static "img/dipl.png" %}'); }
+.bg-certificate { background-image: url('{% static "img/cert.png" %}'); }
+.bg-short { background-image: url('{% static "img/esl.png" %}'); }
+
+/* Zoom effect on image only */
+.pathway-card:hover .pathway-img {
+    background-size: 110%; /* Slight zoom in effect */
+}
+
+/* 5. Overlay Button (Red Style like VU) */
+.pathway-overlay {
+    position: absolute;
+    bottom: 20px; /* Moved slightly lower */
+    left: 0; 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+}
+
+.pathway-overlay span {
+    background-color: #d32f2f; /* VU Red style color */
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: background 0.3s;
+}
+
+.pathway-overlay span:hover {
+    background-color: #b71c1c; /* Darker red on hover */
+}
+
+/* Icon Colors */
+.icon-bg-red   { background-color: #e63946; }
+.icon-bg-gold  { background-color: var(--ants-gold); color: black !important; }
+.icon-bg-blue  { background-color: #00aaff; }
+.icon-bg-green { background-color: #2a9d8f; }
+
+/* Mobile Adjustments */
+    @media (max-width: 768px) {
+        /* 1. Make image taller so it doesn't crop the body */
+        .pathway-img { 
+            height: 480px !important; /* Increased from 350px to show more body */
+            background-position: top center !important; /* Keep focus on face */
+        }
+        
+        /* 2. Adjust text size for mobile */
+        .display-5 { font-size: 1.6rem; }
+        
+        /* 3. Adjust Header padding */
+        .pathway-header {
+            padding: 50px 15px 20px 15px; /* Slightly compact header */
+            min-height: auto;
+        }
+        
+        /* 4. Adjust Icon size slightly */
+        .pathway-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            top: -30px;
+        }
+    }
 
     /* --- 3. News & Events --- */
     .news-card-main:hover img, .news-card-small:hover img {
@@ -808,11 +903,58 @@
         to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Mobile Adjustments */
-    @media (max-width: 768px) {
-        .slider-image-wrapper { height: 400px; }
-        .kyambogo-gradient { height: 70%; }
-        .display-5 { font-size: 1.4rem; }
+/* ============================================= */
+    /* RESPONSIVE FIXES (Tablets & Mobiles)          */
+    /* Applies to screens up to 991px wide (iPad/Tab)*/
+    /* ============================================= */
+    @media (max-width: 991px) {
+        
+        .slider-image-wrapper { 
+            /* 1. Height: Taller than mobile, but shorter than desktop */
+            /* This gives enough room for the image without scrolling too much */
+            height: 450px !important; 
+            
+            /* 2. Background: White padding if image aspect ratio doesn't match */
+            background-color: #ffffff; 
+        }
+
+        /* 3. THE CRITICAL FIX: 'Contain' ensures the whole banner is visible */
+        .slider-image-wrapper img {
+            object-fit: contain !important; 
+            object-position: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 4. Gradient: Hide it on tablets too so it doesn't darken flyer text */
+        .kyambogo-gradient { 
+            display: none !important; 
+        }
+
+        /* 5. Typography Scaling */
+        .slider-title { 
+            font-size: 1.8rem !important; /* Smaller font for tablets */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8); /* Ensure readability */
+        }
+        
+        /* 6. Caption Position */
+        /* Move text lower so it doesn't block the center of the image */
+        .carousel-caption {
+            justify-content: flex-end !important;
+            padding-bottom: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); /* Mini text background */
+        }
+        
+        /* Hide large descriptions on tablet to save space */
+        .carousel-caption p.lead {
+            display: none !important; 
+        }
+    }
+
+    /* specific tweak for very small phones */
+    @media (max-width: 576px) {
+        .slider-image-wrapper { height: 300px !important; }
+        .slider-title { font-size: 1.4rem !important; }
     }
 </style>
 
