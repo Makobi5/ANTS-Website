@@ -52,6 +52,7 @@ class PageBanner(models.Model):
         ('STATEMENT', 'Statement of Faith'),
         ('POLICIES', 'University Policies'),
         ('SCHEDULE', 'Daily Schedule'),
+        ('GUILD', 'Students Guild')
     ]
     
     page = models.CharField(max_length=50, choices=PAGE_CHOICES, unique=True, help_text="Select which page this banner belongs to")
@@ -111,3 +112,24 @@ class ContactPerson(models.Model):
     
     def __str__(self):
         return self.name    
+    
+    
+class StudentLeader(models.Model):
+    CABINET_YEARS = [
+        ('2026', '2026/2027 Cabinet'),
+        ('2025', '2025/2026 Cabinet'),
+        ('2024', '2024/2025 Cabinet'),
+    ]
+
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100, help_text="e.g. Guild President")
+    photo = models.ImageField(upload_to='student_leaders/')
+    cabinet_year = models.CharField(max_length=10, choices=CABINET_YEARS, default='2026')
+    email = models.EmailField(blank=True, null=True, help_text="Optional: Official email (e.g. guild@ants.ac.ug)")
+    order = models.IntegerField(default=0, help_text="1 for President, 2 for VP, etc.")
+
+    class Meta:
+        ordering = ['-cabinet_year', 'order'] # Show newest cabinet first, then by rank
+
+    def __str__(self):
+        return f"{self.name} - {self.role} ({self.cabinet_year})"    

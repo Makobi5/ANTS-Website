@@ -18,6 +18,8 @@ from .forms import ContactForm
 from django.contrib import messages
 from .models import ContactDepartment
 from django.urls import reverse
+from .models import StudentLeader,PageBanner 
+
 
 def home(request):
     # --- 1. HERO SLIDER LOGIC ---
@@ -197,3 +199,33 @@ def contact(request):
         'form': form,
         'departments': departments
     })
+    
+    
+def student_guild(request):
+    # 1. Fetch the Group Photo Banner
+    guild_banner = PageBanner.objects.filter(page='GUILD').first()
+
+    # 2. Fetch Leaders
+    all_leaders = StudentLeader.objects.all()
+    current_cabinet = all_leaders.filter(cabinet_year='2026').order_by('order')
+    past_leaders = all_leaders.exclude(cabinet_year='2026').order_by('-cabinet_year', 'order')
+    
+    return render(request, 'core/students/guild.html', {
+        'guild_banner': guild_banner, # <--- Pass image to template
+        'current_cabinet': current_cabinet,
+        'past_leaders': past_leaders
+    })
+
+def alumni(request):
+    return render(request, 'core/students/alumni.html')
+
+def life_at_ants(request):
+    return render(request, 'core/students/life.html')
+
+def fees_structure(request):
+    return render(request, 'core/students/fees.html')    
+def student_manual(request):
+    # Fetch policies specifically titled "Student Manual" or category "Manual"
+    # For now, let's just fetch ALL policies but show them on a dedicated page
+    manuals = Policy.objects.filter(title__icontains="Manual") 
+    return render(request, 'core/students/manual.html', {'manuals': manuals})

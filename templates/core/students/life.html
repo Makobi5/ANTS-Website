@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Life at ANTS</h2>
+
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <img src="{% static 'img/church1.png' %}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h4 class="fw-bold text-dark">Spiritual Life</h4>
+                    <p class="text-muted">ANTS is a community of faith. Our daily routine includes Morning Glory, Chapel Services, and evening devotionals. We believe that academic excellence must be matched by spiritual vibrancy.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="bg-light h-100 p-4 rounded border-start border-5 border-warning">
+                <h4 class="fw-bold text-dark">Community & Recreation</h4>
+                <p>Students participate in sports, music, and community outreach. We foster a family environment where students from over 10 different nations live and learn together.</p>
+                <ul class="list-unstyled mt-3">
+                    <li class="mb-2"><i class="fas fa-futbol text-success me-2"></i> Sports (Football, Volleyball)</li>
+                    <li class="mb-2"><i class="fas fa-music text-primary me-2"></i> Music & Worship Team</li>
+                    <li class="mb-2"><i class="fas fa-hands-helping text-danger me-2"></i> Community Work</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/banner.jpg' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">Students Guild</h1>
+        <p class="mb-0 text-white-50 text-uppercase">STUDENTS / LEADERSHIP</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    
+<!-- Intro -->
+    <div class="text-center mb-5 mw-800 mx-auto">
+        <h3 class="fw-bold text-primary">The Student Leadership Council</h3>
+        <p class="text-muted">
+            The Students Guild is the bridge between the student body and the administration. 
+            We are committed to servant leadership, spiritual growth, and academic excellence.
+        </p>
+    </div>
+
+    <!-- NEW: GUILD GROUP PHOTO SECTION -->
+    <div class="mb-5">
+        <div class="position-relative rounded overflow-hidden shadow-sm border border-5 border-white">
+            {% if guild_banner %}
+                <!-- Dynamic Image from Admin -->
+                <img src="{{ guild_banner.image.url }}" class="w-100 object-fit-cover" style="height: 500px;" alt="Students Guild Group Photo">
+                
+                {% if guild_banner.caption %}
+                <div class="bg-primary text-white text-center py-2">
+                    <small class="fw-bold text-uppercase">{{ guild_banner.caption }}</small>
+                </div>
+                {% endif %}
+            {% else %}
+                <!-- Fallback Image if nothing uploaded yet -->
+                <img src="{% static 'img/church1.png' %}" class="w-100 object-fit-cover" style="height: 400px;" alt="ANTS Guild">
+                <div class="position-absolute top-50 start-50 translate-middle text-center bg-white p-4 rounded shadow opacity-90">
+                    <h4 class="text-primary fw-bold mb-0">Guild Group Photo</h4>
+                    <small class="text-muted">Coming Soon</small>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- CURRENT CABINET (2026) -->
+    <div class="mb-5">
+        <h4 class="fw-bold border-start border-5 border-warning ps-3 mb-4">Current Cabinet (2026/2027)</h4>
+        
+        {% if current_cabinet %}
+                <div class="row g-5 justify-content-center">
+                    {% for leader in current_cabinet %}
+                    <div class="col-md-6 col-lg-4">
+                        
+                        <!-- 1. The Leader Container -->
+                        <div class="leader-card text-center">
+                            
+                            <!-- 2. Sculpted Image Frame (Shield Shape) -->
+                            <div class="leader-img-frame mb-4">
+                                {% if leader.photo %}
+                                    <img src="{{ leader.photo.url }}" alt="{{ leader.name }}">
+                                {% else %}
+                                    <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-user fa-5x text-muted opacity-50"></i>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Optional: Overlay gradient for depth -->
+                                <div class="img-overlay"></div>
+                            </div>
+
+                            <!-- 3. Text Info (Clean Typography) -->
+                            <div class="leader-info">
+                                <h6 class="text-uppercase fw-bold text-primary mb-1" style="letter-spacing: 1px;">
+                                    {{ leader.role }}
+                                </h6>
+                                <h3 class="fw-bold text-dark mb-3">
+                                    {{ leader.name }}
+                                </h3>
+                                
+                                {% if leader.email %}
+                                    <a href="mailto:{{ leader.email }}" class="btn btn-outline-warning rounded-pill btn-sm fw-bold px-4">
+                                        <i class="fas fa-envelope me-2"></i> Contact
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <div class="alert alert-warning text-center">Current cabinet details are being updated.</div>
+                {% endif %}
+    </div>
+
+    <!-- PAST CABINETS (Archives) -->
+    {% if past_leaders %}
+    <div class="mt-5 pt-5 border-top">
+        <h4 class="fw-bold text-muted mb-4">Past Leadership Archives</h4>
+        
+        <div class="accordion" id="accordionArchive">
+            
+            <!-- Group by Year logic -->
+            {% regroup past_leaders by get_cabinet_year_display as cabinet_list %}
+            
+            {% for cabinet in cabinet_list %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                    <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}">
+                        <i class="fas fa-history me-2 text-warning"></i> {{ cabinet.grouper }}
+                    </button>
+                </h2>
+                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionArchive">
+                    <div class="accordion-body bg-light">
+                        <div class="row g-3">
+                            {% for leader in cabinet.list %}
+                            <div class="col-md-4 d-flex align-items-center bg-white p-2 rounded border">
+                                {% if leader.photo %}
+                                    <img src="{{ leader.photo.url }}" class="rounded-circle me-3" width="50" height="50" style="object-fit: cover;">
+                                {% endif %}
+                                <div>
+                                    <h6 class="mb-0 fw-bold small">{{ leader.name }}</h6>
+                                    <small class="text-muted">{{ leader.role }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+<style>
+/* --- Student Leader Card Styles --- */
+
+.leader-card {
+    transition: transform 0.3s ease;
+}
+
+.leader-card:hover {
+    transform: translateY(-10px); /* Lifts up slightly */
+}
+
+/* The Shield Frame */
+.leader-img-frame {
+    height: 380px; /* Tall portrait height */
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    
+    /* THE SHAPE MAGIC: Flat top, Round Bottom */
+    border-radius: 20px 20px 50% 50%; 
+    
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15); /* Soft drop shadow */
+    border-top: 5px solid var(--ants-gold); /* Gold accent on top */
+    background-color: #fff;
+}
+
+/* The Arch Frame (More Professional / Ecclesiastical) */
+.leader-img-frame {
+    height: 400px; /* Good height for portrait */
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    
+    /* THE SHAPE: Full round top, slightly rounded bottom corners */
+    /* This creates the "Window" or "Arch" look */
+    border-radius: 500px 500px 20px 20px; 
+    
+    /* Move the Gold line to the BOTTOM for a solid foundation */
+    border-bottom: 6px solid var(--ants-gold);
+    border-top: none; 
+    
+    background-color: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Clean shadow */
+}
+
+/* Zoom Effect */
+.leader-card:hover .leader-img-frame img {
+    transform: scale(1.05);
+}
+
+/* Gradient Overlay (Optional: Makes bottom of image slightly darker) */
+.img-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 30%;
+    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+    pointer-events: none;
+}
+</style>
+
+{% endblock %}

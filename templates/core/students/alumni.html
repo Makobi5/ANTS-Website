@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">ANTS Alumni Network</h2>
+    
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i> Are you an ANTS Graduate? <a href="{% url 'contact' %}" class="fw-bold">Contact us</a> to update your details.
+    </div>
+
+    <div class="row g-4">
+        <!-- Alumni Highlight -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="row g-0 h-100">
+                    <div class="col-4 bg-secondary d-flex align-items-center justify-content-center">
+                        <i class="fas fa-user-graduate fa-3x text-white-50"></i>
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Pastoral Ministry</h5>
+                            <p class="card-text small text-muted">Over 300 of our graduates are currently serving as Senior Pastors across East Africa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

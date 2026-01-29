@@ -268,19 +268,22 @@
                             </ul>
                         </li>
 
-                        <!-- === 5. STUDENTS === -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Students
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
-                                <li><a class="dropdown-item" href="#">Students Manual</a></li>
-                                <li><a class="dropdown-item" href="#">Students Guild</a></li>
-                                <li><a class="dropdown-item" href="#">Alumni</a></li>
-                                <li><a class="dropdown-item" href="#">Life at ANTS</a></li>
-                                <li><a class="dropdown-item" href="#">Fees Structure</a></li>
-                            </ul>
-                        </li>
+                                <!-- === 5. STUDENTS === -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="studentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Students
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="studentsDropdown">
+                                        <!-- Link Manual to Policies page where PDFs live -->
+                                        <li><a class="dropdown-item" href="{% url 'student_manual' %}">Students Manual (PDF)</a></li>
+                                        
+                                        <!-- New Pages -->
+                                        <li><a class="dropdown-item" href="{% url 'student_guild' %}">Students Guild</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'alumni' %}">Alumni</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'life_at_ants' %}">Life at ANTS</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'fees_structure' %}">Fees Structure</a></li>
+                                    </ul>
+                                </li>
 
                         <!-- === 6. SERVICES === -->
                         <li class="nav-item dropdown">

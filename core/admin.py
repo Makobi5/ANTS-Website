@@ -3,6 +3,7 @@ from .models import Policy, DailySchedule, PageBanner,SliderImage  # Import it h
 from django.utils.html import mark_safe
 from .models import  Partner, Testimonial # <--- Add imports
 from .models import ContactDepartment, ContactPerson
+from .models import StudentLeader
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -60,4 +61,10 @@ class ContactPersonInline(admin.TabularInline):
 @admin.register(ContactDepartment)
 class ContactDepartmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'order')
-    inlines = [ContactPersonInline]    
+    inlines = [ContactPersonInline]  
+    
+@admin.register(StudentLeader)
+class StudentLeaderAdmin(admin.ModelAdmin):
+    list_display = ('name', 'role', 'cabinet_year', 'order')
+    list_filter = ('cabinet_year',)
+    list_editable = ('order',)      

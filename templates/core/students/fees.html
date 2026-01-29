@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">Tuition & Fees Structure</h2>
+        <p class="text-muted">Academic Year 2026</p>
+    </div>
+
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="bg-primary text-white text-uppercase">
+                <tr>
+                    <th>Program</th>
+                    <th>Tuition (Per Semester)</th>
+                    <th>Functional Fees</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Certificate Programs</td>
+                    <td>UGX 400,000</td>
+                    <td>UGX 150,000</td>
+                    <td class="fw-bold text-dark">UGX 550,000</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Diploma Programs</td>
+                    <td>UGX 500,000</td>
+                    <td>UGX 200,000</td>
+                    <td class="fw-bold text-dark">UGX 700,000</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Bachelor Programs</td>
+                    <td>UGX 800,000</td>
+                    <td>UGX 250,000</td>
+                    <td class="fw-bold text-dark">UGX 1,050,000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="mt-4 alert alert-warning d-flex align-items-center">
+        <i class="fas fa-exclamation-circle fa-2x me-3"></i>
+        <div>
+            <strong>Note:</strong> Fees are subject to review. International students may have a different fee structure. 
+            <br>Please contact the <a href="{% url 'contact' %}" class="alert-link">Bursar's Office</a> for the official PDF document.
+        </div>
+    </div>
+</div>
+{% endblock %}
