@@ -23,36 +23,33 @@ def home(request):
     # --- 1. HERO SLIDER LOGIC ---
     # Fetch Manual Slides (Created in Admin)
     manual_slides = SliderImage.objects.all().order_by('-created_at')
-    # Fetch Latest News for Slider (Only those with images)
-    news_slides = NewsArticle.objects.exclude(image='').order_by('-date_posted')[:5]
-    # Combine them into one list for the template
+    
+    # Fetch News for Slider:
+    # 1. Must be marked "Show on Slider"
+    # 2. Must have an image
+    # 3. Limit to the latest 6
+    news_slides = NewsArticle.objects.filter(show_on_slider=True).exclude(image='').order_by('-date_posted')[:6]
+    
+    # Combine them into one list
     combined_slides = list(chain(manual_slides, news_slides))
     
     # --- 2. OFFICE OF THE PRINCIPAL ---
-    # Fetch the staff member marked as 'PRINCIPAL'
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()
 
-    # --- 3. UNIVERSITY NEWS GRID ---
-    # Fetch latest 5 articles
+    # --- 3. UNIVERSITY NEWS GRID (Below Slider) ---
+    # Fetch latest 5 articles generally (regardless of slider setting)
     latest_news_list = NewsArticle.objects.all().order_by('-date_posted')[:5]
-    # Split them: First one is "Featured" (Big), the rest are "Other" (Small)
     featured_news = latest_news_list[0] if latest_news_list else None
     other_news = latest_news_list[1:] if len(latest_news_list) > 1 else []
 
-    # --- 4. UPCOMING EVENTS (Parallax Section) ---
+    # --- 4. UPCOMING EVENTS ---
     today = timezone.now().date()
-    # Fetch events happening today or in the future, limit to 3 for the row
     upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:3]
 
-    # --- 5. TESTIMONIALS ---
-    # Fetch latest 3 testimonials for the "Voices of ANTS" section
+    # --- 5. TESTIMONIALS & PARTNERS ---
     testimonials = Testimonial.objects.all().order_by('-created_at')[:3]
-
-    # --- 6. PARTNERS ---
-    # Fetch all partners
     partners = Partner.objects.all()
 
-    # Pass everything to the template
     return render(request, 'core/home.html', {
         'combined_slides': combined_slides,
         'principal': principal,

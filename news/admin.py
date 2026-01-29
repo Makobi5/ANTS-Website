@@ -26,20 +26,21 @@ class NewsDocumentInline(admin.TabularInline):
 # 3. Register Article with the Inline
 @admin.register(NewsArticle)
 class NewsArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'date_posted', 'author')
-    list_filter = ('category', 'tags', 'date_posted')
+    # Added 'show_on_slider' to list display and list editable
+    list_display = ('title', 'category', 'date_posted', 'show_on_slider', 'author')
+    list_editable = ('show_on_slider',) # Allows you to toggle it directly from the list view!
+    list_filter = ('show_on_slider', 'category', 'tags', 'date_posted')
     search_fields = ('title', 'content')
     
-    # Organize Layout
     fieldsets = (
-        ('Main Content', {
+        ('Content', {
             'fields': ('title', 'category', 'content')
         }),
-        ('SEO & Metadata', {
-            'fields': ('tags', 'summary')
+        ('Display Settings', {
+            'fields': ('show_on_slider', 'tags', 'summary') # <--- Added here
         }),
-        ('Featured Image', {
-            'fields': ('image','thumbnail', 'author'),
+        ('Images', {
+            'fields': ('image', 'thumbnail', 'author'),
         }),
     )
     

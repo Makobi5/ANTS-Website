@@ -19,6 +19,12 @@ class Category(models.Model):
 class NewsArticle(models.Model):
     title = models.CharField(max_length=200)
     # 1. Main Wide Image (For Sliders & Detail Page Header)
+    show_on_slider = models.BooleanField(
+        default=False, 
+        verbose_name="Show on Homepage Slider",
+        help_text="Check this box if you want this article to appear in the big main slider on the homepage."
+    )
+    
     image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image (Wide)")
     
     # 2. NEW: Thumbnail Image (For Cards, Lists, and Sidebar)
