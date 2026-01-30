@@ -5,6 +5,7 @@ from .models import  Partner, Testimonial # <--- Add imports
 from .models import ContactDepartment, ContactPerson
 from .models import StudentLeader
 from .models import AlumniMember
+from .models import ServiceDepartment
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -79,3 +80,8 @@ class AlumniMemberAdmin(admin.ModelAdmin):
     list_filter = ('is_approved', 'graduation_year')
     search_fields = ('full_name', 'email')
     actions = [approve_alumni] # Adds the action to the dropdown menu     
+    
+@admin.register(ServiceDepartment)
+class ServiceDepartmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'head_title')
+    prepopulated_fields = {'slug': ('name',)}    

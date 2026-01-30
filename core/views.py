@@ -22,6 +22,7 @@ from .models import StudentLeader,PageBanner
 from .models import AlumniMember
 from .forms import AlumniRegistrationForm
 from news.models import NewsImage 
+from .models import ServiceDepartment
 def home(request):
     # --- 1. HERO SLIDER LOGIC ---
     # Fetch Manual Slides (Created in Admin)
@@ -261,3 +262,7 @@ def life_housing(request):
 # 3. Dining
 def life_dining(request):
     return render(request, 'core/students/life_dining.html')
+
+def service_detail(request, slug):
+    service = get_object_or_404(ServiceDepartment, slug=slug)
+    return render(request, 'core/services/service_detail.html', {'service': service})

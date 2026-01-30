@@ -14,6 +14,8 @@ class StaffMember(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True, help_text="Auto-generated part of the URL (e.g. prof-joy-kwesiga)")
     role = models.CharField(max_length=100, help_text="e.g. Dean of Students")
+    service_department = models.ForeignKey('core.ServiceDepartment', on_delete=models.SET_NULL, null=True, blank=True, related_name='staff_list')
+    qualifications = models.CharField(max_length=300, blank=True, help_text="e.g. MSc. CS, CCNA, BIT")
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     photo = models.ImageField(upload_to='staff_photos/', blank=True, null=True)
     order = models.IntegerField(default=0, help_text="Lower numbers appear first")

@@ -206,7 +206,7 @@
                                         <div class="col-6 px-2">
                                             <h6 class="dropdown-header-custom">GOVERNANCE</h6>
                                             <a class="dropdown-item" href="#">Governance Structure</a>
-                                            <a class="dropdown-item" href="{% url 'principal_profile' %}">The Principal</a>
+                                            <a class="dropdown-item" href="#">ANTS Chancellor</a>
                                             <a class="dropdown-item" href="#">Governing Council</a>
                                             <a class="dropdown-item" href="{% url 'management_list' %}">Management</a>
                                             <a class="dropdown-item" href="{% url 'staff_list' %}">Staff Directory</a>
@@ -298,14 +298,14 @@
                                             <h6 class="dropdown-header-custom">UNIVERSITY SERVICES</h6>
                                             <a class="dropdown-item" href="#">University Library</a>
                                             <a class="dropdown-item" href="#">Quality Assurance</a>
-                                            <a class="dropdown-item" href="#">Computing Services</a>
+                                            <a class="dropdown-item" href="{% url 'service_detail' 'computing-services' %}">Computing Services</a>
                                             <a class="dropdown-item" href="#">Financial Services</a>
                                             <a class="dropdown-item" href="#">Health Services</a>
                                         </div>
                                         <div class="col-6 px-2">
                                             <h6 class="dropdown-header-custom">KEY OFFICES</h6>
-                                            <a class="dropdown-item" href="#">The Principal</a>
-                                            <a class="dropdown-item" href="#">University Secretary</a>
+                                            <a class="dropdown-item" href="{% url 'principal_profile' %}">The Principal</a>
+                                            <a class="dropdown-item" href="{% url 'service_detail' 'university-secretary' %}">University Secretary</a>
                                             <a class="dropdown-item" href="#">Academic Registrar</a>
                                             <a class="dropdown-item" href="#">Human Resource</a>
                                             <a class="dropdown-item" href="#">Dean of Students</a>

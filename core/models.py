@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+from staff.models import StaffMember
 # Create your models here.
 class Policy(models.Model):
     title = models.CharField(max_length=200, help_text="e.g. Academic Integrity Policy")
@@ -158,3 +159,21 @@ class AlumniMember(models.Model):
 
     def __str__(self):
         return f"{self.full_name} ({self.graduation_year})"       
+    
+    
+class ServiceDepartment(models.Model):
+    name = models.CharField(max_length=100, help_text="e.g. Finance Department, University Library")
+    slug = models.SlugField(unique=True, help_text="URL friendly name (e.g. finance-department)")
+    
+    # The Head of Department (Link to Staff)
+    head_of_dept = models.ForeignKey(StaffMember, on_delete=models.SET_NULL, null=True, blank=True, related_name="headed_services")
+    head_title = models.CharField(max_length=100, default="Head of Department", help_text="e.g. University Bursar, Librarian")
+    
+    # Content Tabs
+    introduction = RichTextUploadingField(help_text="Main description (Mandate)")
+    duties = RichTextUploadingField(blank=True, help_text="Content for 'Duties & Responsibilities' tab")
+    staff_content = RichTextUploadingField(blank=True, help_text="Content for 'Staff Members' tab (or list names manually)")
+    contact_info = RichTextUploadingField(blank=True, help_text="Address, Email, Phone for this specific department")
+
+    def __str__(self):
+        return self.name    
