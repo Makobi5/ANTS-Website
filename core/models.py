@@ -132,4 +132,29 @@ class StudentLeader(models.Model):
         ordering = ['-cabinet_year', 'order'] # Show newest cabinet first, then by rank
 
     def __str__(self):
-        return f"{self.name} - {self.role} ({self.cabinet_year})"    
+        return f"{self.name} - {self.role} ({self.cabinet_year})" 
+
+class AlumniMember(models.Model):
+    # Personal Info
+    full_name = models.CharField(max_length=200)
+    graduation_year = models.CharField(max_length=4, help_text="Year of Graduation")
+    program = models.CharField(max_length=200, help_text="Course studied at ANTS")
+    
+    # Professional Info
+    current_job = models.CharField(max_length=200, blank=True, help_text="Current Job Title")
+    employer = models.CharField(max_length=200, blank=True, help_text="Company or Church Name")
+    
+    # Contact (Private for Admin, unless you want to show email publicly)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    
+    # Public Profile
+    photo = models.ImageField(upload_to='alumni_photos/', blank=True, null=True)
+    testimonial = models.TextField(blank=True, help_text="A short message about their time at ANTS")
+    
+    # Approval Logic
+    is_approved = models.BooleanField(default=False, verbose_name="Approve for Website")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} ({self.graduation_year})"       

@@ -16,4 +16,7 @@ urlpatterns = [
     path('students/life/', views.life_at_ants, name='life_at_ants'),
     path('students/fees/', views.fees_structure, name='fees_structure'),
     path('students/manual/', views.student_manual, name='student_manual'),
+    path('students/life/sports/', views.life_sports, name='life_sports'),
+    path('students/life/housing/', views.life_housing, name='life_housing'),
+    path('students/life/dining/', views.life_dining, name='life_dining'),
 ]

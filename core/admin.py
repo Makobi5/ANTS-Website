@@ -4,6 +4,7 @@ from django.utils.html import mark_safe
 from .models import  Partner, Testimonial # <--- Add imports
 from .models import ContactDepartment, ContactPerson
 from .models import StudentLeader
+from .models import AlumniMember
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -67,4 +68,14 @@ class ContactDepartmentAdmin(admin.ModelAdmin):
 class StudentLeaderAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'cabinet_year', 'order')
     list_filter = ('cabinet_year',)
-    list_editable = ('order',)      
+    list_editable = ('order',)     
+def approve_alumni(modeladmin, request, queryset):
+    queryset.update(is_approved=True)
+approve_alumni.short_description = "Approve selected alumni for website Display"
+
+@admin.register(AlumniMember)
+class AlumniMemberAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'graduation_year', 'program', 'is_approved')
+    list_filter = ('is_approved', 'graduation_year')
+    search_fields = ('full_name', 'email')
+    actions = [approve_alumni] # Adds the action to the dropdown menu     

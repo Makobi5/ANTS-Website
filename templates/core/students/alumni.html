@@ -2,30 +2,145 @@
 {% load static %}
 
 {% block content %}
+
+<!-- Header -->
+<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/banner.jpg' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">Alumni Network</h1>
+        <p class="mb-0 text-white-50 text-uppercase">STUDENTS / ALUMNI</p>
+    </div>
+</div>
+
 <div class="container py-5">
-    <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">ANTS Alumni Network</h2>
     
-    <div class="alert alert-info">
-        <i class="fas fa-info-circle me-2"></i> Are you an ANTS Graduate? <a href="{% url 'contact' %}" class="fw-bold">Contact us</a> to update your details.
+    <!-- 1. INTRO & BENEFITS (From Screenshots) -->
+    <div class="row mb-5">
+        <div class="col-lg-6 mb-4">
+            <h3 class="fw-bold text-primary mb-3">Welcome Home, Alumni!</h3>
+            <p class="text-muted">
+                Alumni will be part of a community that offers various benefits including:
+            </p>
+            <ul class="list-unstyled text-muted small" style="line-height: 2;">
+                <li><i class="fas fa-check-circle text-warning me-2"></i> A regular e-newsletter with updates on the College.</li>
+                <li><i class="fas fa-check-circle text-warning me-2"></i> Ability to connect and network with fellow Alumni.</li>
+                <li><i class="fas fa-check-circle text-warning me-2"></i> Invitation to University events including public lectures and re-unions.</li>
+                <li><i class="fas fa-check-circle text-warning me-2"></i> Access to the university library on site free of charge.</li>
+                <li><i class="fas fa-check-circle text-warning me-2"></i> Networking opportunities.</li>
+                <li><i class="fas fa-check-circle text-warning me-2"></i> Opportunity to share your knowledge experience to inspire others.</li>
+            </ul>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="bg-light p-4 rounded border-start border-5 border-primary h-100">
+                <h4 class="fw-bold text-dark mb-3">How to Get Involved</h4>
+                <ol class="text-muted small ps-3" style="line-height: 1.8;">
+                    <li class="mb-2">Support students' employability through offering internships.</li>
+                    <li class="mb-2">Connect with fellow alumni by attending events.</li>
+                    <li class="mb-2">Help the College in organizing alumni reunions.</li>
+                    <li class="mb-2">Keep us informed of your accomplishments and awards.</li>
+                    <li class="mb-2">Make a donation to support College research.</li>
+                    <li class="mb-2">Speak to current students at networking receptions.</li>
+                </ol>
+                <div class="text-center mt-4">
+                    <a href="#register" class="btn btn-warning fw-bold px-4 rounded-pill">JOIN THE NETWORK</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row g-4">
-        <!-- Alumni Highlight -->
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="row g-0 h-100">
-                    <div class="col-4 bg-secondary d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user-graduate fa-3x text-white-50"></i>
+    <!-- 2. MEET OUR ALUMNI (Dynamic Grid) -->
+    {% if approved_alumni %}
+    <div class="mb-5">
+        <h3 class="fw-bold text-center text-primary mb-5">Prominent Alumni</h3>
+        
+        <div class="row g-4">
+            {% for alum in approved_alumni %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center">
+                    <div class="position-relative mx-auto mt-4" style="width: 150px; height: 150px;">
+                        {% if alum.photo %}
+                            <img src="{{ alum.photo.url }}" class="rounded-circle w-100 h-100 object-fit-cover border border-5 border-light shadow-sm">
+                        {% else %}
+                            <div class="rounded-circle w-100 h-100 bg-secondary d-flex align-items-center justify-content-center text-white">
+                                <i class="fas fa-user-graduate fa-3x"></i>
+                            </div>
+                        {% endif %}
                     </div>
-                    <div class="col-8">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Pastoral Ministry</h5>
-                            <p class="card-text small text-muted">Over 300 of our graduates are currently serving as Senior Pastors across East Africa.</p>
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-1">{{ alum.full_name }}</h5>
+                        <p class="small text-primary fw-bold mb-2">{{ alum.current_job }}</p>
+                        <p class="small text-muted mb-3">{{ alum.employer }}</p>
+                        
+                        <div class="bg-light p-3 rounded position-relative">
+                            <i class="fas fa-quote-left text-warning position-absolute top-0 start-0 m-2"></i>
+                            <p class="small text-muted fst-italic mb-0 pt-2">{{ alum.testimonial|truncatewords:20 }}</p>
                         </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <small class="text-muted fw-bold">Class of {{ alum.graduation_year }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 3. REGISTRATION FORM -->
+    <div id="register" class="mt-5 pt-5 border-top">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0 overflow-hidden">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <h3 class="fw-bold mb-0">Alumni Registration Form</h3>
+                        <p class="mb-0 text-white-50">Join the database to stay connected</p>
+                    </div>
+                    <div class="card-body p-5">
+                        
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success d-flex align-items-center">
+                                    <i class="fas fa-check-circle me-2"></i> {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <h6 class="text-warning fw-bold text-uppercase mb-3">Personal Information</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-12">{{ form.full_name }}</div>
+                                <div class="col-md-6">{{ form.email }}</div>
+                                <div class="col-md-6">{{ form.phone }}</div>
+                            </div>
+
+                            <h6 class="text-warning fw-bold text-uppercase mb-3">Academic & Work</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">{{ form.graduation_year }}</div>
+                                <div class="col-md-6">{{ form.program }}</div>
+                                <div class="col-md-6">{{ form.current_job }}</div>
+                                <div class="col-md-6">{{ form.employer }}</div>
+                            </div>
+
+                            <h6 class="text-warning fw-bold text-uppercase mb-3">Profile (Optional)</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-12">
+                                    <label class="small text-muted">Upload Photo</label>
+                                    {{ form.photo }}
+                                </div>
+                                <div class="col-12">{{ form.testimonial }}</div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 fw-bold py-3 text-uppercase">
+                                Submit Registration
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}

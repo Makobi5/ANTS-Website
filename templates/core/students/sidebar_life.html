@@ -1,0 +1,26 @@
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-purple text-white fw-bold text-uppercase py-3">
+        <i class="fas fa-heartbeat me-2"></i> Student Life
+    </div>
+    <div class="list-group list-group-flush">
+        <a href="{% url 'life_sports' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'life_sports' %}active-life-link{% endif %}">
+            <i class="fas fa-futbol me-2 text-warning"></i> Sports & Culture
+        </a>
+        <a href="{% url 'life_housing' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'life_housing' %}active-life-link{% endif %}">
+            <i class="fas fa-bed me-2 text-warning"></i> Accommodation
+        </a>
+        <a href="{% url 'life_dining' %}" class="list-group-item list-group-item-action py-3 {% if request.resolver_match.url_name == 'life_dining' %}active-life-link{% endif %}">
+            <i class="fas fa-utensils me-2 text-warning"></i> Meals & Dining
+        </a>
+    </div>
+</div>
+
+<style>
+    .active-life-link {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        color: var(--ants-purple);
+        border-left: 5px solid var(--ants-gold);
+    }
+    .bg-purple { background-color: var(--ants-purple); }
+</style>

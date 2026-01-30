@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">{% include 'core/students/sidebar_life.html' %}</div>
+        
+        <div class="col-lg-9">
+            
+            <!-- Header (Fixed Colors) -->
+            <div class="p-5 mb-5 rounded shadow-sm text-white" 
+                 style="background-color: var(--ants-purple); border-bottom: 6px solid var(--ants-gold);">
+                <h2 class="fw-bold mb-2 display-6">On-Campus Housing</h2>
+                <p class="mb-0 lead opacity-75">A home away from home. Safe, secure, and community-focused.</p>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-6">
+                    <img src="{% static 'img/church1.png' %}" class="img-fluid rounded shadow-sm mb-3">
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold text-dark">Dormitory Facilities</h5>
+                    <p class="text-muted">
+                        ANTS provides separate, fully furnished dormitories for Male and Female students.
+                    </p>
+                    <ul class="list-unstyled small text-muted">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 24/7 Security</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Power & Water Backup</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Resident Matron/Patron</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card bg-light border-0">
+                <div class="card-body">
+                    <h5 class="fw-bold text-dark mb-3">Accommodation Policies</h5>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent"><i class="fas fa-exclamation-circle text-danger me-2"></i> <strong>Curfew:</strong> All students must be in their dorms by 10:00 PM.</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-ban text-danger me-2"></i> <strong>Visitors:</strong> No visitors are allowed in the dormitories.</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-broom text-primary me-2"></i> <strong>Cleanliness:</strong> Students are responsible for keeping their spaces tidy.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

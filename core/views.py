@@ -19,8 +19,9 @@ from django.contrib import messages
 from .models import ContactDepartment
 from django.urls import reverse
 from .models import StudentLeader,PageBanner 
-
-
+from .models import AlumniMember
+from .forms import AlumniRegistrationForm
+from news.models import NewsImage 
 def home(request):
     # --- 1. HERO SLIDER LOGIC ---
     # Fetch Manual Slides (Created in Admin)
@@ -217,7 +218,23 @@ def student_guild(request):
     })
 
 def alumni(request):
-    return render(request, 'core/students/alumni.html')
+    # 1. Handle Form Submission
+    if request.method == 'POST':
+        form = AlumniRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save() # Saves with is_approved=False by default
+            messages.success(request, "Registration successful! Your profile is pending approval by the admin.")
+            return redirect('alumni') # Reload page to clear form
+    else:
+        form = AlumniRegistrationForm()
+
+    # 2. Fetch ONLY Approved Alumni for display
+    approved_alumni = AlumniMember.objects.filter(is_approved=True).order_by('-graduation_year')
+
+    return render(request, 'core/students/alumni.html', {
+        'approved_alumni': approved_alumni,
+        'form': form
+    })
 
 def life_at_ants(request):
     return render(request, 'core/students/life.html')
@@ -229,3 +246,18 @@ def student_manual(request):
     # For now, let's just fetch ALL policies but show them on a dedicated page
     manuals = Policy.objects.filter(title__icontains="Manual") 
     return render(request, 'core/students/manual.html', {'manuals': manuals})
+
+# 1. Sports & Athletics
+def life_sports(request):
+    # Fetch 3 random or latest images for the "Featured Gallery" section
+    # We use 'order_by' to get recent ones
+    gallery_preview = NewsImage.objects.all().order_by('-id')[:3]
+    return render(request, 'core/students/life_sports.html', {'gallery': gallery_preview})
+
+# 2. Accommodation / Housing
+def life_housing(request):
+    return render(request, 'core/students/life_housing.html')
+
+# 3. Dining
+def life_dining(request):
+    return render(request, 'core/students/life_dining.html')

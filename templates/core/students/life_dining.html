@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">{% include 'core/students/sidebar_life.html' %}</div>
+        
+        <div class="col-lg-9">
+            <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Meals & Dining</h2>
+            
+            <p class="text-muted mb-4">
+                We provide three healthy meals a day for all residential students. Our menu is designed to be nutritious and culturally diverse to cater to our international student body.
+            </p>
+
+            <h5 class="fw-bold text-dark mb-3">Dining Schedule</h5>
+            <div class="table-responsive mb-5">
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Meal</th>
+                            <th>Time</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">Breakfast</td>
+                            <td>07:00 AM - 08:00 AM</td>
+                            <td>Tea, Porridge, Bread/Escort</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Lunch</td>
+                            <td>01:00 PM - 02:00 PM</td>
+                            <td>Posho, Rice, Beans, Peas, G.Nuts</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Dinner</td>
+                            <td>07:00 PM - 08:00 PM</td>
+                            <td>Rice, Matooke, Sweet Potatoes, Beef (Fridays)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-warning border-start border-5 border-warning">
+                <h6 class="fw-bold">Dining Hall Policy</h6>
+                <p class="mb-0 small">
+                    All meals must be consumed within the Dining Hall. Taking utensils or food to the dormitories is strictly prohibited to maintain hygiene.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
