@@ -232,66 +232,6 @@
 {% endif %}
 
 
-<!-- ============================================ -->
-<!-- GALLERY SUBSCRIPTION SECTION (With Feedback) -->
-<!-- ============================================ -->
-<div id="newsletter" class="py-5 bg-white border-top">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-7 col-md-9 text-center">
-                
-                <!-- Icon -->
-                <div class="mb-3">
-                    <span class="d-inline-block p-3 rounded-circle bg-light shadow-sm text-primary">
-                        <i class="fas fa-envelope-open-text fa-2x"></i>
-                    </span>
-                </div>
-
-                <h3 class="fw-bold text-primary mb-2">Stay Connected with ANTS</h3>
-                
-                <!-- 1. FEEDBACK LOOP (Success Message) -->
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if 'newsletter' in message.tags %}
-                            <!-- Success Message Design (Green Box for White Background) -->
-                            <div class="alert alert-success fade-in-right p-4 mt-4 rounded shadow-sm border-0">
-                                <h4 class="fw-bold mb-2 text-success">
-                                    <i class="fas fa-check-circle me-2"></i> Success!
-                                </h4>
-                                <p class="mb-0 text-dark" style="font-size: 1.05rem;">
-                                    {{ message }}
-                                </p>
-                            </div>
-                            <!-- Hide the form below -->
-                            <style>.newsletter-form-wrapper { display: none !important; }</style>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                <!-- 2. THE FORM WRAPPER (Hidden on Success) -->
-                <div class="newsletter-form-wrapper">
-                    <p class="text-muted mb-4">Subscribe to our newsletter to receive the latest updates.</p>
-                    
-                    <form action="{% url 'subscribe' %}" method="POST" class="subscription-form mx-auto" style="max-width: 500px;">
-                        {% csrf_token %}
-                        <div class="input-group input-group-lg shadow-sm">
-                            <input type="email" name="email" class="form-control border-0 px-4" placeholder="Enter your email address..." required aria-label="Email">
-                            <button type="submit" class="btn btn-warning text-dark fw-bold px-5">
-                                SUBSCRIBE
-                            </button>
-                        </div>
-                    </form>
-
-                    <small class="text-muted mt-3 d-block fst-italic" style="font-size: 0.8rem;">
-                        <i class="fas fa-lock me-1"></i> We respect your privacy. No spam.
-                    </small>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- ============================================ -->
 <!-- PAGE SPECIFIC CSS                            -->

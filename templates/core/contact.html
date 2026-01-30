@@ -168,27 +168,6 @@
                 </iframe>
             </div>
 
-<!-- 4. FLOATING NEWSLETTER (Reusing Homepage Style) -->
-<div class="container position-relative z-index-20">
-    <div class="newsletter-floating p-5 shadow-lg">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h6 class="text-uppercase fw-bold mb-1" style="color: #333;">Subscribe to our Newsletter</h6>
-                <h2 class="fw-bold display-6 mb-0" style="color: #002147;">Get updates on News & Events</h2>
-            </div>
-            <div class="col-lg-6">
-                <form action="{% url 'subscribe' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="input-group input-group-lg">
-                        <input type="email" name="email" class="form-control border-0 rounded-0 px-4" placeholder="Email Address" required>
-                        <button type="submit" class="btn btn-primary fw-bold text-uppercase px-4 rounded-0" style="background-color: #2d76b1; border: none;">Subscribe</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
     .social-btn { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; }
     .bg-facebook { background: #1877F2; border:none; }

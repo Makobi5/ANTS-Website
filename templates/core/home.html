@@ -597,69 +597,6 @@
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- 6. NEWSLETTER BANNER (FLOATING & FEEDBACK)   -->
-<!-- ============================================ -->
-<div id="newsletter" class="container position-relative z-index-20">
-    <div class="newsletter-floating p-5 shadow-lg">
-        <div class="row align-items-center">
-            
-            <!-- Text Side -->
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h6 class="text-uppercase fw-bold mb-1" style="letter-spacing: 1px; color: #333;">
-                    Subscribe to our Newsletter
-                </h6>
-                <h2 class="fw-bold display-6 mb-2" style="color: #002147;">
-                    Get updates on News, Jobs & Events
-                </h2>
-                <p class="mb-0 text-dark opacity-75">
-                    Sign up to get the latest updates from ANTS by email.
-                </p>
-            </div>
-
-            <!-- Form Side (With Success Feedback) -->
-            <div class="col-lg-6">
-                
-                <!-- 1. Check for Newsletter Success Messages -->
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if 'newsletter' in message.tags %}
-                            <!-- SUCCESS MESSAGE (Appears instead of form) -->
-                            <div class="text-white fade-in-right p-3 rounded" style="background-color: rgba(0,0,0,0.1);">
-                                <h4 class="fw-bold mb-2">
-                                    <i class="fas fa-check-circle me-2"></i> Success!
-                                </h4>
-                                <p class="mb-0" style="font-size: 1.05rem; line-height: 1.4; color: #333;">
-                                    {{ message }}
-                                </p>
-                            </div>
-                            <!-- Hide the form if success message exists -->
-                            <style>.newsletter-form-wrapper { display: none !important; }</style>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                <!-- 2. The Form (Wrapped for hiding) -->
-                <div class="newsletter-form-wrapper">
-                    <form action="{% url 'subscribe' %}" method="POST">
-                        {% csrf_token %}
-                        <div class="input-group input-group-lg">
-                            <input type="email" name="email" class="form-control border-0 rounded-0 px-4" 
-                                   placeholder="Email Address" required>
-                            
-                            <button type="submit" class="btn btn-primary fw-bold text-uppercase px-4 rounded-0" 
-                                    style="background-color: #2d76b1; border: none;">
-                                Subscribe Now
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-</div>
 
 
 <!-- ============================================ -->
