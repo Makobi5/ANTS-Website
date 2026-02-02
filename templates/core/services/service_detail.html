@@ -3,119 +3,145 @@
 
 {% block content %}
 
-<!-- Header -->
-<div class="bg-primary py-5 text-center text-white" style="background: var(--ants-purple);">
-    <h1 class="fw-bold">{{ service.name }}</h1>
-    <p class="opacity-75 text-uppercase">UNIVERSITY SERVICES</p>
+<!-- 1. HEADER BANNER -->
+<div class="bg-primary py-5 text-white text-center position-relative" style="background: linear-gradient(rgba(27, 29, 78, 0.85), rgba(27, 29, 78, 0.85)), url('{% static 'img/ants.jpg' %}') center/cover no-repeat;">
+    <div class="container py-3">
+        <h1 class="fw-bold display-6">{{ service.name }}</h1>
+        <p class="mb-0 text-white-50 text-uppercase small">HOME / SERVICES / {{ service.name }}</p>
+    </div>
 </div>
 
 <div class="container py-5">
     <div class="row">
         
-        <!-- LEFT: Head of Dept Profile -->
-        <div class="col-lg-3 text-center mb-4">
-            <div class="bg-white p-3 rounded shadow-sm border">
-                <div class="rounded-circle overflow-hidden mx-auto mb-3 border border-5 border-light shadow-sm" style="width: 180px; height: 180px;">
+        <!-- ============================================= -->
+        <!-- LEFT COLUMN: Profile & Navigation (Sidebar)   -->
+        <!-- ============================================= -->
+        <div class="col-lg-3 mb-5">
+            
+            <!-- Head of Dept Profile -->
+            <div class="text-center mb-4">
+                <div class="mx-auto mb-3 position-relative" style="width: 160px; height: 160px;">
                     {% if service.head_of_dept.photo %}
-                        <img src="{{ service.head_of_dept.photo.url }}" class="w-100 h-100 object-fit-cover">
+                        <img src="{{ service.head_of_dept.photo.url }}" 
+                             class="w-100 h-100 rounded-circle border border-5 border-light shadow" 
+                             style="object-fit: cover;">
                     {% else %}
-                        <div class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center text-white">
-                            <i class="fas fa-user fa-4x"></i>
+                        <div class="w-100 h-100 rounded-circle bg-light d-flex align-items-center justify-content-center border shadow-sm">
+                            <i class="fas fa-user fa-4x text-muted opacity-50"></i>
                         </div>
                     {% endif %}
                 </div>
-                <h6 class="fw-bold text-dark mb-1">{{ service.head_of_dept.name }}</h6>
-                <small class="text-muted d-block mb-3">{{ service.head_title }}</small>
+                <h5 class="fw-bold text-dark mb-1">{{ service.head_of_dept.name }}</h5>
+                <p class="text-muted fw-bold mb-3 small text-uppercase">{{ service.head_title }}</p>
                 
-                <a href="{% url 'staff_detail' service.head_of_dept.slug %}" class="btn btn-success btn-sm fw-bold px-4 rounded-pill">
+                {% if service.head_of_dept %}
+                <a href="{% url 'staff_detail' service.head_of_dept.slug %}" class="btn btn-success btn-sm fw-bold px-4 rounded-pill shadow-sm">
                     View Profile
                 </a>
+                {% endif %}
             </div>
 
-            <!-- Vertical Navigation Tabs (The Sidebar Menu) -->
-            <div class="nav flex-column nav-pills mt-4 shadow-sm" id="v-pills-tab" role="tablist">
-                <button class="nav-link active text-start py-3 fw-bold border-bottom" id="tab-intro" data-bs-toggle="pill" data-bs-target="#content-intro" type="button">
+            <!-- KABALE STYLE SIDEBAR MENU -->
+            <div class="nav flex-column nav-pills shadow-sm bg-white rounded overflow-hidden" id="v-pills-tab" role="tablist">
+                
+                <!-- 1. Mandate Button -->
+                <button class="nav-link active text-start py-3 px-4 border-bottom fw-bold rounded-0" 
+                        id="tab-intro" data-bs-toggle="pill" data-bs-target="#content-intro" type="button">
                     Mandate & Overview
                 </button>
-                <button class="nav-link text-start py-3 fw-bold border-bottom" id="tab-duties" data-bs-toggle="pill" data-bs-target="#content-duties" type="button">
+                
+                <!-- 2. Duties Button -->
+                <button class="nav-link text-start py-3 px-4 border-bottom fw-bold rounded-0" 
+                        id="tab-duties" data-bs-toggle="pill" data-bs-target="#content-duties" type="button">
                     Duties & Responsibilities
                 </button>
-                <button class="nav-link text-start py-3 fw-bold border-bottom" id="tab-staff" data-bs-toggle="pill" data-bs-target="#content-staff" type="button">
+                
+                <!-- 3. Staff Button -->
+                <button class="nav-link text-start py-3 px-4 border-bottom fw-bold rounded-0" 
+                        id="tab-staff" data-bs-toggle="pill" data-bs-target="#content-staff" type="button">
                     Staff Members
                 </button>
-                <button class="nav-link text-start py-3 fw-bold" id="tab-contact" data-bs-toggle="pill" data-bs-target="#content-contact" type="button">
+                
+                <!-- 4. Contact Button -->
+                <button class="nav-link text-start py-3 px-4 fw-bold rounded-0" 
+                        id="tab-contact" data-bs-toggle="pill" data-bs-target="#content-contact" type="button">
                     Contact Information
                 </button>
             </div>
+
         </div>
 
-        <!-- RIGHT: Content Area -->
-        <div class="col-lg-9">
-            <div class="tab-content ps-lg-4" id="v-pills-tabContent">
+        <!-- ============================================= -->
+        <!-- RIGHT COLUMN: Content Area (Tabs)             -->
+        <!-- ============================================= -->
+        <div class="col-lg-9 ps-lg-5">
+            <div class="tab-content" id="v-pills-tabContent">
                 
-                <!-- 1. Intro -->
+                <!-- 1. CONTENT: Mandate -->
                 <div class="tab-pane fade show active" id="content-intro">
-                    <h3 class="text-primary fw-bold mb-3">{{ service.name }}</h3>
-                    <div class="service-text text-muted" style="line-height: 1.8;">
+                    <h3 class="text-primary fw-bold mb-4 border-bottom pb-2">{{ service.name }}</h3>
+                    <div class="service-text text-dark" style="line-height: 1.8;">
                         {{ service.introduction|safe }}
                     </div>
                 </div>
 
-                <!-- 2. Duties -->
+                <!-- 2. CONTENT: Duties -->
                 <div class="tab-pane fade" id="content-duties">
-                    <h3 class="text-primary fw-bold mb-3">Duties & Responsibilities</h3>
+                    <h3 class="text-primary fw-bold mb-4 border-bottom pb-2">Duties & Responsibilities</h3>
                     <div class="service-text text-muted" style="line-height: 1.8;">
                         {{ service.duties|safe }}
                     </div>
                 </div>
 
-                <!-- 3. Staff (Dynamic List) -->
+                <!-- 3. CONTENT: Staff List -->
                 <div class="tab-pane fade" id="content-staff">
                     <h3 class="text-primary fw-bold mb-4 border-bottom pb-2">Staff Members</h3>
                     
                     {% if service.staff_list.all %}
-                        <div class="list-group list-group-flush">
+                        <div class="list-group list-group-flush border rounded">
                             {% for staff in service.staff_list.all %}
-                            <div class="list-group-item py-3 d-flex align-items-center border-bottom">
-                                <!-- Photo -->
+                            <div class="list-group-item py-3 d-flex align-items-center">
                                 <div class="me-4 flex-shrink-0">
                                     {% if staff.photo %}
-                                        <img src="{{ staff.photo.url }}" class="rounded-circle shadow-sm border" width="80" height="80" style="object-fit: cover;">
+                                        <img src="{{ staff.photo.url }}" class="rounded-circle shadow-sm border" width="70" height="70" style="object-fit: cover;">
                                     {% else %}
-                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-muted border" style="width: 80px; height: 80px;">
-                                            <i class="fas fa-user fa-2x"></i>
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center border" style="width: 70px; height: 70px;">
+                                            <i class="fas fa-user text-muted"></i>
                                         </div>
                                     {% endif %}
                                 </div>
-                                
-                                <!-- Info -->
                                 <div class="flex-grow-1">
-                                    <h5 class="fw-bold text-primary mb-1">{{ staff.name }}</h5>
-                                    <p class="mb-1 text-dark fw-bold small">{{ staff.role }}</p>
-                                    <small class="text-muted d-block">{{ staff.qualifications }}</small>
+                                    <h6 class="fw-bold text-primary mb-1">{{ staff.name }}</h6>
+                                    <small class="text-dark fw-bold text-uppercase">{{ staff.role }}</small>
+                                    <small class="text-muted d-block mt-1">{{ staff.qualifications }}</small>
                                 </div>
-                                
-                                <!-- Button -->
                                 <div class="ms-3 d-none d-md-block">
-                                    <a href="{% url 'staff_detail' staff.slug %}" class="btn btn-outline-primary btn-sm px-3 rounded-pill fw-bold">
-                                        View Profile
-                                    </a>
+                                    <a href="{% url 'staff_detail' staff.slug %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">Profile</a>
                                 </div>
                             </div>
                             {% endfor %}
                         </div>
                     {% else %}
-                        <div class="alert alert-info">
-                            Staff list for this department is currently being updated.
-                        </div>
+                        <div class="alert alert-warning">Staff list is being updated.</div>
                     {% endif %}
                 </div>
-                <!-- 4. Contact -->
+
+                <!-- 4. CONTENT: Contact Info -->
                 <div class="tab-pane fade" id="content-contact">
-                    <h3 class="text-primary fw-bold mb-3">Contact Information</h3>
-                    <div class="alert alert-info border-start border-5 border-info">
-                        {{ service.contact_info|safe }}
+                    
+                    <!-- Heading with Blue Line -->
+                    <h3 class="fw-bold text-primary contact-title-underline" style="color: #0077b5 !important;">
+                        Contact Information
+                    </h3>
+                    
+                    <!-- Content Area -->
+                    <div class="contact-details-box mt-3">
+                        <div class="contact-content">
+                            {{ service.contact_info|safe }}
+                        </div>
                     </div>
+
                 </div>
 
             </div>
@@ -124,30 +150,72 @@
     </div>
 </div>
 
+<!-- CSS for the Sidebar Menu -->
 <style>
-    /* Styling for the Vertical Menu */
+    /* Styling the Sidebar Links */
     .nav-pills .nav-link {
-        color: #333;
+        color: #555;
         background-color: #fff;
-        border-radius: 0;
+        transition: all 0.3s;
     }
+    
+    /* Hover State */
+    .nav-pills .nav-link:hover {
+        background-color: #f0f0f0;
+        color: var(--ants-purple);
+        padding-left: 30px !important; /* Slide effect */
+    }
+
+    /* Active State (The Blue Box) */
     .nav-pills .nav-link.active {
-        background-color: #0077b5; /* The Blue color from screenshot */
+        background-color: #0077b5; /* KAB Blue */
         color: #fff;
+        padding-left: 30px !important;
         border-left: 5px solid var(--ants-gold);
     }
-    .nav-pills .nav-link:hover:not(.active) {
-        background-color: #f8f9fa;
-        color: var(--ants-purple);
+    /* --- Contact Section Styles --- */
+    
+    .contact-details-box {
+        background-color: #f9f9f9; /* The light gray background */
+        border-left: 4px solid #f9f9f9; /* Keeps it clean */
     }
-    /* Intro letter first char */
-    .service-text p:first-of-type::first-letter {
-        font-size: 200%;
-        color: var(--ants-purple);
-        font-weight: bold;
-        float: left;
-        margin-right: 5px;
-        line-height: 1;
+
+    /* Style the text inside the box */
+    .contact-content p {
+        margin-bottom: 12px;
+        font-size: 1.05rem;
+        color: #333;
+    }
+
+    /* AUTOMATICALLY style bold text to look like Labels (Blue) */
+    .contact-content strong, 
+    .contact-content b {
+        color: #0077b5; /* KAB Blue */
+        font-weight: 800;
+        margin-right: 8px;
+    }
+
+    /* 1. The Container */
+    .contact-content {
+        font-size: 1.05rem;
+        color: #333;
+    }
+
+    /* 2. The Magic Rule: Turn BOLD text into BLUE LABELS */
+    .contact-content strong, 
+    .contact-content b {
+        color: #0077b5 !important; /* Kabale Blue */
+        font-weight: 800;
+        margin-right: 5px; /* Small space after the colon */
+    }
+
+    /* 3. The Blue Underline for the Title */
+    .contact-title-underline {
+        border-bottom: 2px solid #0077b5;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        display: block; /* Ensures line goes across */
+        width: 100%;
     }
 </style>
 
