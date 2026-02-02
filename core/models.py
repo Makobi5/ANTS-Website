@@ -176,4 +176,27 @@ class ServiceDepartment(models.Model):
     contact_info = RichTextUploadingField(blank=True, help_text="Address, Email, Phone for this specific department")
 
     def __str__(self):
-        return self.name    
+        return self.name   
+    
+    
+class Sermon(models.Model):
+    title = models.CharField(max_length=200)
+    preacher = models.CharField(max_length=100, help_text="e.g. Rev. Victor Jung")
+    date_preached = models.DateField()
+    youtube_link = models.URLField(help_text="Paste the full YouTube link here (e.g., https://www.youtube.com/watch?v=...)")
+    description = models.TextField(blank=True)
+    
+    class Meta:
+        ordering = ['-date_preached'] # Newest first
+
+    def __str__(self):
+        return self.title
+
+    # Helper function to extract the Video ID from the link
+    def get_video_id(self):
+        # Logic to turn 'https://www.youtube.com/watch?v=VIDEO_ID' into 'VIDEO_ID'
+        if "v=" in self.youtube_link:
+            return self.youtube_link.split("v=")[1].split("&")[0]
+        elif "youtu.be" in self.youtube_link:
+            return self.youtube_link.split("/")[-1]
+        return None     

@@ -5,7 +5,7 @@ from .models import  Partner, Testimonial # <--- Add imports
 from .models import ContactDepartment, ContactPerson
 from .models import StudentLeader
 from .models import AlumniMember
-from .models import ServiceDepartment
+from .models import ServiceDepartment, Sermon
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -85,3 +85,9 @@ class AlumniMemberAdmin(admin.ModelAdmin):
 class ServiceDepartmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'head_title')
     prepopulated_fields = {'slug': ('name',)}    
+    
+    
+@admin.register(Sermon)
+class SermonAdmin(admin.ModelAdmin):
+    list_display = ('title', 'preacher', 'date_preached')
+    list_filter = ('preacher',)    

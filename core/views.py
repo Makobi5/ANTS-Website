@@ -22,7 +22,7 @@ from .models import StudentLeader,PageBanner
 from .models import AlumniMember
 from .forms import AlumniRegistrationForm
 from news.models import NewsImage 
-from .models import ServiceDepartment
+from .models import ServiceDepartment, Sermon
 def home(request):
     # --- 1. HERO SLIDER LOGIC ---
     # Fetch Manual Slides (Created in Admin)
@@ -266,3 +266,19 @@ def life_dining(request):
 def service_detail(request, slug):
     service = get_object_or_404(ServiceDepartment, slug=slug)
     return render(request, 'core/services/service_detail.html', {'service': service})
+
+
+def ants_chapel(request):
+    # Get all sermons
+    sermons = Sermon.objects.all()
+    
+    # Get the very latest one for the big player
+    latest_sermon = sermons.first()
+    
+    # Get the rest for the sidebar list
+    recent_sermons = sermons[1:] if len(sermons) > 1 else []
+
+    return render(request, 'core/chapel.html', {
+        'latest_sermon': latest_sermon,
+        'recent_sermons': recent_sermons
+    })

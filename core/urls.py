@@ -20,4 +20,5 @@ urlpatterns = [
     path('students/life/housing/', views.life_housing, name='life_housing'),
     path('students/life/dining/', views.life_dining, name='life_dining'),
     path('services/<slug:slug>/', views.service_detail, name='service_detail'),
+    path('chapel/', views.ants_chapel, name='ants_chapel'),
 ]

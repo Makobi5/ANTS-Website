@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<div class="bg-primary py-5 text-white text-center position-relative" 
+     style="background: linear-gradient(rgba(40, 10, 80, 0.9), rgba(40, 10, 80, 0.9)), url('{% static 'img/church1.png' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">ANTS Chapel</h1>
+        <p class="mb-0 text-white-50 text-uppercase">Spiritual Life & Worship</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    
+    <!-- 1. ABOUT THE CHAPEL - OPTION 1: FIXED Z-INDEX (Original Style Fixed) -->
+    <div class="row align-items-center mb-5 pb-5 border-bottom">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h5 class="text-warning fw-bold text-uppercase ls-2">The Heart of Campus</h5>
+            <h2 class="fw-bold text-primary mb-3">A Place of Spiritual Formation</h2>
+            <p class="lead text-muted fst-italic">"They devoted themselves to the apostles' teaching and to fellowship..." - Acts 2:42</p>
+            
+            <p class="text-dark">
+                Since its establishment in 2004, the ANTS Chapel has served as the spiritual center of our community. It is more than just a building; it is where faculty and students gather daily to seek God's face, aligning our academic pursuit with spiritual vitality.
+            </p>
+            <p class="text-muted">
+                Our worship style is vibrant and interdenominational, reflecting the diverse cultures of the 10+ nations represented at ANTS. Whether through Morning Glory, Community Chapel, or Evening Devotions, our goal is to mold servant leaders who are spiritually nourished.
+            </p>
+        </div>
+<div class="col-lg-6">
+    <div class="card border-0 shadow-lg">
+        <div class="card-body p-0 position-relative overflow-hidden">
+            <img src="{% static 'img/church1.png' %}" class="img-fluid" alt="Chapel Interior">
+            <!-- Decorative overlay -->
+            <div class="position-absolute bottom-0 start-0 w-100 p-4 text-white" 
+                 style="background: linear-gradient(to top, rgba(40, 10, 80, 0.9), transparent);">
+                <h5 class="fw-bold mb-0">ANTS Chapel</h5>
+                <small>Est. 2004</small>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <!-- 2. SERVICE SCHEDULE (Styled Version) -->
+    <div class="row mb-5 justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                
+                <!-- Stylish Header -->
+                <div class="card-header bg-white border-bottom-0 pt-4 text-center">
+                    <div class="d-inline-block p-3 rounded-circle bg-light mb-2 text-primary">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                    <h3 class="fw-bold text-primary">Weekly Service Schedule</h3>
+                    <p class="text-muted small">Join us for times of refreshing and word.</p>
+                    <div class="mx-auto" style="width: 60px; height: 3px; background: var(--ants-gold);"></div>
+                </div>
+
+                <!-- Stylish Table -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-primary text-white text-uppercase small text-center">
+                                <tr>
+                                    <th class="py-3" style="width: 30%;">Day</th>
+                                    <th class="py-3" style="width: 30%;">Time</th>
+                                    <th class="py-3" style="width: 40%;">Activity</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                
+                                <!-- Morning Devotion -->
+                                <tr class="schedule-row">
+                                    <td class="fw-bold text-primary">MONDAY - FRIDAY</td>
+                                    <td class="text-muted font-monospace">06:00 AM - 07:00 AM</td>
+                                    <td><span class="badge bg-gold text-dark px-3 py-2">MORNING DEVOTION</span></td>
+                                </tr>
+
+                                <!-- Chapel Service -->
+                                <tr class="schedule-row">
+                                    <td class="fw-bold text-primary">MONDAY - FRIDAY</td>
+                                    <td class="text-muted font-monospace">11:00 AM - 11:50 AM</td>
+                                    <td><span class="badge bg-purple px-3 py-2">CHAPEL SERVICE</span></td>
+                                </tr>
+
+                                <!-- Evening Prayer -->
+                                <tr class="schedule-row bg-light">
+                                    <td class="fw-bold text-danger">FRIDAY</td>
+                                    <td class="text-muted font-monospace">08:00 PM - 11:00 PM</td>
+                                    <td><span class="badge bg-danger bg-opacity-75 px-3 py-2">EVENING PRAYER</span></td>
+                                </tr>
+
+                                <!-- Sunday Worship -->
+                                <tr class="schedule-row">
+                                    <td class="fw-bold text-primary">SUNDAY</td>
+                                    <td class="text-muted font-monospace">09:00 AM - 11:00 AM</td>
+                                    <td><span class="badge bg-gold text-dark px-3 py-2">WORSHIP SERVICE</span></td>
+                                </tr>
+
+                                <!-- Bible Study -->
+                                <tr class="schedule-row">
+                                    <td class="fw-bold text-secondary">SUNDAY</td>
+                                    <td class="text-muted font-monospace">11:00 AM - 12:00 PM</td>
+                                    <td><span class="text-dark fw-bold">Group Bible Study</span></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Footer Note -->
+                <div class="card-footer bg-light text-center py-3">
+                    <small class="text-muted fst-italic">
+                        * Attendance is mandatory for residential students.
+                    </small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SERMON ARCHIVE (Dynamic from Admin Panel) -->
+    <!-- Note: You add these videos via Admin -> Core -> Sermons -->
+    <div class="mt-5">
+        <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2">
+            <div>
+                <h6 class="text-warning fw-bold text-uppercase mb-1">Online Ministry</h6>
+                <h2 class="fw-bold text-primary mb-0">Sermon Archive</h2>
+            </div>
+            <a href="https://www.youtube.com/@antsuganda" target="_blank" class="btn btn-danger btn-sm fw-bold">
+                <i class="fab fa-youtube me-2"></i> Subscribe
+            </a>
+        </div>
+        
+        <div class="row">
+            <!-- Main Video Player (Left) -->
+            <div class="col-lg-8 mb-4">
+                {% if latest_sermon %}
+                    <div class="ratio ratio-16x9 shadow-lg rounded overflow-hidden mb-3">
+                        <iframe src="https://www.youtube.com/embed/{{ latest_sermon.get_video_id }}" title="YouTube video player" allowfullscreen></iframe>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold text-dark">{{ latest_sermon.title }}</h3>
+                        <div class="text-muted mb-2">
+                            <span class="me-3"><i class="fas fa-user-tie text-primary me-2"></i> {{ latest_sermon.preacher }}</span>
+                            <span><i class="far fa-calendar-alt text-warning me-2"></i> {{ latest_sermon.date_preached }}</span>
+                        </div>
+                        <p class="text-secondary">{{ latest_sermon.description }}</p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-light text-center py-5 border">
+                        <i class="fab fa-youtube fa-3x text-muted mb-3"></i>
+                        <p>No sermons uploaded yet. Add them in the Admin Panel.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Recent List (Right) -->
+            <div class="col-lg-4">
+                <div class="bg-light p-4 rounded shadow-sm border-top border-5 border-danger h-100">
+                    <h5 class="fw-bold text-dark mb-3">Recent Messages</h5>
+                    
+                    <div class="list-group list-group-flush bg-transparent">
+                        {% for sermon in recent_sermons %}
+                        <a href="#" class="list-group-item list-group-item-action bg-transparent py-3 border-bottom" data-bs-toggle="modal" data-bs-target="#videoModal{{ sermon.id }}">
+                            <div class="d-flex gap-3">
+                                <div class="position-relative flex-shrink-0">
+                                    <img src="https://img.youtube.com/vi/{{ sermon.get_video_id }}/mqdefault.jpg" class="rounded shadow-sm" width="100" height="60" style="object-fit: cover;">
+                                    <div class="position-absolute top-50 start-50 translate-middle text-white small">
+                                        <i class="fas fa-play-circle"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 fw-bold text-dark small line-clamp-2">{{ sermon.title }}</h6>
+                                    <small class="text-muted d-block">{{ sermon.preacher }}</small>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Modal for sidebar video -->
+                        <div class="modal fade" id="videoModal{{ sermon.id }}" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-body p-0">
+                                        <div class="ratio ratio-16x9">
+                                            <iframe src="https://www.youtube.com/embed/{{ sermon.get_video_id }}" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted small fst-italic">No other recent sermons.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Internal CSS for Table styling -->
+<style>
+    .bg-gold { background-color: var(--ants-gold); }
+    .bg-purple { background-color: var(--ants-purple); color: white; }
+    
+    .schedule-row { transition: background 0.3s; }
+    .schedule-row:hover { background-color: #fff9e6 !important; } /* Light yellow on hover */
+    
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
+{% endblock %}
