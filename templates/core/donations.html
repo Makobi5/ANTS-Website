@@ -1,0 +1,725 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Custom Donations Page Styles -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Lora:wght@400;600;700&display=swap');
+
+    :root {
+        --ants-purple: #5b2c6f;
+        --ants-gold: #ffca28;
+        --ants-navy: #002147;
+        --donate-accent: #c8a354;
+        --soft-cream: #fdfbf7;
+        --warm-gray: #4a4a4a;
+    }
+
+    .donations-hero {
+        position: relative;
+        background: linear-gradient(135deg, var(--ants-purple) 0%, var(--ants-navy) 100%);
+        padding: 120px 0 80px;
+        overflow: hidden;
+    }
+
+    .donations-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            radial-gradient(circle at 20% 50%, rgba(255, 202, 40, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(200, 163, 84, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .donations-hero h1 {
+        font-family: 'Crimson Pro', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        margin-bottom: 1.5rem;
+        letter-spacing: 1px;
+    }
+
+    .donations-hero .subtitle {
+        font-family: 'Lora', serif;
+        font-size: 1.3rem;
+        color: rgba(255, 255, 255, 0.9);
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        font-style: italic;
+    }
+
+    .donations-hero .scripture {
+        text-align: center;
+        color: var(--ants-gold);
+        font-family: 'Lora', serif;
+        font-size: 1.1rem;
+        margin-top: 2rem;
+        font-style: italic;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Impact Stats Section */
+    .impact-stats {
+        background: var(--soft-cream);
+        padding: 80px 0;
+        position: relative;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 30px;
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-number {
+        font-family: 'Crimson Pro', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--ants-purple);
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-family: 'Lora', serif;
+        font-size: 1.1rem;
+        color: var(--warm-gray);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    /* Giving Opportunities */
+    .giving-opportunities {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+        font-family: 'Crimson Pro', serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 15px;
+    }
+
+    .section-header p {
+        font-family: 'Lora', serif;
+        font-size: 1.2rem;
+        color: var(--warm-gray);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .opportunity-card {
+        background: white;
+        border: 2px solid #e8e8e8;
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .opportunity-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--ants-gold);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .opportunity-card:hover {
+        border-color: var(--ants-purple);
+        box-shadow: 0 10px 30px rgba(91, 44, 111, 0.1);
+    }
+
+    .opportunity-card:hover::before {
+        transform: scaleY(1);
+    }
+
+    .opportunity-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--ants-purple), var(--ants-navy));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        color: white;
+        font-size: 2rem;
+    }
+
+    .opportunity-title {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 15px;
+    }
+
+    .opportunity-description {
+        font-family: 'Lora', serif;
+        font-size: 1.05rem;
+        color: var(--warm-gray);
+        line-height: 1.7;
+        margin-bottom: 20px;
+    }
+
+    .opportunity-amount {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.1rem;
+        color: var(--ants-purple);
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    /* Donate Button */
+    .btn-donate {
+        background: var(--ants-gold);
+        color: var(--ants-navy);
+        border: none;
+        padding: 14px 35px;
+        font-family: 'Lora', serif;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-donate:hover {
+        background: var(--ants-navy);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 33, 71, 0.3);
+    }
+
+    /* Payment Methods Section */
+    .payment-methods {
+        background: var(--soft-cream);
+        padding: 80px 0;
+    }
+
+    .payment-card {
+        background: white;
+        border-radius: 12px;
+        padding: 35px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        border-top: 4px solid var(--ants-purple);
+    }
+
+    .payment-method-title {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .payment-method-title i {
+        color: var(--ants-gold);
+        margin-right: 15px;
+        font-size: 1.8rem;
+    }
+
+    .payment-details {
+        font-family: 'Lora', serif;
+        color: var(--warm-gray);
+        line-height: 1.8;
+    }
+
+    .payment-details strong {
+        color: var(--ants-navy);
+        font-weight: 600;
+    }
+
+    .copy-btn {
+        background: var(--ants-purple);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        margin-left: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .copy-btn:hover {
+        background: var(--ants-navy);
+        transform: scale(1.05);
+    }
+
+    /* Testimonial Section */
+    .donor-testimonial {
+        background: linear-gradient(135deg, var(--ants-purple) 0%, var(--ants-navy) 100%);
+        padding: 80px 0;
+        color: white;
+        text-align: center;
+    }
+
+    .testimonial-quote {
+        font-family: 'Lora', serif;
+        font-size: 1.6rem;
+        font-style: italic;
+        max-width: 900px;
+        margin: 0 auto 30px;
+        line-height: 1.8;
+    }
+
+    .testimonial-author {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.2rem;
+        color: var(--ants-gold);
+        font-weight: 600;
+    }
+
+    /* CTA Section */
+    .final-cta {
+        background: white;
+        padding: 100px 0;
+        text-align: center;
+    }
+
+    .final-cta h2 {
+        font-family: 'Crimson Pro', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 20px;
+    }
+
+    .final-cta p {
+        font-family: 'Lora', serif;
+        font-size: 1.3rem;
+        color: var(--warm-gray);
+        max-width: 700px;
+        margin: 0 auto 40px;
+    }
+
+    .btn-donate-large {
+        background: var(--ants-purple);
+        color: white;
+        border: none;
+        padding: 20px 60px;
+        font-family: 'Lora', serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.4s ease;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .btn-donate-large:hover {
+        background: var(--ants-gold);
+        color: var(--ants-navy);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(91, 44, 111, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .donations-hero h1 {
+            font-size: 2.5rem;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+        }
+        .section-header h2 {
+            font-size: 2rem;
+        }
+        .opportunity-card {
+            padding: 30px 20px;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-delay-1 { animation-delay: 0.2s; opacity: 0; }
+    .animate-delay-2 { animation-delay: 0.4s; opacity: 0; }
+    .animate-delay-3 { animation-delay: 0.6s; opacity: 0; }
+</style>
+
+<!-- Hero Section -->
+<section class="donations-hero">
+    <div class="container">
+        <h1 class="animate-fade-in">Partner with Us in God's Work</h1>
+        <p class="subtitle animate-fade-in animate-delay-1">
+            Your generosity empowers the next generation of Christian leaders to transform nations for Christ.
+        </p>
+        <p class="scripture animate-fade-in animate-delay-2">
+            "Give, and it will be given to you... For with the measure you use, it will be measured to you." - Luke 6:38
+        </p>
+    </div>
+</section>
+
+<!-- Impact Stats -->
+<section class="impact-stats">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-fade-in">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Students Served</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-fade-in animate-delay-1">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">Years of Impact</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-fade-in animate-delay-2">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Nations Reached</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card animate-fade-in animate-delay-3">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Churches Planted</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Giving Opportunities -->
+<section class="giving-opportunities">
+    <div class="container">
+        <div class="section-header">
+            <h2>Where Your Gifts Make a Difference</h2>
+            <p>Choose the area where you feel called to invest in kingdom work</p>
+        </div>
+
+        <div class="row">
+            <!-- Student Scholarships -->
+            <div class="col-lg-6">
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="opportunity-title">Student Scholarships</h3>
+                    <p class="opportunity-description">
+                        Enable gifted students from humble backgrounds to pursue their calling in ministry. 
+                        Many of our most promising leaders cannot afford tuition but have hearts burning for God's work.
+                    </p>
+                    <p class="opportunity-amount">
+                        <i class="fas fa-hand-holding-usd me-2"></i>
+                        Full Scholarship: UGX 5,000,000 | Partial: Any Amount
+                    </p>
+                    <button class="btn btn-donate" onclick="scrollToPayment()">Give to Scholarships</button>
+                </div>
+            </div>
+
+            <!-- Campus Infrastructure -->
+            <div class="col-lg-6">
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="opportunity-title">Campus Development</h3>
+                    <p class="opportunity-description">
+                        Help us build classrooms, dormitories, and worship spaces that provide a conducive 
+                        environment for learning and spiritual formation.
+                    </p>
+                    <p class="opportunity-amount">
+                        <i class="fas fa-hand-holding-usd me-2"></i>
+                        Building Projects: Starting from UGX 10,000,000
+                    </p>
+                    <button class="btn btn-donate" onclick="scrollToPayment()">Support Infrastructure</button>
+                </div>
+            </div>
+
+            <!-- Library & Resources -->
+            <div class="col-lg-6">
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="opportunity-title">Library & Learning Resources</h3>
+                    <p class="opportunity-description">
+                        Equip our students with theological books, digital resources, and research materials 
+                        essential for deep biblical study and ministry preparation.
+                    </p>
+                    <p class="opportunity-amount">
+                        <i class="fas fa-hand-holding-usd me-2"></i>
+                        Book Sponsorship: From UGX 500,000
+                    </p>
+                    <button class="btn btn-donate" onclick="scrollToPayment()">Fund Resources</button>
+                </div>
+            </div>
+
+            <!-- General Fund -->
+            <div class="col-lg-6">
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="opportunity-title">General Operations Fund</h3>
+                    <p class="opportunity-description">
+                        Support day-to-day operations including faculty salaries, utilities, student welfare, 
+                        and ministry outreach programs that transform lives daily.
+                    </p>
+                    <p class="opportunity-amount">
+                        <i class="fas fa-hand-holding-usd me-2"></i>
+                        Unrestricted Giving: Any Amount Welcome
+                    </p>
+                    <button class="btn btn-donate" onclick="scrollToPayment()">Give to General Fund</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Methods -->
+<section class="payment-methods" id="payment-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>How to Give</h2>
+            <p>Multiple convenient ways to support our mission</p>
+        </div>
+
+        <div class="row">
+            <!-- Bank Transfer -->
+            <div class="col-lg-4">
+                <div class="payment-card">
+                    <h4 class="payment-method-title">
+                        <i class="fas fa-university"></i>
+                        Bank Transfer
+                    </h4>
+                    <div class="payment-details">
+                        <p><strong>Bank:</strong> Stanbic Bank Uganda</p>
+                        <p><strong>Account Name:</strong> All Nations Theological College & Seminary</p>
+                        <p>
+                            <strong>Account Number:</strong> 
+                            <span id="bankAccount">9030008451234</span>
+                            <button class="copy-btn" onclick="copyToClipboard('bankAccount')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </p>
+                        <p><strong>Swift Code:</strong> SBICUGKXXXX</p>
+                        <p class="mt-3 small text-muted">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Please include your name and purpose in reference
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Money -->
+            <div class="col-lg-4">
+                <div class="payment-card">
+                    <h4 class="payment-method-title">
+                        <i class="fas fa-mobile-alt"></i>
+                        Mobile Money
+                    </h4>
+                    <div class="payment-details">
+                        <p><strong>MTN Mobile Money:</strong></p>
+                        <p>
+                            <strong>Number:</strong> 
+                            <span id="mtnNumber">0707396619</span>
+                            <button class="copy-btn" onclick="copyToClipboard('mtnNumber')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </p>
+                        <p><strong>Name:</strong> ANTS Collections</p>
+                        
+                        <hr class="my-3" style="border-color: rgba(0,0,0,0.1);">
+                        
+                        <p><strong>Airtel Money:</strong></p>
+                        <p>
+                            <strong>Number:</strong> 
+                            <span id="airtelNumber">0752396619</span>
+                            <button class="copy-btn" onclick="copyToClipboard('airtelNumber')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact & Other Methods -->
+            <div class="col-lg-4">
+                <div class="payment-card">
+                    <h4 class="payment-method-title">
+                        <i class="fas fa-comments"></i>
+                        Other Ways to Give
+                    </h4>
+                    <div class="payment-details">
+                        <p><strong>Pledge or Monthly Giving:</strong></p>
+                        <p>Contact us to set up recurring donations</p>
+                        
+                        <p class="mt-3"><strong>In-Kind Donations:</strong></p>
+                        <p>Equipment, books, or materials</p>
+                        
+                        <p class="mt-3"><strong>Legacy Giving:</strong></p>
+                        <p>Include ANTS in your will or estate</p>
+                        
+                        <div class="mt-4">
+                            <a href="{% url 'contact' %}" class="btn btn-donate w-100">
+                                Contact Development Office
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tax Deductibility Notice -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="alert" style="background: #fff3cd; border-left: 4px solid var(--ants-gold); padding: 20px;">
+                    <h5 style="color: var(--ants-navy); margin-bottom: 10px;">
+                        <i class="fas fa-file-invoice me-2"></i>Tax Receipts
+                    </h5>
+                    <p class="mb-0" style="color: var(--warm-gray);">
+                        All donations are acknowledged with official receipts. ANTS is a registered 
+                        charitable organization. Contact <a href="mailto:finance@ants.ac.ug" style="color: var(--ants-purple);">finance@ants.ac.ug</a> 
+                        for receipt requests or inquiries.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Donor Testimonial -->
+<section class="donor-testimonial">
+    <div class="container">
+        <p class="testimonial-quote">
+            "Supporting ANTS has been one of the most rewarding investments of my life. Seeing young men and women 
+            equipped to preach the gospel with excellence and reach nations fills my heart with joy. I'm proud to be 
+            part of this kingdom work."
+        </p>
+        <p class="testimonial-author">— Rev. Dr. Sarah Nakato, Ministry Partner since 2015</p>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="final-cta">
+    <div class="container">
+        <h2>Your Gift Changes Lives Forever</h2>
+        <p>
+            Join us in raising up the next generation of Christian leaders who will impact Uganda, 
+            Africa, and the nations with the transforming power of the Gospel.
+        </p>
+        <a href="#payment-section" class="btn-donate-large">
+            Make Your Gift Today
+        </a>
+        
+        <div class="mt-5 pt-4">
+            <p style="color: var(--warm-gray); font-family: 'Lora', serif;">
+                Questions about giving? Contact us at 
+                <a href="mailto:info@ants.ac.ug" style="color: var(--ants-purple); font-weight: 600;">info@ants.ac.ug</a> 
+                or call 
+                <a href="tel:+256707396619" style="color: var(--ants-purple); font-weight: 600;">+256 707 396 619</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Smooth scroll to payment section
+    function scrollToPayment() {
+        document.getElementById('payment-section').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+
+    // Copy to clipboard function
+    function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        const text = element.textContent;
+        
+        navigator.clipboard.writeText(text).then(function() {
+            // Show success feedback
+            const btn = element.nextElementSibling;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(function() {
+                btn.innerHTML = originalHTML;
+                btn.style.background = '';
+            }, 2000);
+        }, function(err) {
+            alert('Could not copy: ' + err);
+        });
+    }
+
+    // Intersection Observer for animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and sections
+        document.querySelectorAll('.opportunity-card, .payment-card, .stat-card').forEach(el => {
+            observer.observe(el);
+        });
+    });
+</script>
+
+{% endblock %}

@@ -282,3 +282,15 @@ def ants_chapel(request):
         'latest_sermon': latest_sermon,
         'recent_sermons': recent_sermons
     })
+
+def donations(request):
+    """
+    Donations page view
+    """
+    # You can add context data here if needed
+    # For example, fetching donation statistics from database
+    context = {
+        'page_title': 'Support ANTS | Donations',
+        # Add any dynamic data you want to pass to the template
+    }
+    return render(request, 'core/donations.html', context)

@@ -140,7 +140,14 @@
             <div class="col-lg-8 mb-4">
                 {% if latest_sermon %}
                     <div class="ratio ratio-16x9 shadow-lg rounded overflow-hidden mb-3">
-                        <iframe src="https://www.youtube.com/embed/{{ latest_sermon.get_video_id }}" title="YouTube video player" allowfullscreen></iframe>
+                        <iframe 
+                                    src="https://www.youtube.com/embed/{{ latest_sermon.get_video_id }}" 
+                                    title="{{ latest_sermon.title }}" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
                     </div>
                     <div>
                         <h3 class="fw-bold text-dark">{{ latest_sermon.title }}</h3>

@@ -6,6 +6,8 @@ from .models import ContactDepartment, ContactPerson
 from .models import StudentLeader
 from .models import AlumniMember
 from .models import ServiceDepartment, Sermon
+from django.contrib import admin
+from .models import DonationCategory, Donation, DonationTestimonial, DonationImpactStory
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -91,3 +93,89 @@ class ServiceDepartmentAdmin(admin.ModelAdmin):
 class SermonAdmin(admin.ModelAdmin):
     list_display = ('title', 'preacher', 'date_preached')
     list_filter = ('preacher',)    
+    
+@admin.register(DonationCategory)
+class DonationCategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category_type', 'target_amount', 'is_active', 'order']
+    list_filter = ['category_type', 'is_active']
+    search_fields = ['name', 'description']
+    prepopulated_fields = {'slug': ('name',)}
+    list_editable = ['order', 'is_active']
+
+
+@admin.register(Donation)
+class DonationAdmin(admin.ModelAdmin):
+    list_display = ['donor_name', 'amount', 'currency', 'category', 'payment_method', 
+                   'status', 'date_received', 'receipt_issued']
+    list_filter = ['status', 'payment_method', 'category', 'receipt_issued', 
+                  'date_received', 'is_anonymous']
+    search_fields = ['donor_name', 'donor_email', 'transaction_reference', 
+                    'receipt_number', 'purpose']
+    date_hierarchy = 'date_received'
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Donor Information', {
+            'fields': ('donor_name', 'donor_email', 'donor_phone', 'is_anonymous')
+        }),
+        ('Donation Details', {
+            'fields': ('category', 'amount', 'currency', 'payment_method', 
+                      'transaction_reference', 'purpose', 'donor_message')
+        }),
+        ('Status & Processing', {
+            'fields': ('status', 'date_received', 'date_confirmed', 
+                      'receipt_issued', 'receipt_number', 'notes')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    actions = ['mark_as_confirmed', 'mark_receipt_issued']
+    
+    def mark_as_confirmed(self, request, queryset):
+        from django.utils import timezone
+        updated = queryset.update(status='CONFIRMED', date_confirmed=timezone.now().date())
+        self.message_user(request, f'{updated} donation(s) marked as confirmed.')
+    mark_as_confirmed.short_description = "Mark selected donations as confirmed"
+    
+    def mark_receipt_issued(self, request, queryset):
+        updated = queryset.update(receipt_issued=True)
+        self.message_user(request, f'Receipt issued for {updated} donation(s).')
+    mark_receipt_issued.short_description = "Mark receipts as issued"
+
+
+@admin.register(DonationTestimonial)
+class DonationTestimonialAdmin(admin.ModelAdmin):
+    list_display = ['name', 'title', 'is_featured', 'is_active', 'order']
+    list_filter = ['is_featured', 'is_active']
+    search_fields = ['name', 'quote', 'title']
+    list_editable = ['is_featured', 'order']
+
+
+@admin.register(DonationImpactStory)
+class DonationImpactStoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'category', 'beneficiary_name', 'is_published', 'publish_date']
+    list_filter = ['is_published', 'category', 'publish_date']
+    search_fields = ['title', 'summary', 'beneficiary_name']
+    prepopulated_fields = {'slug': ('title',)}
+    date_hierarchy = 'publish_date'
+    
+    fieldsets = (
+        ('Story Details', {
+            'fields': ('title', 'slug', 'category', 'featured_image', 'summary', 'full_story')
+        }),
+        ('Beneficiary (Optional)', {
+            'fields': ('beneficiary_name', 'beneficiary_photo'),
+            'classes': ('collapse',)
+        }),
+        ('Publishing', {
+            'fields': ('is_published', 'publish_date')
+        }),
+    )
+
+
+
+
+    
