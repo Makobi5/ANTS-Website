@@ -7,7 +7,7 @@ from .models import StudentLeader
 from .models import AlumniMember
 from .models import ServiceDepartment, Sermon
 from django.contrib import admin
-from .models import DonationCategory, Donation, DonationTestimonial, DonationImpactStory
+from .models import DonationCategory, Donation, DonationTestimonial, DonationImpactStory, OutreachProgram, OutreachImage, Sermon
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -89,10 +89,11 @@ class ServiceDepartmentAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}    
     
     
+# 3. Update Sermon Admin
 @admin.register(Sermon)
 class SermonAdmin(admin.ModelAdmin):
-    list_display = ('title', 'preacher', 'date_preached')
-    list_filter = ('preacher',)    
+    list_display = ('title', 'preacher', 'date_preached', 'show_on_slider')
+    list_editable = ('show_on_slider',)  
     
 @admin.register(DonationCategory)
 class DonationCategoryAdmin(admin.ModelAdmin):
@@ -174,6 +175,18 @@ class DonationImpactStoryAdmin(admin.ModelAdmin):
             'fields': ('is_published', 'publish_date')
         }),
     )
+# 1. Create Inline for Outreach Images
+class OutreachImageInline(admin.TabularInline):
+    model = OutreachImage
+    extra = 5 # 5 slots for photos at once
+        
+# 2. Update Outreach Admin
+@admin.register(OutreachProgram)
+class OutreachProgramAdmin(admin.ModelAdmin):
+    list_display = ('title', 'location', 'show_on_slider')
+    list_editable = ('show_on_slider',) # Toggle from list
+    inlines = [OutreachImageInline] # Add gallery here 
+
 
 
 

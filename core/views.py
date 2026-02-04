@@ -22,20 +22,22 @@ from .models import StudentLeader,PageBanner
 from .models import AlumniMember
 from .forms import AlumniRegistrationForm
 from news.models import NewsImage 
-from .models import ServiceDepartment, Sermon
+from .models import ServiceDepartment, Sermon, OutreachProgram,OutreachProgram, Sermon
 def home(request):
-    # --- 1. HERO SLIDER LOGIC ---
-    # Fetch Manual Slides (Created in Admin)
+    # 1. Manual Slides
     manual_slides = SliderImage.objects.all().order_by('-created_at')
     
-    # Fetch News for Slider:
-    # 1. Must be marked "Show on Slider"
-    # 2. Must have an image
-    # 3. Limit to the latest 6
-    news_slides = NewsArticle.objects.filter(show_on_slider=True).exclude(image='').order_by('-date_posted')[:6]
+    # 2. News Slides (Marked for Slider)
+    news_slides = NewsArticle.objects.filter(show_on_slider=True).exclude(image='').order_by('-date_posted')
     
-    # Combine them into one list
-    combined_slides = list(chain(manual_slides, news_slides))
+    # 3. Outreach Slides (Marked for Slider)
+    outreach_slides = OutreachProgram.objects.filter(show_on_slider=True).exclude(image='')
+    
+    # 4. Sermon Slides (Marked for Slider)
+    sermon_slides = Sermon.objects.filter(show_on_slider=True).exclude(image='')
+    
+    # 5. Combine ALL (Chain them together)
+    combined_slides = list(chain(manual_slides, news_slides, outreach_slides, sermon_slides))
     
     # --- 2. OFFICE OF THE PRINCIPAL ---
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()
@@ -294,3 +296,7 @@ def donations(request):
         # Add any dynamic data you want to pass to the template
     }
     return render(request, 'core/donations.html', context)
+
+def community_outreach(request):
+    programs = OutreachProgram.objects.all()
+    return render(request, 'core/community_outreach.html', {'programs': programs})

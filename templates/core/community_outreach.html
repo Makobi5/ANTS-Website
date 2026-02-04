@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Header Banner -->
+<div class="bg-primary py-5 text-white text-center position-relative" 
+     style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/church1.png' %}') center/cover;">
+    <div class="container">
+        <h1 class="fw-bold display-5">Community Outreach</h1>
+        <p class="mb-0 text-white-50 text-uppercase">SERVICE / MISSIONS / EVANGELISM</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    
+    <!-- Intro Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8 text-center">
+            <h5 class="text-warning fw-bold text-uppercase ls-2">The Great Commission</h5>
+            <h2 class="fw-bold text-primary mb-3">Faith in Action</h2>
+            <div class="d-flex justify-content-center mb-4">
+                <div style="height: 4px; width: 80px; background-color: var(--ants-gold);"></div>
+            </div>
+            <p class="lead text-muted fst-italic">
+                "Go therefore and make disciples of all nations..." - Matthew 28:19
+            </p>
+            <p class="text-dark">
+                At ANTS, theological education is not just for the classroom. We are committed to transforming our local community through practical ministry, social support, and the spreading of the Gospel.
+            </p>
+        </div>
+    </div>
+
+    <!-- Ministry Programs Grid -->
+    {% if programs %}
+    <div class="row g-4">
+        {% for prog in programs %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-lift">
+                <!-- Image -->
+                <div class="position-relative overflow-hidden" style="height: 250px;">
+                    {% if prog.image %}
+                        <img src="{{ prog.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ prog.title }}">
+                    {% else %}
+                        <div class="bg-secondary w-100 h-100 d-flex align-items-center justify-content-center text-white">
+                            <i class="fas fa-hands-helping fa-3x"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Location Badge -->
+                    <div class="position-absolute bottom-0 start-0 bg-gold text-dark px-3 py-1 fw-bold small m-2 rounded">
+                        <i class="fas fa-map-marker-alt me-1"></i> {{ prog.location }}
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="card-body p-4">
+                    <h4 class="fw-bold text-primary mb-3">{{ prog.title }}</h4>
+                    <div class="card-text text-muted mb-4">
+                        {{ prog.description|safe|truncatewords:20 }}
+                    </div>
+                    
+                    <!-- Read More Modal Trigger -->
+                    <button type="button" class="btn btn-outline-primary rounded-pill btn-sm px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#modal{{ prog.id }}">
+                        Read Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Full Details -->
+        <div class="modal fade" id="modal{{ prog.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title fw-bold">{{ prog.title }}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <!-- Main Image -->
+                        {% if prog.image %}
+                            <img src="{{ prog.image.url }}" class="img-fluid rounded mb-4 w-100 shadow-sm" style="max-height: 400px; object-fit: cover;">
+                        {% endif %}
+                        
+                        <h5 class="text-warning fw-bold text-uppercase mb-3">Ministry Overview</h5>
+                        <div class="text-muted mb-4" style="line-height: 1.8;">
+                            {{ prog.description|safe }}
+                        </div>
+
+                        <!-- NEW: OUTREACH GALLERY -->
+                        {% if prog.gallery_images.all %}
+                        <h6 class="fw-bold text-primary border-bottom pb-2 mb-3">Activity Gallery</h6>
+                        <div class="row g-2">
+                            {% for photo in prog.gallery_images.all %}
+                            <div class="col-4">
+                                <a href="{{ photo.image.url }}" target="_blank">
+                                    <img src="{{ photo.image.url }}" class="img-fluid rounded border shadow-sm" style="height: 100px; width: 100%; object-fit: cover;">
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <div class="alert alert-info text-center p-5">
+            <h4><i class="fas fa-hammer me-2"></i> Outreach Content Updating...</h4>
+            <p>We are currently compiling stories from our mission fields. Check back soon!</p>
+        </div>
+    {% endif %}
+
+    <!-- Partner CTA -->
+    <div class="mt-5 py-5 text-center bg-light rounded border-start border-5 border-primary shadow-sm">
+        <h3 class="fw-bold text-dark">Partner with our Missions</h3>
+        <p class="text-muted mb-4 max-w-600 mx-auto">
+            Your support helps us reach prisons, hospitals, and villages with the hope of Christ.
+        </p>
+        <a href="{% url 'contact' %}" class="btn btn-warning fw-bold px-5 py-3 shadow">
+            SUPPORT A MISSION <i class="fas fa-heart ms-2"></i>
+        </a>
+    </div>
+
+</div>
+
+<style>
+    .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+    .bg-gold { background-color: var(--ants-gold); }
+</style>
+
+{% endblock %}

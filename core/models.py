@@ -188,6 +188,8 @@ class Sermon(models.Model):
     date_preached = models.DateField()
     youtube_link = models.URLField(help_text="Paste the full YouTube link here")
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to='sermon_thumbnails/', blank=True, null=True, help_text="Upload a cover photo to display on the Homepage Slider")
+    show_on_slider = models.BooleanField(default=False, verbose_name="Show on Homepage Slider")
     
     class Meta:
         ordering = ['-date_preached']
@@ -376,3 +378,23 @@ class DonationImpactStory(models.Model):
     
     def __str__(self):
         return self.title    
+# 1. Update OutreachProgram
+class OutreachProgram(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='outreach/', verbose_name="Cover Image")
+    description = RichTextUploadingField()
+    location = models.CharField(max_length=200)
+    
+    # NEW: Checkbox for Homepage
+    show_on_slider = models.BooleanField(default=False, verbose_name="Show on Homepage Slider")
+    
+    def __str__(self):
+        return self.title
+
+# 2. NEW: Outreach Gallery Model (Multiple Photos)
+class OutreachImage(models.Model):
+    program = models.ForeignKey(OutreachProgram, on_delete=models.CASCADE, related_name='gallery_images')
+    image = models.ImageField(upload_to='outreach_gallery/')
+    
+    def __str__(self):
+        return f"Image for {self.program.title}"     
