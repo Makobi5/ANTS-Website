@@ -2,128 +2,509 @@
 {% load static %}
 
 {% block content %}
-<!-- Header -->
-<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/banner.jpg' %}') center/cover;">
-    <div class="container">
-        <h1 class="fw-bold display-5">Students Guild</h1>
-        <p class="mb-0 text-white-50 text-uppercase">STUDENTS / LEADERSHIP</p>
+
+<style>
+    :root {
+        --ants-purple: #5b2c6f;
+        --ants-gold: #ffca28;
+        --ants-navy: #002147;
+    }
+
+    /* Hero Banner */
+    .guild-hero {
+        background: linear-gradient(rgba(91, 44, 111, 0.9), rgba(91, 44, 111, 0.9)), 
+                    url('{% static "img/banner.jpg" %}') center/cover;
+        padding: 100px 0 80px;
+        color: white;
+        position: relative;
+    }
+
+    .guild-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .guild-hero .subtitle {
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        opacity: 0.9;
+    }
+
+    /* Section Headers */
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 30px;
+        padding-left: 20px;
+        border-left: 5px solid var(--ants-gold);
+    }
+
+    /* Group Photo Section */
+    .guild-group-photo {
+        position: relative;
+        margin-bottom: 60px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        border: 6px solid white;
+    }
+
+    .guild-group-photo img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .photo-caption {
+        background: linear-gradient(135deg, var(--ants-purple), var(--ants-navy));
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .photo-placeholder {
+        height: 400px;
+        background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .placeholder-overlay {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* Leader Cards - Professional Layout */
+    .leader-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        border-top: 4px solid var(--ants-gold);
+    }
+
+    .leader-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(91, 44, 111, 0.2);
+    }
+
+    /* Leader Image Frame - Arch Style */
+    .leader-img-container {
+        position: relative;
+        height: 350px;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
+
+    .leader-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .leader-card:hover .leader-img-container img {
+        transform: scale(1.08);
+    }
+
+    /* Image Overlay Gradient */
+    .leader-img-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+        pointer-events: none;
+    }
+
+    /* Role Badge on Image */
+    .role-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--ants-gold);
+        color: var(--ants-navy);
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Leader Info Section */
+    .leader-info {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .leader-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 8px;
+    }
+
+    .leader-role {
+        font-size: 0.95rem;
+        color: var(--ants-purple);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
+
+    .leader-email {
+        display: inline-block;
+        color: #666;
+        font-size: 0.9rem;
+        text-decoration: none;
+        margin-bottom: 15px;
+    }
+
+    .leader-email:hover {
+        color: var(--ants-purple);
+    }
+
+    .contact-btn {
+        background: var(--ants-purple);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .contact-btn:hover {
+        background: var(--ants-gold);
+        color: var(--ants-navy);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 202, 40, 0.3);
+    }
+
+    /* President/Special Position Highlight */
+    .leader-card.president {
+        border-top: 4px solid var(--ants-purple);
+        border-left: 4px solid var(--ants-purple);
+        border-right: 4px solid var(--ants-purple);
+    }
+
+    .leader-card.president .role-badge {
+        background: var(--ants-purple);
+        color: white;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 30px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--ants-gold);
+        margin-bottom: 20px;
+    }
+
+    /* Past Leaders Archive */
+    .archive-section {
+        margin-top: 80px;
+        padding-top: 60px;
+        border-top: 3px solid #e9ecef;
+    }
+
+    .archive-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .accordion-item {
+        border: none;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .accordion-button {
+        background: white;
+        color: var(--ants-navy);
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 20px 25px;
+        border: none;
+        border-left: 4px solid var(--ants-gold);
+    }
+
+    .accordion-button:not(.collapsed) {
+        background: var(--ants-purple);
+        color: white;
+        border-left-color: var(--ants-gold);
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: var(--ants-gold);
+    }
+
+    .accordion-button::after {
+        filter: brightness(0);
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        filter: brightness(0) invert(1);
+    }
+
+    .accordion-body {
+        background: #f8f9fa;
+        padding: 30px;
+    }
+
+    /* Past Leader Item */
+    .past-leader-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .past-leader-item:hover {
+        border-color: var(--ants-gold);
+        box-shadow: 0 5px 15px rgba(91, 44, 111, 0.1);
+    }
+
+    .past-leader-photo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--ants-gold);
+        flex-shrink: 0;
+    }
+
+    .past-leader-info h6 {
+        font-weight: 700;
+        color: var(--ants-navy);
+        margin-bottom: 3px;
+        font-size: 0.95rem;
+    }
+
+    .past-leader-info small {
+        color: #666;
+        font-size: 0.85rem;
+    }
+
+    /* Intro Section */
+    .intro-section {
+        max-width: 800px;
+        margin: 0 auto 60px;
+        text-align: center;
+    }
+
+    .intro-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--ants-purple);
+        margin-bottom: 20px;
+    }
+
+    .intro-text {
+        font-size: 1.1rem;
+        color: #666;
+        line-height: 1.8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .guild-hero h1 {
+            font-size: 2.5rem;
+        }
+        .guild-group-photo img,
+        .photo-placeholder {
+            height: 300px;
+        }
+        .leader-img-container {
+            height: 280px;
+        }
+        .intro-title {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Hero Banner -->
+<div class="guild-hero">
+    <div class="container text-center">
+        <h1>Students Guild</h1>
+        <p class="subtitle">Student Leadership & Governance</p>
     </div>
 </div>
 
+<!-- Main Content -->
 <div class="container py-5">
     
-<!-- Intro -->
-    <div class="text-center mb-5 mw-800 mx-auto">
-        <h3 class="fw-bold text-primary">The Student Leadership Council</h3>
-        <p class="text-muted">
+    <!-- Intro Section -->
+    <div class="intro-section">
+        <h2 class="intro-title">The Student Leadership Council</h2>
+        <p class="intro-text">
             The Students Guild is the bridge between the student body and the administration. 
             We are committed to servant leadership, spiritual growth, and academic excellence.
         </p>
     </div>
 
-    <!-- NEW: GUILD GROUP PHOTO SECTION -->
-    <div class="mb-5">
-        <div class="position-relative rounded overflow-hidden shadow-sm border border-5 border-white">
-            {% if guild_banner %}
-                <!-- Dynamic Image from Admin -->
-                <img src="{{ guild_banner.image.url }}" class="w-100 object-fit-cover" style="height: 500px;" alt="Students Guild Group Photo">
-                
-                {% if guild_banner.caption %}
-                <div class="bg-primary text-white text-center py-2">
-                    <small class="fw-bold text-uppercase">{{ guild_banner.caption }}</small>
-                </div>
-                {% endif %}
-            {% else %}
-                <!-- Fallback Image if nothing uploaded yet -->
-                <img src="{% static 'img/church1.png' %}" class="w-100 object-fit-cover" style="height: 400px;" alt="ANTS Guild">
-                <div class="position-absolute top-50 start-50 translate-middle text-center bg-white p-4 rounded shadow opacity-90">
-                    <h4 class="text-primary fw-bold mb-0">Guild Group Photo</h4>
-                    <small class="text-muted">Coming Soon</small>
-                </div>
+    <!-- Guild Group Photo -->
+    <div class="guild-group-photo">
+        {% if guild_banner %}
+            <img src="{{ guild_banner.image.url }}" alt="Students Guild Group Photo">
+            {% if guild_banner.caption %}
+            <div class="photo-caption">{{ guild_banner.caption }}</div>
             {% endif %}
-        </div>
+        {% else %}
+            <div class="photo-placeholder">
+                <div class="placeholder-overlay">
+                    <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                    <h4 style="color: var(--ants-purple); font-weight: 700;">Guild Group Photo</h4>
+                    <p class="text-muted mb-0">Coming Soon</p>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
-    <!-- CURRENT CABINET (2026) -->
+    <!-- Current Cabinet -->
     <div class="mb-5">
-        <h4 class="fw-bold border-start border-5 border-warning ps-3 mb-4">Current Cabinet (2026/2027)</h4>
+        <h3 class="section-title">Current Cabinet 2026/2027</h3>
         
         {% if current_cabinet %}
-                <div class="row g-5 justify-content-center">
-                    {% for leader in current_cabinet %}
-                    <div class="col-md-6 col-lg-4">
+        <div class="row g-4">
+            {% for leader in current_cabinet %}
+            <div class="col-md-6 col-lg-4">
+                <div class="leader-card {% if 'President' in leader.role or 'Guild' in leader.role %}president{% endif %}">
+                    
+                    <!-- Leader Image -->
+                    <div class="leader-img-container">
+                        {% if leader.photo %}
+                            <img src="{{ leader.photo.url }}" alt="{{ leader.name }}">
+                        {% else %}
+                            <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #e9ecef, #f8f9fa);">
+                                <i class="fas fa-user fa-5x text-muted opacity-25"></i>
+                            </div>
+                        {% endif %}
                         
-                        <!-- 1. The Leader Container -->
-                        <div class="leader-card text-center">
-                            
-                            <!-- 2. Sculpted Image Frame (Shield Shape) -->
-                            <div class="leader-img-frame mb-4">
-                                {% if leader.photo %}
-                                    <img src="{{ leader.photo.url }}" alt="{{ leader.name }}">
-                                {% else %}
-                                    <div class="bg-light w-100 h-100 d-flex align-items-center justify-content-center">
-                                        <i class="fas fa-user fa-5x text-muted opacity-50"></i>
-                                    </div>
-                                {% endif %}
-                                
-                                <!-- Optional: Overlay gradient for depth -->
-                                <div class="img-overlay"></div>
-                            </div>
-
-                            <!-- 3. Text Info (Clean Typography) -->
-                            <div class="leader-info">
-                                <h6 class="text-uppercase fw-bold text-primary mb-1" style="letter-spacing: 1px;">
-                                    {{ leader.role }}
-                                </h6>
-                                <h3 class="fw-bold text-dark mb-3">
-                                    {{ leader.name }}
-                                </h3>
-                                
-                                {% if leader.email %}
-                                    <a href="mailto:{{ leader.email }}" class="btn btn-outline-warning rounded-pill btn-sm fw-bold px-4">
-                                        <i class="fas fa-envelope me-2"></i> Contact
-                                    </a>
-                                {% endif %}
-                            </div>
-
-                        </div>
-
+                        <!-- Gradient Overlay -->
+                        <div class="leader-img-overlay"></div>
+                        
+                        <!-- Role Badge -->
+                        <div class="role-badge">{{ leader.role }}</div>
                     </div>
-                    {% endfor %}
+
+                    <!-- Leader Info -->
+                    <div class="leader-info">
+                        <h4 class="leader-name">{{ leader.name }}</h4>
+                        
+                        {% if leader.email %}
+                        <a href="mailto:{{ leader.email }}" class="leader-email d-block mb-3">
+                            <i class="fas fa-envelope me-2"></i>{{ leader.email }}
+                        </a>
+                        {% endif %}
+                        
+                        {% if leader.email %}
+                        <a href="mailto:{{ leader.email }}" class="contact-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Contact
+                        </a>
+                        {% endif %}
+                    </div>
+
                 </div>
-                {% else %}
-                    <div class="alert alert-warning text-center">Current cabinet details are being updated.</div>
-                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-users"></i>
+            <h4 style="color: var(--ants-navy);">Cabinet Details Being Updated</h4>
+            <p class="text-muted mb-0">Current cabinet information will be posted soon.</p>
+        </div>
+        {% endif %}
     </div>
 
-    <!-- PAST CABINETS (Archives) -->
+    <!-- Past Cabinets Archive -->
     {% if past_leaders %}
-    <div class="mt-5 pt-5 border-top">
-        <h4 class="fw-bold text-muted mb-4">Past Leadership Archives</h4>
+    <div class="archive-section">
+        <h3 class="archive-title">
+            <i class="fas fa-history me-2 text-muted"></i>Past Leadership Archives
+        </h3>
         
         <div class="accordion" id="accordionArchive">
             
-            <!-- Group by Year logic -->
-            {% regroup past_leaders by get_cabinet_year_display as cabinet_list %}
+            {% regroup past_leaders by cabinet_year as cabinet_list %}
             
             {% for cabinet in cabinet_list %}
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                    <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}">
-                        <i class="fas fa-history me-2 text-warning"></i> {{ cabinet.grouper }}
+                    <button class="accordion-button collapsed" type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#collapse{{ forloop.counter }}"
+                            aria-expanded="false">
+                        <i class="fas fa-calendar-alt me-3" style="color: var(--ants-gold);"></i>
+                        Cabinet {{ cabinet.grouper }}
                     </button>
                 </h2>
-                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionArchive">
-                    <div class="accordion-body bg-light">
+                <div id="collapse{{ forloop.counter }}" 
+                     class="accordion-collapse collapse" 
+                     aria-labelledby="heading{{ forloop.counter }}"
+                     data-bs-parent="#accordionArchive">
+                    <div class="accordion-body">
                         <div class="row g-3">
                             {% for leader in cabinet.list %}
-                            <div class="col-md-4 d-flex align-items-center bg-white p-2 rounded border">
-                                {% if leader.photo %}
-                                    <img src="{{ leader.photo.url }}" class="rounded-circle me-3" width="50" height="50" style="object-fit: cover;">
-                                {% endif %}
-                                <div>
-                                    <h6 class="mb-0 fw-bold small">{{ leader.name }}</h6>
-                                    <small class="text-muted">{{ leader.role }}</small>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="past-leader-item">
+                                    {% if leader.photo %}
+                                    <img src="{{ leader.photo.url }}" 
+                                         class="past-leader-photo" 
+                                         alt="{{ leader.name }}">
+                                    {% else %}
+                                    <div class="past-leader-photo" 
+                                         style="background: linear-gradient(135deg, var(--ants-purple), var(--ants-navy)); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="past-leader-info flex-grow-1">
+                                        <h6>{{ leader.name }}</h6>
+                                        <small>{{ leader.role }}</small>
+                                    </div>
                                 </div>
                             </div>
                             {% endfor %}
@@ -137,64 +518,20 @@
     </div>
     {% endif %}
 
+    <!-- Optional: Call to Action -->
+    <div class="mt-5 p-5 text-center rounded" 
+         style="background: linear-gradient(135deg, var(--ants-purple), var(--ants-navy)); color: white;">
+        <h3 class="fw-bold mb-3">Want to Get Involved?</h3>
+        <p class="mb-4" style="opacity: 0.9;">
+            The Students Guild welcomes ideas, suggestions, and participation from all students. 
+            Reach out to any cabinet member to share your thoughts or get involved in student activities.
+        </p>
+        <a href="{% url 'contact' %}" class="btn btn-lg" 
+           style="background: var(--ants-gold); color: var(--ants-navy); font-weight: 700; padding: 12px 40px; border-radius: 50px;">
+            Contact the Guild
+        </a>
+    </div>
+
 </div>
-<style>
-/* --- Student Leader Card Styles --- */
-
-.leader-card {
-    transition: transform 0.3s ease;
-}
-
-.leader-card:hover {
-    transform: translateY(-10px); /* Lifts up slightly */
-}
-
-/* The Shield Frame */
-.leader-img-frame {
-    height: 380px; /* Tall portrait height */
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    
-    /* THE SHAPE MAGIC: Flat top, Round Bottom */
-    border-radius: 20px 20px 50% 50%; 
-    
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15); /* Soft drop shadow */
-    border-top: 5px solid var(--ants-gold); /* Gold accent on top */
-    background-color: #fff;
-}
-
-/* The Arch Frame (More Professional / Ecclesiastical) */
-.leader-img-frame {
-    height: 400px; /* Good height for portrait */
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    
-    /* THE SHAPE: Full round top, slightly rounded bottom corners */
-    /* This creates the "Window" or "Arch" look */
-    border-radius: 500px 500px 20px 20px; 
-    
-    /* Move the Gold line to the BOTTOM for a solid foundation */
-    border-bottom: 6px solid var(--ants-gold);
-    border-top: none; 
-    
-    background-color: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Clean shadow */
-}
-
-/* Zoom Effect */
-.leader-card:hover .leader-img-frame img {
-    transform: scale(1.05);
-}
-
-/* Gradient Overlay (Optional: Makes bottom of image slightly darker) */
-.img-overlay {
-    position: absolute;
-    bottom: 0; left: 0; width: 100%; height: 30%;
-    background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
-    pointer-events: none;
-}
-</style>
 
 {% endblock %}

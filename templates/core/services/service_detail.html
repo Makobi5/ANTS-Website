@@ -14,9 +14,7 @@
 <div class="container py-5">
     <div class="row">
         
-        <!-- ============================================= -->
-        <!-- LEFT COLUMN: Profile & Navigation (Sidebar)   -->
-        <!-- ============================================= -->
+        <!-- LEFT COLUMN: Profile & Navigation (Sidebar) -->
         <div class="col-lg-3 mb-5">
             
             <!-- Head of Dept Profile -->
@@ -42,32 +40,39 @@
                 {% endif %}
             </div>
 
-            <!-- KABALE STYLE SIDEBAR MENU -->
-            <div class="nav flex-column nav-pills shadow-sm bg-white rounded overflow-hidden" id="v-pills-tab" role="tablist">
-                
-                <!-- 1. Mandate Button -->
-                <button class="nav-link active text-start py-3 px-4 border-bottom fw-bold rounded-0" 
-                        id="tab-intro" data-bs-toggle="pill" data-bs-target="#content-intro" type="button">
-                    Mandate & Overview
-                </button>
-                
-                <!-- 2. Duties Button -->
-                <button class="nav-link text-start py-3 px-4 border-bottom fw-bold rounded-0" 
-                        id="tab-duties" data-bs-toggle="pill" data-bs-target="#content-duties" type="button">
-                    Duties & Responsibilities
-                </button>
-                
-                <!-- 3. Staff Button -->
-                <button class="nav-link text-start py-3 px-4 border-bottom fw-bold rounded-0" 
-                        id="tab-staff" data-bs-toggle="pill" data-bs-target="#content-staff" type="button">
-                    Staff Members
-                </button>
-                
-                <!-- 4. Contact Button -->
-                <button class="nav-link text-start py-3 px-4 fw-bold rounded-0" 
-                        id="tab-contact" data-bs-toggle="pill" data-bs-target="#content-contact" type="button">
-                    Contact Information
-                </button>
+            <!-- SIDEBAR MENU (Fixed Logic & Styling) -->
+            <div class="card shadow-sm border-0 rounded overflow-hidden">
+                <div class="list-group list-group-flush" id="v-pills-tab" role="tablist">
+                    
+                    <!-- 1. Mandate -->
+                    <button class="list-group-item list-group-item-action active fw-bold py-3 px-4" 
+                            id="tab-intro" data-bs-toggle="pill" data-bs-target="#content-intro" type="button">
+                        Mandate & Overview
+                    </button>
+                    
+                    <!-- 2. Duties (Only show if data exists) -->
+                    {% if service.duties %}
+                    <button class="list-group-item list-group-item-action fw-bold py-3 px-4" 
+                            id="tab-duties" data-bs-toggle="pill" data-bs-target="#content-duties" type="button">
+                        Duties & Responsibilities
+                    </button>
+                    {% endif %}
+                    
+                    <!-- 3. Staff (Show if text exists OR if staff members exist) -->
+                    {% if service.staff_content or service.staff_list.exists %}
+                    <button class="list-group-item list-group-item-action fw-bold py-3 px-4" 
+                            id="tab-staff" data-bs-toggle="pill" data-bs-target="#content-staff" type="button">
+                        Staff Members
+                    </button>
+                    {% endif %}
+                    
+                    <!-- 4. Contact (Always show) -->
+                    <button class="list-group-item list-group-item-action fw-bold py-3 px-4" 
+                            id="tab-contact" data-bs-toggle="pill" data-bs-target="#content-contact" type="button">
+                        Contact Information
+                    </button>
+
+                </div>
             </div>
 
         </div>
@@ -150,72 +155,110 @@
     </div>
 </div>
 
-<!-- CSS for the Sidebar Menu -->
 <style>
-    /* Styling the Sidebar Links */
-    .nav-pills .nav-link {
+    /* ============================================================
+       1. SIDEBAR NAVIGATION (KABALE STYLE)
+       ============================================================ */
+    
+    .list-group-item-action {
+        border-left: 5px solid transparent; 
         color: #555;
-        background-color: #fff;
-        transition: all 0.3s;
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #eee;
+        font-size: 0.95rem;
     }
     
-    /* Hover State */
-    .nav-pills .nav-link:hover {
-        background-color: #f0f0f0;
-        color: var(--ants-purple);
-        padding-left: 30px !important; /* Slide effect */
+    /* Hover State: Slide effect */
+    .list-group-item-action:hover {
+        background-color: #f8f9fa;
+        color: #1b1d4e; /* Using your dark theme color */
+        padding-left: 30px !important; 
     }
 
-    /* Active State (The Blue Box) */
-    .nav-pills .nav-link.active {
-        background-color: #0077b5; /* KAB Blue */
-        color: #fff;
+    /* Active State: Blue background with Gold left border */
+    .list-group-item-action.active {
+        background-color: #0077b5 !important; /* KAB Blue */
+        color: #fff !important;
+        border-left: 5px solid #ffc107; /* Gold Strip */
+        border-color: #0077b5;
         padding-left: 30px !important;
-        border-left: 5px solid var(--ants-gold);
     }
-    /* --- Contact Section Styles --- */
+
+    /* ============================================================
+       2. DROP-CAP (THE FIX)
+       ============================================================ */
     
-    .contact-details-box {
-        background-color: #f9f9f9; /* The light gray background */
-        border-left: 4px solid #f9f9f9; /* Keeps it clean */
+    /* 
+       Targets ONLY the first paragraph that is a DIRECT child of .service-text 
+       inside the Mandate (intro) tab. 
+    */
+    #content-intro .service-text > p:first-of-type::first-letter {
+        font-size: 3.5rem; 
+        color: #1b1d4e; 
+        font-weight: bold;
+        float: left;
+        margin-right: 10px;
+        line-height: 0.85;
+        margin-top: 5px;
+        font-family: serif;
     }
 
-    /* Style the text inside the box */
-    .contact-content p {
-        margin-bottom: 12px;
-        font-size: 1.05rem;
-        color: #333;
+    /* 
+       Safety Reset: Prevents drop-caps from appearing in lists, 
+       even if the CMS wraps list items in <p> tags.
+    */
+    .service-text li p::first-letter,
+    .service-text li::first-letter {
+        font-size: inherit !important;
+        color: inherit !important;
+        font-weight: inherit !important;
+        float: none !important;
+        margin: 0 !important;
+        line-height: inherit !important;
     }
 
-    /* AUTOMATICALLY style bold text to look like Labels (Blue) */
-    .contact-content strong, 
-    .contact-content b {
-        color: #0077b5; /* KAB Blue */
-        font-weight: 800;
-        margin-right: 8px;
-    }
-
-    /* 1. The Container */
-    .contact-content {
-        font-size: 1.05rem;
-        color: #333;
-    }
-
-    /* 2. The Magic Rule: Turn BOLD text into BLUE LABELS */
-    .contact-content strong, 
-    .contact-content b {
-        color: #0077b5 !important; /* Kabale Blue */
-        font-weight: 800;
-        margin-right: 5px; /* Small space after the colon */
-    }
-
-    /* 3. The Blue Underline for the Title */
+    /* ============================================================
+       3. CONTACT INFORMATION STYLING
+       ============================================================ */
+    
     .contact-title-underline {
         border-bottom: 2px solid #0077b5;
         padding-bottom: 10px;
         margin-bottom: 20px;
-        display: block; /* Ensures line goes across */
+        display: block;
         width: 100%;
+    }
+
+    .contact-details-box {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .contact-content {
+        font-size: 1.05rem;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Auto-style Bold text as Blue Labels */
+    .contact-content strong, 
+    .contact-content b {
+        color: #0077b5 !important;
+        font-weight: 800;
+        margin-right: 5px;
+    }
+
+    /* ============================================================
+       4. GENERAL CONTENT STYLING
+       ============================================================ */
+    
+    .service-text {
+        font-size: 1.05rem;
+    }
+
+    .service-text p {
+        margin-bottom: 1.5rem;
     }
 </style>
 

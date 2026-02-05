@@ -8,6 +8,7 @@ from .models import AlumniMember
 from .models import ServiceDepartment, Sermon
 from django.contrib import admin
 from .models import DonationCategory, Donation, DonationTestimonial, DonationImpactStory, OutreachProgram, OutreachImage, Sermon
+from staff.models import StaffMember
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -83,10 +84,21 @@ class AlumniMemberAdmin(admin.ModelAdmin):
     search_fields = ('full_name', 'email')
     actions = [approve_alumni] # Adds the action to the dropdown menu     
     
+# 1. Create the Inline View for Staff
+class StaffMemberInline(admin.TabularInline):
+    model = StaffMember
+    extra = 1 # Shows 1 empty row to add a new person
+    fields = ('name', 'role', 'qualifications', 'photo', 'category') # Fields to edit directly
+    fk_name = "service_department" # Explicitly tell Django which field links them
+
+# 2. Update ServiceDepartmentAdmin to include the Inline
 @admin.register(ServiceDepartment)
 class ServiceDepartmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'head_title')
-    prepopulated_fields = {'slug': ('name',)}    
+    prepopulated_fields = {'slug': ('name',)}
+    
+    # This adds the Staff section inside the Department page
+    inlines = [StaffMemberInline]   
     
     
 # 3. Update Sermon Admin

@@ -181,10 +181,16 @@
                     {% endif %}
                 </div>
 
-                <!-- Button -->
+                <!-- Call to Action Button -->
                 <div class="mt-5">
-                    <a href="{% url 'principal_profile' %}" class="btn btn-primary w-100 py-3 fw-bold text-uppercase text-start ps-4 shadow-sm mb-2" style="background-color: var(--ants-purple); border: none; border-radius: 0;">
-                        Read Principal's Full Biography <i class="fas fa-arrow-right float-end pe-4 mt-1"></i>
+                    <a href="{% url 'service_detail' 'office-of-the-principal' %}" 
+                       class="btn btn-primary w-100 py-3 fw-bold text-uppercase text-start ps-4 shadow-sm action-btn" 
+                       style="background-color: var(--ants-purple); border: none; border-radius: 4px;">
+                        
+                        Visit Office of the Principal 
+                        
+                        <!-- Arrow Icon on the right -->
+                        <i class="fas fa-arrow-right float-end pe-4 mt-1"></i>
                     </a>
                 </div>
             </div>
@@ -915,6 +921,17 @@
         .slider-image-wrapper { height: 300px !important; }
         .slider-title { font-size: 1.4rem !important; }
     }
+
+/* Principal Office Button Hover */
+    .action-btn {
+        transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+        background-color: var(--ants-gold) !important;
+        color: #000 !important; /* Black text on Gold background */
+        padding-left: 25px !important; /* Slight slide effect */
+    }
+
 </style>
 
 {% endblock %}
