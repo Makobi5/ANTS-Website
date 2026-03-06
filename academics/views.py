@@ -32,6 +32,12 @@ def program_list(request, category_slug):
     return render(request, 'academics/program_list.html', context)
 
 def program_detail(request, slug):
-    # Fetch the specific program using its unique slug
     program = get_object_or_404(Program, slug=slug)
-    return render(request, 'academics/program_detail.html', {'program': program})
+    
+    # NEW: Fetch related programs (Same category, excluding current one)
+    related_programs = Program.objects.filter(category=program.category).exclude(id=program.id)[:4]
+    
+    return render(request, 'academics/program_detail.html', {
+        'program': program,
+        'related_programs': related_programs
+    })

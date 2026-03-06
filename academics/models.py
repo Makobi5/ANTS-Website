@@ -33,6 +33,13 @@ class Program(models.Model):
     
     # Files
     image = models.ImageField(upload_to='program_images/', blank=True, null=True, help_text="Cover image for the course")
+    hero_image = models.ImageField(
+        upload_to='program_banners/', 
+        blank=True, 
+        null=True, 
+        verbose_name="Top Header Banner (Wide)",
+        help_text="Upload a wide image (1920x600) for the top background. If empty, a default blue banner is used."
+    )
     brochure = models.FileField(upload_to='program_files/', blank=True, null=True, help_text="Upload PDF Fee Structure or Brochure")
 
     created_at = models.DateTimeField(auto_now_add=True)

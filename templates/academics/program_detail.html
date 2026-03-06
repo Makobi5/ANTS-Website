@@ -2,53 +2,275 @@
 {% load static %}
 
 {% block content %}
+
+<!-- ============================================ -->
+<!-- 1. HERO BANNER (Uses the NEW hero_image)     -->
+<!-- ============================================ -->
+<div class="program-hero position-relative d-flex align-items-center">
+    <!-- Background Image Logic -->
+        <div class="hero-bg" 
+         style="background: linear-gradient(rgba(27, 29, 78, 0.7), rgba(27, 29, 78, 0.5)), 
+         url('{% if program.hero_image %}{{ program.hero_image.url }}{% else %}{% static 'img/banner.jpg' %}{% endif %}') center/cover no-repeat;">
+    </div>
+    
+    <div class="container position-relative z-index-2">
+        <div class="row">
+            <div class="col-lg-8">
+                <p class="text-warning text-uppercase small fw-bold mb-3 ls-2">
+                    Academics &raquo; {{ program.get_category_display }}
+                </p>
+                <h1 class="display-4 fw-bold text-white mb-4">{{ program.title }}</h1>
+                
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'apply_now' %}?course_id={{ program.id }}" class="btn btn-warning fw-bold px-5 py-3 rounded-pill text-uppercase shadow">
+                        Apply Now <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================ -->
+<!-- 2. MAIN CONTENT WITH SIDEBAR NAVIGATION      -->
+<!-- ============================================ -->
 <div class="container py-5">
     <div class="row">
         
-        <!-- LEFT: Sidebar Info -->
-        <div class="col-lg-4 mb-4">
-            <div class="card border-0 shadow-sm mb-4">
-                {% if program.image %}
-                    <img src="{{ program.image.url }}" class="card-img-top" alt="{{ program.title }}">
-                {% else %}
-                    <div class="bg-primary text-white p-5 text-center">
-                        <i class="fas fa-graduation-cap fa-4x"></i>
-                    </div>
-                {% endif %}
-                <div class="card-body">
-                    <h4 class="fw-bold text-primary">{{ program.title }}</h4>
-                    <hr>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><strong>Duration:</strong> {{ program.duration }}</li>
-                        <li class="mb-2"><strong>Mode:</strong> {{ program.study_mode }}</li>
-                        <li class="mb-2"><strong>Level:</strong> {{ program.get_category_display }}</li>
-                    </ul>
-                    
-                    <!-- We pass the program ID in the URL as a parameter -->
-<a href="{% url 'apply_now' %}?course_id={{ program.id }}" class="btn btn-warning w-100 fw-bold mt-2">Apply for this Course</a>
-                    
-                    {% if program.brochure %}
-                        <a href="{{ program.brochure.url }}" class="btn btn-outline-secondary w-100 mt-2" target="_blank">
-                            <i class="fas fa-download me-2"></i> Download Fees Structure
-                        </a>
-                    {% endif %}
+        <!-- LEFT: Vertical Navigation (Sticky) -->
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="sticky-top" style="top: 100px;">
+                <div class="list-group shadow-sm border-0 rounded-3 overflow-hidden" id="program-nav">
+                    <a href="#overview" class="list-group-item list-group-item-action py-3 fw-bold active-tab">
+                        Overview
+                    </a>
+                    <a href="#admission" class="list-group-item list-group-item-action py-3 fw-bold">
+                        Admission Requirements
+                    </a>
+                    <a href="#curriculum" class="list-group-item list-group-item-action py-3 fw-bold">
+                        What You Will Learn
+                    </a>
+                    <a href="#fees" class="list-group-item list-group-item-action py-3 fw-bold">
+                        Tuition & Fees
+                    </a>
+                </div>
+
+                <!-- Call to Action Card -->
+                <div class="card border-0 bg-light mt-4 rounded-3 p-4 text-center">
+                    <h5 class="fw-bold text-primary">Ready to Join?</h5>
+                    <p class="small text-muted mb-3">Applications for the upcoming intake are open.</p>
+                    <a href="{% url 'apply_now' %}?course_id={{ program.id }}" class="btn btn-primary w-100 rounded-pill fw-bold">APPLY NOW</a>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT: Main Content -->
-        <div class="col-lg-8">
-            <h3 class="fw-bold border-bottom pb-2 mb-4">Course Overview</h3>
-            <div class="text-muted mb-5" style="line-height: 1.8;">
-                {{ program.overview|linebreaks }}
+        <!-- RIGHT: Details Content -->
+        <div class="col-lg-9 ps-lg-5">
+            
+            <!-- SECTION: Overview -->
+            <div id="overview" class="mb-5">
+                <h4 class="fw-bold text-primary mb-3 text-uppercase">About This Programme</h4>
+                <div class="text-muted mb-5" style="font-size: 1.1rem; line-height: 1.8;">
+                    {{ program.overview|safe|linebreaks }}
+                </div>
+
+                <!-- QUICK FACTS GRID (VU Style) -->
+                <h5 class="fw-bold text-dark mb-4">Quick Facts</h5>
+                <div class="row g-4">
+                    <!-- Fact 1: Credential -->
+                    <div class="col-md-6">
+                        <div class="fact-card d-flex align-items-center p-4 rounded bg-light border">
+                            <div class="icon-box bg-white text-primary rounded-circle shadow-sm me-3">
+                                <i class="fas fa-certificate fa-lg"></i>
+                            </div>
+                            <div>
+                                <small class="text-muted fw-bold text-uppercase d-block">Credential</small>
+                                <span class="fw-bold text-dark">{{ program.get_category_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Fact 2: Duration -->
+                    <div class="col-md-6">
+                        <div class="fact-card d-flex align-items-center p-4 rounded bg-light border">
+                            <div class="icon-box bg-white text-warning rounded-circle shadow-sm me-3">
+                                <i class="far fa-clock fa-lg"></i>
+                            </div>
+                            <div>
+                                <small class="text-muted fw-bold text-uppercase d-block">Duration</small>
+                                <span class="fw-bold text-dark">{{ program.duration }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fact 3: Delivery -->
+                    <div class="col-md-6">
+                        <div class="fact-card d-flex align-items-center p-4 rounded bg-light border">
+                            <div class="icon-box bg-white text-success rounded-circle shadow-sm me-3">
+                                <i class="fas fa-chalkboard-teacher fa-lg"></i>
+                            </div>
+                            <div>
+                                <small class="text-muted fw-bold text-uppercase d-block">Delivery Mode</small>
+                                <span class="fw-bold text-dark">{{ program.study_mode }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fact 4: Language -->
+                    <div class="col-md-6">
+                        <div class="fact-card d-flex align-items-center p-4 rounded bg-light border">
+                            <div class="icon-box bg-white text-info rounded-circle shadow-sm me-3">
+                                <i class="fas fa-language fa-lg"></i>
+                            </div>
+                            <div>
+                                <small class="text-muted fw-bold text-uppercase d-block">Language</small>
+                                <span class="fw-bold text-dark">English</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <h3 class="fw-bold border-bottom pb-2 mb-4">Admission Requirements</h3>
-            <div class="bg-light p-4 rounded border-start border-5 border-warning">
-                {{ program.requirements|linebreaks }}
+            <hr class="my-5">
+
+            <!-- SECTION: Admission -->
+            <div id="admission" class="mb-5 scroll-offset">
+                <h4 class="fw-bold text-primary mb-3 text-uppercase">Admission Requirements</h4>
+                <div class="bg-white p-4 rounded border-start border-5 border-warning shadow-sm">
+                    <div class="text-muted">
+                        {{ program.requirements|safe|linebreaks }}
+                    </div>
+                </div>
             </div>
+            
+            <hr class="my-5">
+
+            <!-- SECTION: Curriculum (Placeholder for now since we don't have a field for it, using summary) -->
+            <div id="curriculum" class="mb-5 scroll-offset">
+                <h4 class="fw-bold text-primary mb-3 text-uppercase">What You Will Learn</h4>
+                <p class="text-muted">{{ program.summary|safe }}</p>
+                <!-- Add more static text or a new field later -->
+                <p class="text-muted">
+                    Students will engage in rigorous study of biblical texts, theological frameworks, and practical ministry applications. The curriculum is designed to balance academic excellence with spiritual formation.
+                </p>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- SECTION: Fees -->
+            <div id="fees" class="mb-5 scroll-offset">
+                <h4 class="fw-bold text-primary mb-3 text-uppercase">Tuition & Fees</h4>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Fees structure is subject to review. Please download the brochure for detailed breakdown.
+                </div>
+                {% if program.brochure %}
+                    <a href="{{ program.brochure.url }}" target="_blank" class="btn btn-outline-dark">
+                        <i class="fas fa-file-pdf me-2"></i> Download Fee Structure PDF
+                    </a>
+                {% else %}
+                    <a href="{% url 'fees_structure' %}" class="btn btn-outline-dark">View General Fees Structure</a>
+                {% endif %}
+            </div>
+
         </div>
-
     </div>
 </div>
+
+<!-- ============================================ -->
+<!-- 3. RELATED PROGRAMS (VU Bottom Grid)         -->
+<!-- ============================================ -->
+{% if related_programs %}
+<div class="py-5 bg-white border-top">
+    <div class="container">
+        <h3 class="fw-bold text-dark mb-4">Related Programmes</h3>
+        
+        <div class="row g-4">
+            {% for rel in related_programs %}
+            <div class="col-md-6 col-lg-3">
+                <a href="{% url 'program_detail' rel.slug %}" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm hover-up">
+                        <div class="position-relative overflow-hidden" style="height: 180px;">
+                            {% if rel.image %}
+                                <img src="{{ rel.image.url }}" class="w-100 h-100 object-fit-cover">
+                            {% else %}
+                                <div class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center text-white">
+                                    <i class="fas fa-graduation-cap fa-2x"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <small class="text-warning fw-bold text-uppercase">{{ rel.get_category_display }}</small>
+                            <h6 class="fw-bold text-dark mt-2 mb-0">{{ rel.title }}</h6>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <small class="text-muted"><i class="far fa-clock me-1"></i> {{ rel.duration }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ============================================ -->
+<!-- 4. CALL TO ACTION STRIP                      -->
+<!-- ============================================ -->
+<div class="py-5 text-center text-white" style="background-color: var(--footer-bg);">
+    <div class="container">
+        <h2 class="fw-bold">Ready to take the next step?</h2>
+        <p class="lead opacity-75 mb-4">Apply to All Nations Theological College & Seminary today.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'apply_now' %}?course_id={{ program.id }}" class="btn btn-info fw-bold px-5 py-3">APPLY NOW</a>
+            <a href="{% url 'contact' %}" class="btn btn-outline-light fw-bold px-5 py-3">CONTACT US</a>
+        </div>
+    </div>
+</div>
+
+<!-- STYLES -->
+<style>
+    /* Hero */
+    .program-hero {
+        height: 60vh;
+        min-height: 450px;
+        width: 100%;
+        position: relative;
+    }
+    .hero-bg {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 1;
+    }
+    
+    /* Navigation Sidebar */
+    .list-group-item {
+        border-left: 5px solid transparent;
+        color: #555;
+    }
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        color: var(--ants-purple);
+    }
+    /* Simulate Active State styling (you can add JS to scroll spy this later) */
+    .active-tab {
+        border-left-color: var(--ants-gold);
+        color: var(--ants-purple);
+        background-color: #f8f9fa;
+    }
+
+    /* Quick Fact Cards */
+    .icon-box {
+        width: 50px; height: 50px;
+        display: flex; align-items: center; justify-content: center;
+    }
+    
+    /* Related Programs */
+    .hover-up { transition: transform 0.3s; }
+    .hover-up:hover { transform: translateY(-5px); }
+
+    /* Scroll Offset fix for sticky header */
+    .scroll-offset {
+        scroll-margin-top: 100px;
+    }
+</style>
+
 {% endblock %}
