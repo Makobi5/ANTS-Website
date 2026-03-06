@@ -296,8 +296,8 @@
                                     <div class="d-flex p-2">
                                         <div class="col-6 px-2 border-end border-white-50">
                                             <h6 class="dropdown-header-custom">UNIVERSITY SERVICES</h6>
-                                            <a class="dropdown-item" href="#">University Library</a>
-                                            <a class="dropdown-item" href="#">Quality Assurance</a>
+                                            <a class="dropdown-item" href="{% url 'service_detail' 'university-library' %}">University Library</a>
+                                            <a class="dropdown-item" href="{% url 'service_detail' 'quality-assurence-directorate' %}">Quality Assurance</a>
                                             <a class="dropdown-item" href="{% url 'service_detail' 'dicts' %}">ICT Services</a>
                                             <a class="dropdown-item" href="#">Financial Services</a>
                                             <a class="dropdown-item" href="#">Health Services</a>
@@ -306,9 +306,9 @@
                                             <h6 class="dropdown-header-custom">KEY OFFICES</h6>
                                             <!-- Now points to the Department Page, not the personal profile -->
                                             <a class="dropdown-item" href="{% url 'service_detail' 'office-of-the-principal' %}">The Principal</a>
-                                            <a class="dropdown-item" href="{% url 'service_detail' 'university-secretary' %}">Institute Secretary</a>
+                                            <a class="dropdown-item" href="{% url 'service_detail' 'office-of-the-hr' %}">Institute Secretary</a>
                                             <a class="dropdown-item" href="{% url 'service_detail' 'office-of-the-academic-registra' %}">Academic Registrar</a>
-                                            <a class="dropdown-item" href="#">Human Resource</a>
+                                            <a class="dropdown-item" href="{% url 'service_detail' 'office-of-the-hr' %}">Human Resource</a>
                                             <a class="dropdown-item" href="#">Dean of Students</a>
                                         </div>
                                     </div>
