@@ -2,35 +2,414 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-3 mb-4">
-            <!-- Reuse the News Widget for consistency -->
-            {% load news_widgets %}
-            {% show_latest_news 2 %}
-        </div>
-        
-        <div class="col-lg-9">
-            <h2 class="fw-bold text-primary mb-4 border-bottom pb-2">Who We Are</h2>
-            
-            <!-- Update the filename to match your saved image -->
-            <!-- DYNAMIC BANNER LOGIC -->
-            {% if banner %}
-                <!-- If admin uploaded an image, show it -->
-                <img src="{{ banner.image.url }}" class="img-fluid rounded mb-4 w-100 shadow-sm" style="height: 400px; object-fit: cover;" alt="{{ banner.caption|default:'ANTS Campus' }}">
-            {% else %}
-                <!-- Fallback: If no image uploaded yet, show the default static one -->
-                <img src="{% static 'img/church1.png' %}" class="img-fluid rounded mb-4 w-100 shadow-sm" style="height: 400px; object-fit: cover;" alt="ANTS Chapel">
-            {% endif %}
 
-            <p class="lead text-muted">All Nations Theological College and Seminary (ANTS) is an interdenominational institution committed to training men and women for the Gospel ministry.</p>
-            
-            <h5 class="fw-bold text-dark mt-4">Our History</h5>
-            <p>Founded in 2004, ANTS began with a vision to equip leaders in Uganda who lacked formal theological training. From a humble beginning with just 12 students, the college has grown into a premier institution attracting students from across East Africa.</p>
-            
-            <h5 class="fw-bold text-dark mt-4">Our Philosophy</h5>
-            <p>We believe in "Head, Heart, and Hands" training. It is not enough to know the Bible intellectually; one must be transformed spiritually and equipped practically for service.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+  .wwa-wrapper {
+    background: #f9f8f6;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── Hero Banner ── */
+  .wwa-hero {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+    border-radius: 0 0 2px 2px;
+  }
+  .wwa-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.72);
+    transition: transform 6s ease;
+  }
+  .wwa-hero:hover img { transform: scale(1.04); }
+  .wwa-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(74,0,130,0.55) 0%, rgba(20,20,60,0.6) 100%);
+    display: flex; align-items: flex-end;
+    padding: 2.5rem 3rem;
+  }
+  .wwa-hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    color: #fff;
+    margin: 0;
+    line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  .wwa-hero-text .gold-bar {
+    width: 60px; height: 4px;
+    background: #f0c040;
+    border-radius: 2px;
+    margin-top: .75rem;
+  }
+
+  /* ── Page Grid ── */
+  .wwa-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+  @media(max-width:768px){ .wwa-grid{ grid-template-columns:1fr; } }
+
+  /* ── Sidebar ── */
+  .wwa-sidebar { }
+
+  /* ── Main Content ── */
+  .wwa-main { }
+
+  /* Section headings */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    color: #3b0080;
+    border-left: 4px solid #f0c040;
+    padding-left: .85rem;
+    margin: 2.4rem 0 1rem;
+    line-height: 1.25;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  /* Lead paragraph */
+  .wwa-lead {
+    font-size: 1.13rem;
+    color: #333;
+    line-height: 1.85;
+    border-left: 3px solid #e0d4f5;
+    padding-left: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .wwa-body p {
+    color: #444;
+    line-height: 1.8;
+    font-size: 1.01rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Philosophy callout */
+  .philosophy-card {
+    background: linear-gradient(135deg, #3b0080 0%, #5a189a 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 1.8rem 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .philosophy-card::before {
+    content: '\201C';
+    position: absolute;
+    top: -10px; left: 16px;
+    font-size: 8rem;
+    color: rgba(255,255,255,0.08);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .philosophy-card p {
+    font-size: 1.08rem;
+    line-height: 1.75;
+    margin: 0;
+    position: relative;
+    color: #ffffff;
+  }
+  .philosophy-card strong { color: #f0c040; }
+  .philosophy-card em { color: #fff; font-style: normal; }
+
+  /* ── Timeline ── */
+  .timeline { position: relative; padding: 1rem 0; margin-top: 1rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 22px; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #3b0080, #f0c040);
+    border-radius: 2px;
+  }
+  .tl-item {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+    align-items: flex-start;
+    position: relative;
+  }
+  .tl-dot {
+    flex-shrink: 0;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: #3b0080;
+    color: #f0c040;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: .72rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.1;
+    box-shadow: 0 0 0 4px #fff, 0 0 0 6px #e0d4f5;
+    z-index: 1;
+  }
+  .tl-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    flex: 1;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-top: 3px solid #3b0080;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .tl-content:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59,0,128,0.12);
+  }
+  .tl-content h6 {
+    font-family: 'Playfair Display', serif;
+    color: #3b0080;
+    font-size: 1rem;
+    margin: 0 0 .4rem;
+  }
+  .tl-content p {
+    font-size: .93rem;
+    color: #555;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .tl-badge {
+    display: inline-block;
+    background: #f0c040;
+    color: #3b0080;
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: .4rem;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+
+  /* Stat pills */
+  .stats-row {
+    display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.8rem 0;
+  }
+  .stat-pill {
+    background: #fff;
+    border: 2px solid #3b0080;
+    border-radius: 50px;
+    padding: .55rem 1.3rem;
+    text-align: center;
+    flex: 1; min-width: 120px;
+  }
+  .stat-pill .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: #3b0080;
+    display: block;
+    line-height: 1.1;
+  }
+  .stat-pill .lbl {
+    font-size: .78rem;
+    color: #777;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+</style>
+
+<div class="wwa-wrapper">
+  <div class="container-fluid px-0">
+
+    <!-- Hero -->
+    <div class="wwa-hero">
+      {% if banner %}
+        <img src="{{ banner.image.url }}" alt="{{ banner.caption|default:'ANTS Campus' }}">
+      {% else %}
+        <img src="{% static 'img/banner.jpg' %}" alt="ANTS Chapel">
+      {% endif %}
+      <div class="wwa-hero-overlay">
+        <div class="wwa-hero-text">
+          <h1>Who We Are</h1>
+          <div class="gold-bar"></div>
         </div>
+      </div>
     </div>
+
+    <!-- Grid -->
+    <div class="wwa-grid">
+
+      <!-- Sidebar -->
+      <aside class="wwa-sidebar">
+        {% load news_widgets %}
+        {% show_latest_news 2 %}
+      </aside>
+
+      <!-- Main -->
+      <main class="wwa-main wwa-body">
+
+        <!-- Intro -->
+        <p class="wwa-lead">
+          All Nations Theological College and Seminary (ANTS) is an interdenominational institution
+          committed to training men and women for the Gospel ministry — blending rigorous academics
+          with deep spiritual formation to raise confident, Christ-centred leaders for the Church in
+          Uganda and beyond.
+        </p>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-pill"><span class="num">31+</span><span class="lbl">Years of Service</span></div>
+          <div class="stat-pill"><span class="num">1993</span><span class="lbl">Established</span></div>
+          <div class="stat-pill"><span class="num">28+</span><span class="lbl">Graduations</span></div>
+          <div class="stat-pill"><span class="num">E. Africa</span><span class="lbl">Reach</span></div>
+        </div>
+
+        <!-- Our History -->
+        <h2 class="section-title">Our History</h2>
+        <p>
+          ANTS was founded in <strong>1993</strong> with a clear and urgent vision: to equip believers
+          across Uganda who lacked formal theological training. Opening its doors with just
+          <strong>17 students and 6 lecturers</strong>, the college offered a 2-year Diploma in Theology.
+          Over the decades, ANTS has grown from a modest classroom into a fully accredited tertiary
+          institution drawing students from across East Africa.
+        </p>
+
+        <!-- Timeline -->
+        <div class="timeline">
+
+          <div class="tl-item">
+            <div class="tl-dot">1993</div>
+            <div class="tl-content">
+              <span class="tl-badge">Founded</span>
+              <h6>ANTS Opens Its Doors</h6>
+              <p>Launched with 17 students and 6 lecturers, offering a 2-year Diploma in Theology.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">1995</div>
+            <div class="tl-content">
+              <span class="tl-badge">Milestone</span>
+              <h6>First Graduation</h6>
+              <p>11 pioneer students received their diplomas — the first fruits of the ANTS vision.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">1996</div>
+            <div class="tl-content">
+              <span class="tl-badge">Infrastructure</span>
+              <h6>Main Office Building</h6>
+              <p>Construction of the main administrative office building, cementing the college's permanent home.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">1997</div>
+            <div class="tl-content">
+              <span class="tl-badge">Academics</span>
+              <h6>3-Year Advanced Diploma</h6>
+              <p>Introduction of the Advanced Diploma in Theology, deepening the academic offering for ministry training.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2003</div>
+            <div class="tl-content">
+              <span class="tl-badge">Infrastructure</span>
+              <h6>Chapel Construction Completed</h6>
+              <p>The ANTS Chapel — a central place of worship and spiritual formation — was completed, becoming the heart of campus life.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2004</div>
+            <div class="tl-content">
+              <span class="tl-badge">Growth</span>
+              <h6>Dormitory Completed</h6>
+              <p>Completion of the student dormitory enabled more students from distant regions to reside on campus full-time.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2008</div>
+            <div class="tl-content">
+              <span class="tl-badge">Resources</span>
+              <h6>Ilam Library Constructed</h6>
+              <p>A dedicated library facility was built, providing students with rich theological and academic resources to support their studies.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2009</div>
+            <div class="tl-content">
+              <span class="tl-badge">Programs</span>
+              <h6>ESL Program Launched</h6>
+              <p>The English as a Second Language (ESL) program was introduced, broadening access for students from diverse linguistic backgrounds.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2011</div>
+            <div class="tl-content">
+              <span class="tl-badge">Outreach</span>
+              <h6>PTC Program – Kamuli</h6>
+              <p>The Pastoral Training Centre (PTC) Program was launched in Kamuli, extending ANTS's ministry training beyond the main campus.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2012</div>
+            <div class="tl-content">
+              <span class="tl-badge">Accreditation</span>
+              <h6>Provisional License — NCHE</h6>
+              <p>ANTS received a Provisional License from the National Council for Higher Education (NCHE), recognising it as a formal Tertiary Institution.
+              Programs expanded to include Diplomas in Theology, Mission Studies, and Christian Education.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2018</div>
+            <div class="tl-content">
+              <span class="tl-badge">Full Accreditation</span>
+              <h6>Accredited by NCHE</h6>
+              <p>ANTS achieved full accreditation as a Tertiary Institution by NCHE — a landmark achievement validating decades of academic and ministerial excellence.</p>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot">2024</div>
+            <div class="tl-content">
+              <span class="tl-badge">Celebration</span>
+              <h6>28th Graduation Ceremony</h6>
+              <p>ANTS celebrated its 28th graduation, marking over three decades of faithfully equipping men and women for the Gospel ministry across East Africa.</p>
+            </div>
+          </div>
+
+        </div><!-- /timeline -->
+
+        <!-- Our Philosophy -->
+        <h2 class="section-title">Our Philosophy</h2>
+        <div class="philosophy-card">
+          <p>
+            <strong>"From Learning to Ministry."</strong> At ANTS, we believe in <strong>Head, Heart, and Hands</strong>
+            training. It is not enough to acquire knowledge intellectually — students must be transformed
+            spiritually and equipped practically for service. We are driven to inspire students to apply
+            what they learn directly into church ministries as they serve God.
+          </p>
+        </div>
+
+        <p>
+          Uganda needs well-nourished, spiritually grounded people who are able to contribute honestly
+          to the education and evangelisation of the nation. ANTS is uniquely designed to build confident
+          church leaders by combining spirituality and academics — producing well-balanced ministers
+          ready for the Gospel.
+        </p>
+
+      </main>
+    </div><!-- /grid -->
+  </div>
 </div>
+
 {% endblock %}

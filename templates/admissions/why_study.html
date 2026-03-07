@@ -1,104 +1,377 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load news_widgets %} <!-- Load the news widget tag -->
+{% load news_widgets %}
 
 {% block content %}
-<!-- Breadcrumb Header (Like KIU) -->
-<div class="bg-light border-bottom py-3">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <h4 class="fw-bold text-dark mb-0">Study at ANTS</h4>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 small">
-                    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Why Study at ANTS</li>
-                </ol>
-            </nav>
-        </div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+  .ws-wrapper {
+    background: #f9f8f6;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── Page Header ── */
+  .ws-page-header {
+    background: linear-gradient(135deg, #3b0080 0%, #5a189a 100%);
+    padding: 3.5rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .ws-page-header::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,192,64,0.08);
+  }
+  .ws-page-header::before {
+    content: '';
+    position: absolute;
+    left: -40px; bottom: -80px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .ws-page-header .inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .ws-page-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 2.5rem;
+    margin: 0 0 .5rem;
+  }
+  .ws-page-header p {
+    color: rgba(255,255,255,0.78);
+    font-size: 1rem;
+    margin: 0;
+    max-width: 620px;
+  }
+  .gold-bar {
+    width: 56px; height: 4px;
+    background: #f0c040;
+    border-radius: 2px;
+    margin: .75rem 0 1rem;
+  }
+
+  /* ── Breadcrumb ── */
+  .ws-breadcrumb {
+    background: #fff;
+    border-bottom: 1px solid #ede8f5;
+    padding: .65rem 0;
+    font-size: .85rem;
+  }
+  .ws-breadcrumb .inner { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+  .ws-breadcrumb a { color: #3b0080; text-decoration: none; }
+  .ws-breadcrumb a:hover { text-decoration: underline; }
+  .ws-breadcrumb span { color: #888; }
+
+  /* ── Grid ── */
+  .ws-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+  @media(max-width: 900px){ .ws-grid{ grid-template-columns: 1fr; } }
+
+  /* ── Lead ── */
+  .ws-lead {
+    background: #fff;
+    border-left: 5px solid #3b0080;
+    border-radius: 10px;
+    padding: 1.5rem 1.8rem;
+    font-size: 1.07rem;
+    color: #333;
+    line-height: 1.85;
+    box-shadow: 0 3px 14px rgba(59,0,128,0.07);
+    margin-bottom: 2.4rem;
+  }
+
+  /* ── Social Share ── */
+  .ws-share {
+    display: flex; gap: .6rem; margin-bottom: 2rem;
+  }
+  .ws-share a {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .38rem .9rem;
+    border-radius: 20px;
+    font-size: .82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .ws-share a:hover { opacity: .85; }
+  .ws-share .fb  { background: #1877f2; color: #fff; }
+  .ws-share .tw  { background: #1da1f2; color: #fff; }
+  .ws-share .wa  { background: #25d366; color: #fff; }
+
+  /* ── Reason Cards ── */
+  .reasons-list { display: flex; flex-direction: column; gap: 1.3rem; }
+
+  .reason-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.6rem 1.8rem;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    transition: transform .2s, box-shadow .2s;
+    border-top: 3px solid transparent;
+  }
+  .reason-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(59,0,128,0.11);
+    border-top-color: #3b0080;
+  }
+  .reason-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    background: #f0e6ff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+  .reason-body h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.12rem;
+    color: #3b0080;
+    margin: 0 0 .5rem;
+  }
+  .reason-body p {
+    color: #555;
+    font-size: .97rem;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* ── CTA Banner ── */
+  .ws-cta {
+    background: linear-gradient(135deg, #3b0080, #5a189a);
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    margin-top: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .ws-cta p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0;
+  }
+  .ws-cta small { display: block; font-family: 'Source Sans 3', sans-serif; font-size: .88rem; color: rgba(255,255,255,0.7); margin-top: .25rem; font-weight: 400; }
+  .btn-gold {
+    background: #f0c040;
+    color: #3b0080;
+    border: none;
+    border-radius: 25px;
+    padding: .65rem 1.8rem;
+    font-weight: 700;
+    font-size: .95rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .2s, transform .2s;
+  }
+  .btn-gold:hover { background: #e0b030; color: #3b0080; transform: scale(1.03); }
+
+  /* ── Sidebar ── */
+  .ws-sidebar { }
+
+  .quick-links-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+    margin-bottom: 1.8rem;
+  }
+  .quick-links-card .ql-header {
+    background: #3b0080;
+    color: #f0c040;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    padding: .9rem 1.2rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .quick-links-card a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .85rem 1.2rem;
+    color: #333;
+    text-decoration: none;
+    font-size: .95rem;
+    border-bottom: 1px solid #f0eaf8;
+    transition: background .15s, color .15s;
+  }
+  .quick-links-card a:last-child { border-bottom: none; }
+  .quick-links-card a:hover { background: #f5f0ff; color: #3b0080; }
+  .quick-links-card a .arrow { color: #f0c040; font-size: .8rem; }
+
+  /* ── Stats pill sidebar ── */
+  .sidebar-stat {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.3rem 1.2rem;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+    margin-bottom: 1.8rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+  }
+  .s-stat { text-align: center; }
+  .s-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: #3b0080;
+    display: block;
+    line-height: 1;
+  }
+  .s-stat .lbl { font-size: .73rem; color: #888; text-transform: uppercase; letter-spacing: .4px; }
+</style>
+
+<div class="ws-wrapper">
+
+  <!-- Page Header -->
+  <div class="ws-page-header">
+    <div class="inner">
+      <h1>Why Study at ANTS?</h1>
+      <div class="gold-bar"></div>
+      <p>Discover what makes All Nations Theological College &amp; Seminary the right place to grow your faith, sharpen your mind, and answer your calling.</p>
     </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="ws-breadcrumb">
+    <div class="inner">
+      <a href="{% url 'home' %}">Home</a>
+      <span> &rsaquo; Study at ANTS &rsaquo; Why Study at ANTS</span>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="ws-grid">
+
+    <!-- Main Content -->
+    <main>
+
+      <!-- Social Share -->
+      <div class="ws-share">
+        <a href="#" class="fb"><i class="fab fa-facebook-f"></i> Share</a>
+        <a href="#" class="tw"><i class="fab fa-twitter"></i> Tweet</a>
+        <a href="#" class="wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+
+      <!-- Lead -->
+      <div class="ws-lead">
+        ANTS is dedicated to preparing students at post-secondary level through rigorous instruction in the Bible and Theology, and through intentional training in character and spiritual formation — raising leaders who are ready not just academically, but for life and ministry.
+      </div>
+
+      <!-- Reason Cards -->
+      <div class="reasons-list">
+
+        <div class="reason-card">
+          <div class="reason-icon">🏛️</div>
+          <div class="reason-body">
+            <h5>Fully Registered &amp; Accredited</h5>
+            <p>ANTS is recognised by the <strong>National Council for Higher Education (NCHE)</strong>, ensuring your academic credentials are valid nationally and internationally. When you enroll at ANTS, you join an institution that meets the highest national standards for tertiary education.</p>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">✝️</div>
+          <div class="reason-body">
+            <h5>Christ-Centered Curriculum</h5>
+            <p>Our curriculum is rooted in the unshakeable truth of Scripture, blending academic rigour with practical ministry formation. Whether you are called to pastoral ministry, missions, or counselling, our programmes are designed to deepen your faith and sharpen your mind.</p>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">💰</div>
+          <div class="reason-body">
+            <h5>Affordable Education &amp; Scholarships</h5>
+            <p>We believe theological education should be accessible to all who are called. ANTS offers highly competitive tuition rates alongside <strong>bursaries and work-study programmes</strong> for students who demonstrate financial need and academic potential.</p>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🌱</div>
+          <div class="reason-body">
+            <h5>Holistic Student Development</h5>
+            <p>At ANTS, transformation goes beyond the classroom. Our serene campus in <strong>Kisubi</strong> fosters spiritual reflection, community life, daily chapel services, and mentorship from experienced, godly faculty who invest personally in every student.</p>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">📚</div>
+          <div class="reason-body">
+            <h5>Resourceful Ilam Library</h5>
+            <p>The <strong>Ilam Library</strong> is stocked with an extensive collection of theological texts, Bible commentaries, and online academic journals. It provides a quiet, reflective environment designed to support deep study, serious research, and spiritual enquiry.</p>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🌍</div>
+          <div class="reason-body">
+            <h5>Diverse International Community</h5>
+            <p>Study alongside believers from Uganda, Kenya, South Sudan, DR Congo, Rwanda, Burundi, Tanzania, Ethiopia and beyond. The ANTS community is a rich tapestry of cultures and callings, preparing you for cross-cultural ministry in a globalised world.</p>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🎓</div>
+          <div class="reason-body">
+            <h5>Proven Track Record</h5>
+            <p>Since 1993, ANTS has successfully held <strong>28+ graduation ceremonies</strong>, sending out generations of pastors, missionaries, and church leaders who are actively serving across East Africa and the wider world.</p>
+          </div>
+        </div>
+
+      </div><!-- /reasons-list -->
+
+      <!-- CTA -->
+      <div class="ws-cta">
+        <div>
+          <p>Ready to Begin Your Journey?
+            <small>Applications are open. Take the next step in your calling.</small>
+          </p>
+        </div>
+        <a href="{% url 'student_dashboard' %}" class="btn-gold">Apply Now →</a>
+      </div>
+
+    </main>
+
+    <!-- Sidebar -->
+    <aside class="ws-sidebar">
+
+      <!-- Stats -->
+      <div class="sidebar-stat">
+        <div class="s-stat"><span class="num">31+</span><span class="lbl">Years</span></div>
+        <div class="s-stat"><span class="num">28+</span><span class="lbl">Graduations</span></div>
+        <div class="s-stat"><span class="num">8+</span><span class="lbl">Countries</span></div>
+        <div class="s-stat"><span class="num">NCHE</span><span class="lbl">Accredited</span></div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="quick-links-card">
+        <div class="ql-header">⚡ Quick Links</div>
+        <a href="{% url 'admission_requirements' %}">Admission Requirements <span class="arrow">›</span></a>
+        <a href="{% url 'program_list' 'bachelors' %}">Browse Programmes <span class="arrow">›</span></a>
+        <a href="{% url 'student_dashboard' %}">Apply Now <span class="arrow">›</span></a>
+      </div>
+
+      <!-- News Widget -->
+      {% show_latest_news 3 %}
+
+    </aside>
+
+  </div><!-- /grid -->
 </div>
 
-<div class="container py-5">
-    <div class="row">
-        
-        <!-- LEFT COLUMN: Main Content -->
-        <div class="col-lg-8 mb-5">
-            
-            <!-- Social Share Icons -->
-            <div class="mb-4">
-                <a href="#" class="me-2"><i class="fab fa-facebook fa-lg text-primary"></i></a>
-                <a href="#" class="me-2"><i class="fab fa-twitter fa-lg text-info"></i></a>
-                <a href="#" class="me-2"><i class="fab fa-whatsapp fa-lg text-success"></i></a>
-            </div>
-
-            <h2 class="fw-bold text-uppercase text-primary mb-4">Why Study at All Nations Theological College & Seminary</h2>
-            
-            <p class="lead text-muted mb-4">
-                ANTS is dedicated to preparing students at post secondary level through instruction in the Bible and Theology and through training in character and
-spiritual building
-
-            <!-- Point 1 -->
-            <div class="mb-4">
-                <h5 class="fw-bold text-dark border-start border-4 border-warning ps-3">Fully Registered & Accredited</h5>
-                <p class="text-muted">
-                    We are recognized by the National Council for Higher Education (NCHE). This ensures that your academic papers from ANTS are recognized worldwide as valid. When you enroll with ANTS, you are joining an institution that meets national and international standards.
-                </p>
-            </div>
-
-            <!-- Point 2 -->
-            <div class="mb-4">
-                <h5 class="fw-bold text-dark border-start border-4 border-warning ps-3">Christ-Centered Curriculum</h5>
-                <p class="text-muted">
-                    Our curriculum is rooted in the unshakeable truth of Scripture. We emphasize practical ministry skills alongside academic rigor. Whether you are called to pastoral ministry, missions, or counseling, our courses are designed to deepen your faith and sharpen your mind.
-                </p>
-            </div>
-
-            <!-- Point 3 -->
-            <div class="mb-4">
-                <h5 class="fw-bold text-dark border-start border-4 border-warning ps-3">Affordable Education & Scholarships</h5>
-                <p class="text-muted">
-                    We believe theological education should be accessible. ANTS offers highly competitive tuition rates. Additionally, we offer bursaries and work-study programs to qualifying students who demonstrate financial need and academic potential.
-                </p>
-            </div>
-
-            <!-- Point 4 -->
-            <div class="mb-4">
-                <h5 class="fw-bold text-dark border-start border-4 border-warning ps-3">Holistic Student Development</h5>
-                <p class="text-muted">
-                    ANTS is not just about books; it is about life transformation. Our serene campus environment in Kisubi allows for spiritual reflection. We emphasize community life, daily chapel services, and mentorship from experienced faculty.
-                </p>
-            </div>
-
-            <!-- Point 5 -->
-            <div class="mb-4">
-                <h5 class="fw-bold text-dark border-start border-4 border-warning ps-3">Resourceful Library</h5>
-                <p class="text-muted">
-                    Our library is stocked with a wide selection of theological books, commentaries, and online journals to support your research. We provide a quiet environment conducive to deep study and reflection.
-                </p>
-            </div>
-
-        </div>
-
-        <!-- RIGHT COLUMN: Sidebar with News Widget -->
-        <div class="col-lg-4">
-            
-            <!-- Quick Links -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white fw-bold text-uppercase py-3">
-                    <i class="fas fa-link me-2 text-warning"></i> Quick Links
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'admission_requirements' %}" class="list-group-item list-group-item-action py-3">Admission Requirements</a>
-                    <a href="{% url 'program_list' 'bachelors' %}" class="list-group-item list-group-item-action py-3">Browse Courses</a>
-                    <a href="{% url 'student_dashboard' %}" class="list-group-item list-group-item-action py-3">Apply Now</a>
-                </div>
-            </div>
-
-            <!-- The News Widget (Reusing what we built!) -->
-            {% show_latest_news 3 %}
-
-        </div>
-
-    </div>
-</div>
 {% endblock %}

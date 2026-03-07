@@ -3,226 +3,715 @@
 
 {% block content %}
 
-<!-- Header Banner -->
-<div class="bg-primary py-5 text-white text-center position-relative" 
-     style="background: linear-gradient(rgba(40, 10, 80, 0.9), rgba(40, 10, 80, 0.9)), url('{% static 'img/church1.png' %}') center/cover;">
-    <div class="container">
-        <h1 class="fw-bold display-5">ANTS Chapel</h1>
-        <p class="mb-0 text-white-50 text-uppercase">Spiritual Life & Worship</p>
-    </div>
-</div>
-
-<div class="container py-5">
-    
-    <!-- 1. ABOUT THE CHAPEL - OPTION 1: FIXED Z-INDEX (Original Style Fixed) -->
-    <div class="row align-items-center mb-5 pb-5 border-bottom">
-        <div class="col-lg-6 mb-4 mb-lg-0">
-            <h5 class="text-warning fw-bold text-uppercase ls-2">The Heart of Campus</h5>
-            <h2 class="fw-bold text-primary mb-3">A Place of Spiritual Formation</h2>
-            <p class="lead text-muted fst-italic">"They devoted themselves to the apostles' teaching and to fellowship..." - Acts 2:42</p>
-            
-            <p class="text-dark">
-                Since its establishment in 2004, the ANTS Chapel has served as the spiritual center of our community. It is more than just a building; it is where faculty and students gather daily to seek God's face, aligning our academic pursuit with spiritual vitality.
-            </p>
-            <p class="text-muted">
-                Our worship style is vibrant and interdenominational, reflecting the diverse cultures of the 10+ nations represented at ANTS. Whether through Morning Glory, Community Chapel, or Evening Devotions, our goal is to mold servant leaders who are spiritually nourished.
-            </p>
-        </div>
-<div class="col-lg-6">
-    <div class="card border-0 shadow-lg">
-        <div class="card-body p-0 position-relative overflow-hidden">
-            <img src="{% static 'img/church1.png' %}" class="img-fluid" alt="Chapel Interior">
-            <!-- Decorative overlay -->
-            <div class="position-absolute bottom-0 start-0 w-100 p-4 text-white" 
-                 style="background: linear-gradient(to top, rgba(40, 10, 80, 0.9), transparent);">
-                <h5 class="fw-bold mb-0">ANTS Chapel</h5>
-                <small>Est. 2004</small>
-            </div>
-        </div>
-    </div>
-</div>
-    </div>
-
-    <!-- 2. SERVICE SCHEDULE (Styled Version) -->
-    <div class="row mb-5 justify-content-center">
-        <div class="col-lg-10">
-            <div class="card border-0 shadow-sm">
-                
-                <!-- Stylish Header -->
-                <div class="card-header bg-white border-bottom-0 pt-4 text-center">
-                    <div class="d-inline-block p-3 rounded-circle bg-light mb-2 text-primary">
-                        <i class="fas fa-clock fa-2x"></i>
-                    </div>
-                    <h3 class="fw-bold text-primary">Weekly Service Schedule</h3>
-                    <p class="text-muted small">Join us for times of refreshing and word.</p>
-                    <div class="mx-auto" style="width: 60px; height: 3px; background: var(--ants-gold);"></div>
-                </div>
-
-                <!-- Stylish Table -->
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="bg-primary text-white text-uppercase small text-center">
-                                <tr>
-                                    <th class="py-3" style="width: 30%;">Day</th>
-                                    <th class="py-3" style="width: 30%;">Time</th>
-                                    <th class="py-3" style="width: 40%;">Activity</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center">
-                                
-                                <!-- Morning Devotion -->
-                                <tr class="schedule-row">
-                                    <td class="fw-bold text-primary">MONDAY - FRIDAY</td>
-                                    <td class="text-muted font-monospace">06:00 AM - 07:00 AM</td>
-                                    <td><span class="badge bg-gold text-dark px-3 py-2">MORNING DEVOTION</span></td>
-                                </tr>
-
-                                <!-- Chapel Service -->
-                                <tr class="schedule-row">
-                                    <td class="fw-bold text-primary">MONDAY - FRIDAY</td>
-                                    <td class="text-muted font-monospace">11:00 AM - 11:50 AM</td>
-                                    <td><span class="badge bg-purple px-3 py-2">CHAPEL SERVICE</span></td>
-                                </tr>
-
-                                <!-- Evening Prayer -->
-                                <tr class="schedule-row bg-light">
-                                    <td class="fw-bold text-danger">FRIDAY</td>
-                                    <td class="text-muted font-monospace">08:00 PM - 11:00 PM</td>
-                                    <td><span class="badge bg-danger bg-opacity-75 px-3 py-2">EVENING PRAYER</span></td>
-                                </tr>
-
-                                <!-- Sunday Worship -->
-                                <tr class="schedule-row">
-                                    <td class="fw-bold text-primary">SUNDAY</td>
-                                    <td class="text-muted font-monospace">09:00 AM - 11:00 AM</td>
-                                    <td><span class="badge bg-gold text-dark px-3 py-2">WORSHIP SERVICE</span></td>
-                                </tr>
-
-                                <!-- Bible Study -->
-                                <tr class="schedule-row">
-                                    <td class="fw-bold text-secondary">SUNDAY</td>
-                                    <td class="text-muted font-monospace">11:00 AM - 12:00 PM</td>
-                                    <td><span class="text-dark fw-bold">Group Bible Study</span></td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Footer Note -->
-                <div class="card-footer bg-light text-center py-3">
-                    <small class="text-muted fst-italic">
-                        * Attendance is mandatory for residential students.
-                    </small>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. SERMON ARCHIVE (Dynamic from Admin Panel) -->
-    <!-- Note: You add these videos via Admin -> Core -> Sermons -->
-    <div class="mt-5">
-        <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2">
-            <div>
-                <h6 class="text-warning fw-bold text-uppercase mb-1">Online Ministry</h6>
-                <h2 class="fw-bold text-primary mb-0">Sermon Archive</h2>
-            </div>
-            <a href="https://www.youtube.com/@antsuganda" target="_blank" class="btn btn-danger btn-sm fw-bold">
-                <i class="fab fa-youtube me-2"></i> Subscribe
-            </a>
-        </div>
-        
-        <div class="row">
-            <!-- Main Video Player (Left) -->
-            <div class="col-lg-8 mb-4">
-                {% if latest_sermon %}
-                    <div class="ratio ratio-16x9 shadow-lg rounded overflow-hidden mb-3">
-                        <iframe 
-                                    src="https://www.youtube.com/embed/{{ latest_sermon.get_video_id }}" 
-                                    title="{{ latest_sermon.title }}" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    referrerpolicy="strict-origin-when-cross-origin"
-                                    allowfullscreen>
-                                </iframe>
-                    </div>
-                    <div>
-                        <h3 class="fw-bold text-dark">{{ latest_sermon.title }}</h3>
-                        <div class="text-muted mb-2">
-                            <span class="me-3"><i class="fas fa-user-tie text-primary me-2"></i> {{ latest_sermon.preacher }}</span>
-                            <span><i class="far fa-calendar-alt text-warning me-2"></i> {{ latest_sermon.date_preached }}</span>
-                        </div>
-                        <p class="text-secondary">{{ latest_sermon.description }}</p>
-                    </div>
-                {% else %}
-                    <div class="alert alert-light text-center py-5 border">
-                        <i class="fab fa-youtube fa-3x text-muted mb-3"></i>
-                        <p>No sermons uploaded yet. Add them in the Admin Panel.</p>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Recent List (Right) -->
-            <div class="col-lg-4">
-                <div class="bg-light p-4 rounded shadow-sm border-top border-5 border-danger h-100">
-                    <h5 class="fw-bold text-dark mb-3">Recent Messages</h5>
-                    
-                    <div class="list-group list-group-flush bg-transparent">
-                        {% for sermon in recent_sermons %}
-                        <a href="#" class="list-group-item list-group-item-action bg-transparent py-3 border-bottom" data-bs-toggle="modal" data-bs-target="#videoModal{{ sermon.id }}">
-                            <div class="d-flex gap-3">
-                                <div class="position-relative flex-shrink-0">
-                                    <img src="https://img.youtube.com/vi/{{ sermon.get_video_id }}/mqdefault.jpg" class="rounded shadow-sm" width="100" height="60" style="object-fit: cover;">
-                                    <div class="position-absolute top-50 start-50 translate-middle text-white small">
-                                        <i class="fas fa-play-circle"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-1 fw-bold text-dark small line-clamp-2">{{ sermon.title }}</h6>
-                                    <small class="text-muted d-block">{{ sermon.preacher }}</small>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Modal for sidebar video -->
-                        <div class="modal fade" id="videoModal{{ sermon.id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-body p-0">
-                                        <div class="ratio ratio-16x9">
-                                            <iframe src="https://www.youtube.com/embed/{{ sermon.get_video_id }}" allowfullscreen></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <p class="text-muted small fst-italic">No other recent sermons.</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- Internal CSS for Table styling -->
 <style>
-    .bg-gold { background-color: var(--ants-gold); }
-    .bg-purple { background-color: var(--ants-purple); color: white; }
-    
-    .schedule-row { transition: background 0.3s; }
-    .schedule-row:hover { background-color: #fff9e6 !important; } /* Light yellow on hover */
-    
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+  :root {
+    --purple:  #4a148c;
+    --purple2: #6a1fa8;
+    --gold:    #ffca28;
+    --blue:    #0d6efd;
+    --blue2:   #0077b5;
+    --white:   #ffffff;
+    --soft:    #f8f9fa;
+    --text:    #333333;
+    --muted:   #666666;
+  }
+
+  .chapel-wrapper {
+    background: var(--soft);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── Hero ── */
+  .chapel-hero {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+  }
+  .chapel-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    filter: brightness(0.75);
+    transition: transform 8s ease;
+  }
+  .chapel-hero:hover img { transform: scale(1.04); }
+  .chapel-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(74,20,140,0.65) 0%, rgba(74,20,140,0.25) 60%, rgba(74,20,140,0.1) 100%);
+    display: flex; align-items: flex-end;
+    padding: 2rem 3rem;
+  }
+  .chapel-hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 3rem;
+    margin: 0 0 .4rem;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+  .chapel-hero-text .subtitle {
+    color: rgba(255,255,255,0.72);
+    font-size: .95rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: .8rem;
+  }
+  .gold-bar {
+    width: 60px; height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  /* ── Body ── */
+  .chapel-body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+  }
+
+  /* ── Section title ── */
+  .section-label {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: .3rem;
+    /* gold label needs dark bg visibility fix via text-shadow for light bgs */
+    -webkit-text-stroke: .3px rgba(0,0,0,0.15);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    color: var(--purple);
+    margin: 0 0 1.2rem;
+    line-height: 1.2;
+  }
+  .section-divider {
+    width: 56px; height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 1.6rem;
+  }
+
+  /* ── About Section ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: center;
+    margin-bottom: 5rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid #e8dff5;
+  }
+  @media(max-width:768px){ .about-grid{ grid-template-columns:1fr; } }
+
+  .scripture-block {
+    background: #f5f0ff;
+    border-left: 4px solid var(--purple);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.3rem;
+    margin-bottom: 1.4rem;
+    font-style: italic;
+    color: var(--purple);
+    font-size: 1rem;
+  }
+  .about-text p {
+    color: var(--text);
+    line-height: 1.85;
+    font-size: 1.02rem;
+    margin-bottom: 1rem;
+  }
+
+  .chapel-img-card {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(74,20,140,0.18);
+    position: relative;
+  }
+  .chapel-img-card img {
+    width: 100%; height: 380px;
+    object-fit: cover;
+    display: block;
+    transition: transform 5s ease;
+  }
+  .chapel-img-card:hover img { transform: scale(1.04); }
+  .chapel-img-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(74,20,140,0.92), transparent);
+    padding: 2rem 1.5rem 1.2rem;
+    color: var(--white);
+  }
+  .chapel-img-caption h5 {
+    font-family: 'Playfair Display', serif;
+    margin: 0 0 .2rem;
+    font-size: 1.15rem;
+  }
+  .chapel-img-caption small { color: rgba(255,255,255,.65); font-size: .82rem; }
+
+  /* ── Schedule ── */
+  .schedule-section { margin-bottom: 5rem; }
+  .schedule-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 30px rgba(74,20,140,0.10);
+  }
+  .schedule-header {
+    background: linear-gradient(135deg, var(--purple), var(--purple2));
+    padding: 2rem;
+    text-align: center;
+    color: var(--white);
+  }
+  .schedule-header .icon-ring {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+  }
+  .schedule-header h3 {
+    font-family: 'Playfair Display', serif;
+    margin: 0 0 .3rem;
+    font-size: 1.6rem;
+  }
+  .schedule-header p { color: rgba(255,255,255,.65); font-size: .9rem; margin: 0; }
+
+  .schedule-table { width: 100%; border-collapse: collapse; }
+  .schedule-table thead tr {
+    background: #f5f0ff;
+  }
+  .schedule-table thead th {
+    padding: .85rem 1.2rem;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--purple);
+    font-weight: 700;
+    text-align: center;
+  }
+  .schedule-table tbody tr {
+    border-bottom: 1px solid #f0eaf8;
+    transition: background .15s;
+  }
+  .schedule-table tbody tr:last-child { border-bottom: none; }
+  .schedule-table tbody tr:hover { background: #fdf9ff; }
+  .schedule-table td {
+    padding: 1rem 1.2rem;
+    text-align: center;
+    font-size: .97rem;
+    color: var(--text);
+  }
+  .schedule-table .day-cell {
+    font-weight: 700;
+    color: var(--purple);
+    font-size: .93rem;
+  }
+  .schedule-table .time-cell {
+    font-family: monospace;
+    font-size: .92rem;
+    color: var(--muted);
+  }
+  .sched-badge {
+    display: inline-block;
+    border-radius: 20px;
+    padding: .35rem 1.1rem;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+  .badge-gold   { background: var(--gold); color: var(--purple); }
+  .badge-purple { background: var(--purple); color: var(--white); }
+  .badge-red    { background: #e53935; color: var(--white); }
+  .badge-blue   { background: var(--blue2); color: var(--white); }
+
+  .schedule-footer {
+    background: #fdf9ff;
+    padding: .9rem 1.5rem;
+    text-align: center;
+    font-size: .85rem;
+    color: var(--muted);
+    font-style: italic;
+    border-top: 1px solid #f0eaf8;
+  }
+
+  /* ── Sermon Archive ── */
+  .sermons-section { }
+  .sermons-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .btn-youtube {
+    background: #ff0000;
+    color: var(--white);
+    border: none;
+    border-radius: 25px;
+    padding: .5rem 1.4rem;
+    font-size: .88rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    transition: background .2s, transform .2s;
+  }
+  .btn-youtube:hover { background: #cc0000; color: var(--white); transform: scale(1.03); }
+
+  .sermons-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media(max-width:900px){ .sermons-grid{ grid-template-columns:1fr; } }
+
+  .main-video {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.10);
+  }
+  .main-video .video-embed {
+    aspect-ratio: 16/9;
+    background: #000;
+  }
+  .main-video .video-embed iframe {
+    width: 100%; height: 100%;
+    border: none; display: block;
+  }
+  .main-video .video-info {
+    padding: 1.5rem 1.8rem;
+  }
+  .main-video .video-info h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1.35rem;
+    margin: 0 0 .6rem;
+  }
+  .main-video .video-meta {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    font-size: .88rem; color: var(--muted); margin-bottom: .8rem;
+  }
+  .main-video .video-meta span { display: flex; align-items: center; gap: .4rem; }
+  .main-video .video-meta i { color: var(--purple); }
+  .main-video .video-desc { font-size: .97rem; color: #555; line-height: 1.7; margin: 0; }
+
+  /* No sermon placeholder */
+  .no-sermon {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    color: var(--muted);
+  }
+  .no-sermon i { font-size: 3rem; color: #ddd; margin-bottom: 1rem; display: block; }
+
+  /* Sidebar sermons */
+  .recent-sermons {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--purple);
+  }
+  .recent-sermons .rs-header {
+    padding: 1.1rem 1.3rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--purple);
+    border-bottom: 1px solid #f0eaf8;
+  }
+  .sermon-item {
+    display: flex;
+    gap: .9rem;
+    padding: .9rem 1.1rem;
+    border-bottom: 1px solid #f5f0ff;
+    cursor: pointer;
+    transition: background .15s;
+    text-decoration: none;
+  }
+  .sermon-item:last-child { border-bottom: none; }
+  .sermon-item:hover { background: #fdf9ff; }
+  .sermon-thumb {
+    position: relative; flex-shrink: 0;
+    width: 90px; height: 56px;
+    border-radius: 6px; overflow: hidden;
+  }
+  .sermon-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sermon-thumb .play-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(74,20,140,0.4);
+    color: var(--white);
+    font-size: .9rem;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .sermon-item:hover .play-icon { opacity: 1; }
+  .sermon-meta h6 {
+    font-size: .87rem;
+    color: var(--text);
+    font-weight: 600;
+    margin: 0 0 .25rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .sermon-meta small { font-size: .78rem; color: var(--muted); }
+
+  /* Modal */
+  .modal-content { border: none; border-radius: 12px; overflow: hidden; }
+  .modal-body { padding: 0; }
+  .modal-body .ratio iframe { border: none; }
+  /* ── Office of the Chaplain ── */
+  .chaplain-section {
+    margin-bottom: 5rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid #e8dff5;
+  }
+  .chaplain-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media(max-width: 768px){ .chaplain-grid{ grid-template-columns: 1fr; } }
+
+  .chaplain-text p {
+    color: var(--text);
+    line-height: 1.85;
+    font-size: 1.02rem;
+    margin-bottom: 1rem;
+  }
+  .chaplain-sig {
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 2px solid #f0e6ff;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+  .chaplain-sig strong {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1.1rem;
+  }
+  .chaplain-sig span {
+    font-size: .85rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+  }
+
+  /* Image frame — circular with gold corner accent */
+  .chaplain-img-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .chaplain-img-frame {
+    position: relative;
+    width: 260px; height: 260px;
+  }
+  .chaplain-img-inner {
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid var(--white);
+    box-shadow: 0 8px 32px rgba(74,20,140,0.18);
+    position: relative; z-index: 1;
+  }
+  .chaplain-img-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .gold-corner {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 100px; height: 100px;
+    border-right: 4px solid var(--gold);
+    border-bottom: 4px solid var(--gold);
+    border-radius: 0 0 12px 0;
+    z-index: 0;
+  }
+  .chaplain-name-tag {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+  .chaplain-name-tag strong {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1.05rem;
+  }
+  .chaplain-name-tag span {
+    font-size: .8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+  }
+
 </style>
+
+<div class="chapel-wrapper">
+
+  <!-- Hero -->
+  <div class="chapel-hero">
+    <img src="{% static 'img/chapel.jpg' %}" alt="ANTS Chapel">
+    <div class="chapel-hero-overlay">
+      <div class="chapel-hero-text">
+        <div class="subtitle">Spiritual Life &amp; Worship</div>
+        <h1>ANTS Chapel</h1>
+        <div class="gold-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapel-body">
+
+    <!-- 1. About the Chapel -->
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">The Heart of Campus</div>
+        <h2 class="section-title">A Place of Spiritual Formation</h2>
+        <div class="section-divider"></div>
+
+        <div class="scripture-block">
+          "They devoted themselves to the apostles' teaching and to fellowship, to the breaking of bread and to prayer." — Acts 2:42
+        </div>
+
+        <p>
+          Completed in <strong>2003</strong>, the ANTS Chapel has served as the spiritual centre of our community for over two decades. It is more than a building — it is where faculty and students gather daily to seek God's face, aligning academic pursuit with deep spiritual vitality.
+        </p>
+        <p>
+          Our worship is vibrant and interdenominational, reflecting the diverse cultures of the <strong>10+ nations</strong> represented at ANTS. Through Morning Devotions, Community Chapel, and Evening Prayer, we mold servant leaders who are spiritually nourished and ready for ministry.
+        </p>
+      </div>
+
+      <div class="chapel-img-card">
+        <img src="{% static 'img/chapel.jpg' %}" alt="ANTS Chapel">
+        <div class="chapel-img-caption">
+          <h5>ANTS Chapel</h5>
+          <small>Completed 2003 · Kisubi, Uganda</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Office of the Chaplain -->
+    <div class="chaplain-section">
+      <div class="chaplain-grid">
+
+        <!-- Text Side -->
+        <div class="chaplain-text">
+          <div class="section-label">Spiritual Leadership</div>
+          <h2 class="section-title">Office of the Chaplain</h2>
+          <div class="section-divider"></div>
+
+          <p>
+            Welcome to the ANTS Chapel — a sacred space set apart for encounter, renewal, and growth. Whether you are a new student finding your footing in faith, a seasoned believer deepening your walk, or simply someone seeking God's presence, this Chapel is for you.
+          </p>
+          <p>
+            My role as Chaplain is to walk alongside every member of our community — in seasons of joy, in moments of doubt, and in the ordinary rhythm of daily life. I believe that spiritual formation is not a destination but a daily journey, and it is my privilege to journey with you.
+          </p>
+          <p>
+            I warmly invite you to be part of our chapel programmes — from Morning Devotions to Friday Evening Prayer. Come as you are. Leave strengthened, encouraged, and equipped for God's purpose in your life.
+          </p>
+
+          <div class="chaplain-sig">
+            <strong>Dushimeyesu Ismael</strong>
+            <span>Chaplain, ANTS</span>
+          </div>
+        </div>
+
+        <!-- Image Side -->
+        <div class="chaplain-img-wrap">
+          <div class="chaplain-img-frame">
+            <div class="chaplain-img-inner">
+              <img src="{% static 'img/ismael.jpeg' %}" alt="Chaplain Dushimeyesu Ismael">
+            </div>
+            <!-- Gold corner accent like the principal image style -->
+            <div class="gold-corner"></div>
+          </div>
+          <div class="chaplain-name-tag">
+            <strong>Dushimeyesu Ismael</strong>
+            <span>Chaplain, ANTS</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. Service Schedule -->
+    <div class="schedule-section">
+      <div class="section-label" style="text-align:center;">Join Us</div>
+      <h2 class="section-title" style="text-align:center;">Weekly Service Schedule</h2>
+      <div class="section-divider" style="margin:0 auto 2rem;"></div>
+
+      <div class="schedule-card">
+        <div class="schedule-header">
+          <div class="icon-ring">⏰</div>
+          <h3>Service Times</h3>
+          <p>All are welcome. Residential students are required to attend.</p>
+        </div>
+
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="day-cell">Monday – Friday</td>
+              <td class="time-cell">06:00 AM – 07:00 AM</td>
+              <td><span class="sched-badge badge-gold">Morning Devotion</span></td>
+            </tr>
+            <tr>
+              <td class="day-cell">Monday – Friday</td>
+              <td class="time-cell">11:00 AM – 11:50 AM</td>
+              <td><span class="sched-badge badge-purple">Chapel Service</span></td>
+            </tr>
+            <tr>
+              <td class="day-cell">Friday</td>
+              <td class="time-cell">08:00 PM – 11:00 PM</td>
+              <td><span class="sched-badge badge-red">Evening Prayer</span></td>
+            </tr>
+            <tr>
+              <td class="day-cell">Sunday</td>
+              <td class="time-cell">09:00 AM – 11:00 AM</td>
+              <td><span class="sched-badge badge-gold">Worship Service</span></td>
+            </tr>
+            <tr>
+              <td class="day-cell">Sunday</td>
+              <td class="time-cell">11:00 AM – 12:00 PM</td>
+              <td><span class="sched-badge badge-blue">Group Bible Study</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="schedule-footer">
+          * Attendance is mandatory for all residential students.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Sermon Archive -->
+    <div class="sermons-section">
+      <div class="sermons-header">
+        <div>
+          <div class="section-label">Online Ministry</div>
+          <h2 class="section-title" style="margin-bottom:0;">Sermon Archive</h2>
+        </div>
+        <a href="https://www.youtube.com/@antsuganda" target="_blank" class="btn-youtube">
+          <i class="fab fa-youtube"></i> Subscribe on YouTube
+        </a>
+      </div>
+
+      <div class="sermons-grid">
+
+        <!-- Main video -->
+        <div>
+          {% if latest_sermon %}
+            <div class="main-video">
+              <!-- Click-to-play: avoids YouTube embed restrictions (Error 153) -->
+              <div class="video-embed" id="mainVideoEmbed"
+                   data-videoid="{{ latest_sermon.get_video_id }}"
+                   style="cursor:pointer; position:relative; aspect-ratio:16/9; background:#000; border-radius:0;">
+                <img src="https://img.youtube.com/vi/{{ latest_sermon.get_video_id }}/maxresdefault.jpg"
+                     onerror="this.src='https://img.youtube.com/vi/{{ latest_sermon.get_video_id }}/hqdefault.jpg'"
+                     style="width:100%;height:100%;object-fit:cover;display:block;opacity:.85;">
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                  <div style="width:72px;height:72px;border-radius:50%;background:rgba(74,20,140,0.85);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:transform .2s;"
+                       onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                    <i class="fas fa-play" style="color:#ffca28;font-size:1.5rem;margin-left:4px;"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="video-info">
+                <h3>{{ latest_sermon.title }}</h3>
+                <div class="video-meta">
+                  <span><i class="fas fa-user-tie"></i> {{ latest_sermon.preacher }}</span>
+                  <span><i class="far fa-calendar-alt"></i> {{ latest_sermon.date_preached }}</span>
+                </div>
+                <p class="video-desc">{{ latest_sermon.description }}</p>
+              </div>
+            </div>
+          {% else %}
+            <div class="no-sermon">
+              <i class="fab fa-youtube"></i>
+              <p>No sermons uploaded yet. Add them via the Admin Panel.</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Recent sidebar -->
+        <div class="recent-sermons">
+          <div class="rs-header">Recent Messages</div>
+          {% for sermon in recent_sermons %}
+            <a class="sermon-item" data-bs-toggle="modal" data-bs-target="#videoModal{{ sermon.id }}">
+              <div class="sermon-thumb">
+                <img src="https://img.youtube.com/vi/{{ sermon.get_video_id }}/mqdefault.jpg" alt="{{ sermon.title }}">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+              </div>
+              <div class="sermon-meta">
+                <h6>{{ sermon.title }}</h6>
+                <small>{{ sermon.preacher }}</small>
+              </div>
+            </a>
+
+            <!-- Modal -->
+            <div class="modal fade" id="videoModal{{ sermon.id }}" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <div class="ratio ratio-16x9">
+                      <iframe src="https://www.youtube.com/embed/{{ sermon.get_video_id }}" allowfullscreen></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p style="padding:1.2rem; color:var(--muted); font-size:.9rem; font-style:italic;">No recent sermons available.</p>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /chapel-body -->
+</div>
+
+<script>
+  // Click-to-play: replaces thumbnail with actual iframe on click
+  const embed = document.getElementById('mainVideoEmbed');
+  if (embed) {
+    embed.addEventListener('click', function() {
+      const vid = this.dataset.videoid;
+      this.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1"
+        style="width:100%;height:100%;border:none;display:block;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>`;
+    });
+  }
+</script>
+
 {% endblock %}

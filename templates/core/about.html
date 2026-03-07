@@ -1,38 +1,288 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <h1 class="mb-4">About ANTS</h1>
-            <p class="lead">ANTS is a Tertiary Institution registered by NCHE in Uganda. 
-                ANTS was founded in January, 1993 as a joint project of East Africa (Uganda), 
-                Korea and American Christians. Its purpose is to train international Christians as pastors,
-                 church leaders, and missionaries for the growth and maturity of all churches in Africa
-                  and the world. Currently students from (Uganda, Kenya, South Sudan, DR Congo, 
-                  Rwanda, Burundi, Tanzania, Ethiopia, etc) are studying at this institute.</p>
-            
-            <hr class="my-5">
-            
-            <h3>Our Mission</h3>
-            <p>The mission of ANTS is to prepare men and women through Biblical teachings to serve the church and the society by making disciples of all nations.</p>
-            
-            <h3 class="mt-4">Our Vision</h3>
-            <p>The Vision of ANTS, is to be a Center of Spiritual and Academic excellence in training Christian leaders in East Africa and beyond.</p>
-            
-           <h3 class="mt-4">CORE VALUES</h3>
-            <ol>
-                <li>Christ-Centered</li>
-                <li>Reformed Biblical Theology</li>
-                <li>Intimate Relationship With God</li>
-                <li>Self Reliance and Responsibility</li>
-                <li>Excellence in Academics and Ministry</li>
-                <li>Kingdom of God</li>
-                <li>Global Leadership in African Context</li>
-                <li>Mission Driven</li>
-            </ol>
-            
-        </div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+  .about-wrapper {
+    background: #f9f8f6;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── Page Header ── */
+  .about-page-header {
+    background: linear-gradient(135deg, #3b0080 0%, #5a189a 100%);
+    padding: 3.5rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-page-header::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(240,192,64,0.08);
+  }
+  .about-page-header::before {
+    content: '';
+    position: absolute;
+    left: -40px; bottom: -80px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .about-page-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 2.6rem;
+    margin: 0 0 .5rem;
+    position: relative;
+  }
+  .about-page-header p {
+    color: rgba(255,255,255,0.75);
+    font-size: 1rem;
+    margin: 0;
+    position: relative;
+  }
+  .gold-bar {
+    width: 56px; height: 4px;
+    background: #f0c040;
+    border-radius: 2px;
+    margin: .75rem 0 1rem;
+  }
+
+  /* ── Layout ── */
+  .about-body {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  /* ── Intro Card ── */
+  .intro-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    box-shadow: 0 4px 24px rgba(59,0,128,0.08);
+    border-left: 5px solid #3b0080;
+    margin-bottom: 2.8rem;
+    font-size: 1.08rem;
+    color: #333;
+    line-height: 1.85;
+  }
+  .intro-card strong { color: #3b0080; }
+
+  /* ── Origin Tags ── */
+  .origin-tags {
+    display: flex; flex-wrap: wrap; gap: .6rem;
+    margin-top: 1.2rem;
+  }
+  .origin-tag {
+    background: #f0e6ff;
+    color: #3b0080;
+    border-radius: 20px;
+    padding: .3rem .9rem;
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+
+  /* ── Section Titles ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #3b0080;
+    border-left: 4px solid #f0c040;
+    padding-left: .85rem;
+    margin: 2.8rem 0 1.2rem;
+    line-height: 1.25;
+  }
+
+  /* ── Mission & Vision Cards ── */
+  .mv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+    margin-bottom: 2.8rem;
+  }
+  @media(max-width: 640px){ .mv-grid{ grid-template-columns: 1fr; } }
+
+  .mv-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .mv-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .mv-card.mission::before { background: #3b0080; }
+  .mv-card.vision::before  { background: #f0c040; }
+
+  .mv-card .mv-icon {
+    font-size: 2rem;
+    margin-bottom: .8rem;
+    display: block;
+  }
+  .mv-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #3b0080;
+    margin: 0 0 .7rem;
+  }
+  .mv-card p {
+    color: #444;
+    font-size: .98rem;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* ── Core Values ── */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: .5rem;
+  }
+  .value-item {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .value-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(59,0,128,0.12);
+  }
+  .value-num {
+    background: #3b0080;
+    color: #f0c040;
+    font-family: 'Playfair Display', serif;
+    font-size: .85rem;
+    font-weight: 700;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .value-text {
+    font-size: .95rem;
+    color: #333;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  /* ── Students From Banner ── */
+  .students-banner {
+    background: linear-gradient(135deg, #3b0080, #5a189a);
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    margin-top: 2.8rem;
+    color: #fff;
+  }
+  .students-banner h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #f0c040;
+    margin: 0 0 1rem;
+  }
+  .country-pills {
+    display: flex; flex-wrap: wrap; gap: .6rem;
+  }
+  .country-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 20px;
+    padding: .3rem 1rem;
+    font-size: .85rem;
+  }
+</style>
+
+<div class="about-wrapper">
+
+  <!-- Page Header -->
+  <div class="about-page-header">
+    <div style="max-width:920px; margin:0 auto;">
+      <h1>About ANTS</h1>
+      <div class="gold-bar"></div>
+      <p>All Nations Theological College and Seminary — Equipping Leaders for the Gospel since 1993</p>
     </div>
+  </div>
+
+  <div class="about-body">
+
+    <!-- Intro -->
+    <div class="intro-card">
+      All Nations Theological College and Seminary (ANTS) is a <strong>Tertiary Institution registered by the National Council for Higher Education (NCHE)</strong> in Uganda. Founded in <strong>January 1993</strong> as a joint initiative of <strong>East African (Ugandan), Korean, and American Christians</strong>, ANTS was established with a singular purpose — to train committed believers as pastors, church leaders, and missionaries for the growth and maturity of the Church across Africa and the world.
+
+      <div class="origin-tags">
+        <span class="origin-tag">🇺🇬 Uganda</span>
+        <span class="origin-tag">🇰🇷 Korea</span>
+        <span class="origin-tag">🇺🇸 United States</span>
+        <span class="origin-tag">📅 Est. January 1993</span>
+        <span class="origin-tag">🎓 NCHE Accredited</span>
+      </div>
+    </div>
+
+    <!-- Mission & Vision -->
+    <h2 class="section-title">Mission &amp; Vision</h2>
+    <div class="mv-grid">
+      <div class="mv-card mission">
+        <span class="mv-icon">🎯</span>
+        <h4>Our Mission</h4>
+        <p>To prepare men and women through Biblical teachings to serve the Church and society by making disciples of all nations.</p>
+      </div>
+      <div class="mv-card vision">
+        <span class="mv-icon">🔭</span>
+        <h4>Our Vision</h4>
+        <p>To be a Centre of Spiritual and Academic Excellence in training Christian leaders in East Africa and beyond.</p>
+      </div>
+    </div>
+
+    <!-- Core Values -->
+    <h2 class="section-title">Core Values</h2>
+    <div class="values-grid">
+      <div class="value-item"><div class="value-num">1</div><div class="value-text">Christ-Centered</div></div>
+      <div class="value-item"><div class="value-num">2</div><div class="value-text">Reformed Biblical Theology</div></div>
+      <div class="value-item"><div class="value-num">3</div><div class="value-text">Intimate Relationship With God</div></div>
+      <div class="value-item"><div class="value-num">4</div><div class="value-text">Self Reliance and Responsibility</div></div>
+      <div class="value-item"><div class="value-num">5</div><div class="value-text">Excellence in Academics and Ministry</div></div>
+      <div class="value-item"><div class="value-num">6</div><div class="value-text">Kingdom of God</div></div>
+      <div class="value-item"><div class="value-num">7</div><div class="value-text">Global Leadership in African Context</div></div>
+      <div class="value-item"><div class="value-num">8</div><div class="value-text">Mission Driven</div></div>
+    </div>
+
+    <!-- Students From -->
+    <div class="students-banner">
+      <h5>🌍 Our Students Come From</h5>
+      <div class="country-pills">
+        <span class="country-pill">Uganda</span>
+        <span class="country-pill">Kenya</span>
+        <span class="country-pill">South Sudan</span>
+        <span class="country-pill">DR Congo</span>
+        <span class="country-pill">Rwanda</span>
+        <span class="country-pill">Burundi</span>
+        <span class="country-pill">Tanzania</span>
+        <span class="country-pill">Ethiopia</span>
+        <span class="country-pill">& more</span>
+      </div>
+    </div>
+
+  </div>
 </div>
+
 {% endblock %}

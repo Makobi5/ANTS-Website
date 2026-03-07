@@ -3,263 +3,430 @@
 
 {% block content %}
 
-<!-- 1. HEADER BANNER -->
-<div class="bg-primary py-5 text-white text-center position-relative" style="background: linear-gradient(rgba(27, 29, 78, 0.85), rgba(27, 29, 78, 0.85)), url('{% static 'img/ants.jpg' %}') center/cover no-repeat;">
-    <div class="container py-3">
-        <h1 class="fw-bold display-6">{{ service.name }}</h1>
-        <p class="mb-0 text-white-50 text-uppercase small">HOME / SERVICES / {{ service.name }}</p>
-    </div>
-</div>
-
-<div class="container py-5">
-    <div class="row">
-        
-        <!-- LEFT COLUMN: Profile & Navigation (Sidebar) -->
-        <div class="col-lg-3 mb-5">
-            
-            <!-- Head of Dept Profile -->
-            <div class="text-center mb-4">
-                <div class="mx-auto mb-3 position-relative" style="width: 160px; height: 160px;">
-                    {% if service.head_of_dept.photo %}
-                        <img src="{{ service.head_of_dept.photo.url }}" 
-                             class="w-100 h-100 rounded-circle border border-5 border-light shadow" 
-                             style="object-fit: cover;">
-                    {% else %}
-                        <div class="w-100 h-100 rounded-circle bg-light d-flex align-items-center justify-content-center border shadow-sm">
-                            <i class="fas fa-user fa-4x text-muted opacity-50"></i>
-                        </div>
-                    {% endif %}
-                </div>
-                <h5 class="fw-bold text-dark mb-1">{{ service.head_of_dept.name }}</h5>
-                <p class="text-muted fw-bold mb-3 small text-uppercase">{{ service.head_title }}</p>
-                
-                {% if service.head_of_dept %}
-                <a href="{% url 'staff_detail' service.head_of_dept.slug %}" class="btn btn-success btn-sm fw-bold px-4 rounded-pill shadow-sm">
-                    View Profile
-                </a>
-                {% endif %}
-            </div>
-
-            <!-- SIDEBAR MENU (Fixed Logic & Styling) -->
-            <div class="card shadow-sm border-0 rounded overflow-hidden">
-                <div class="list-group list-group-flush" id="v-pills-tab" role="tablist">
-                    
-                    <!-- 1. Mandate -->
-                    <button class="list-group-item list-group-item-action active fw-bold py-3 px-4" 
-                            id="tab-intro" data-bs-toggle="pill" data-bs-target="#content-intro" type="button">
-                        Mandate & Overview
-                    </button>
-                    
-                    <!-- 2. Duties (Only show if data exists) -->
-                    {% if service.duties %}
-                    <button class="list-group-item list-group-item-action fw-bold py-3 px-4" 
-                            id="tab-duties" data-bs-toggle="pill" data-bs-target="#content-duties" type="button">
-                        Duties & Responsibilities
-                    </button>
-                    {% endif %}
-                    
-                    <!-- 3. Staff (Show if text exists OR if staff members exist) -->
-                    {% if service.staff_content or service.staff_list.exists %}
-                    <button class="list-group-item list-group-item-action fw-bold py-3 px-4" 
-                            id="tab-staff" data-bs-toggle="pill" data-bs-target="#content-staff" type="button">
-                        Staff Members
-                    </button>
-                    {% endif %}
-                    
-                    <!-- 4. Contact (Always show) -->
-                    <button class="list-group-item list-group-item-action fw-bold py-3 px-4" 
-                            id="tab-contact" data-bs-toggle="pill" data-bs-target="#content-contact" type="button">
-                        Contact Information
-                    </button>
-
-                </div>
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- RIGHT COLUMN: Content Area (Tabs)             -->
-        <!-- ============================================= -->
-        <div class="col-lg-9 ps-lg-5">
-            <div class="tab-content" id="v-pills-tabContent">
-                
-                <!-- 1. CONTENT: Mandate -->
-                <div class="tab-pane fade show active" id="content-intro">
-                    <h3 class="text-primary fw-bold mb-4 border-bottom pb-2">{{ service.name }}</h3>
-                    <div class="service-text text-dark" style="line-height: 1.8;">
-                        {{ service.introduction|safe }}
-                    </div>
-                </div>
-
-                <!-- 2. CONTENT: Duties -->
-                <div class="tab-pane fade" id="content-duties">
-                    <h3 class="text-primary fw-bold mb-4 border-bottom pb-2">Duties & Responsibilities</h3>
-                    <div class="service-text text-muted" style="line-height: 1.8;">
-                        {{ service.duties|safe }}
-                    </div>
-                </div>
-
-                <!-- 3. CONTENT: Staff List -->
-                <div class="tab-pane fade" id="content-staff">
-                    <h3 class="text-primary fw-bold mb-4 border-bottom pb-2">Staff Members</h3>
-                    
-                    {% if service.staff_list.all %}
-                        <div class="list-group list-group-flush border rounded">
-                            {% for staff in service.staff_list.all %}
-                            <div class="list-group-item py-3 d-flex align-items-center">
-                                <div class="me-4 flex-shrink-0">
-                                    {% if staff.photo %}
-                                        <img src="{{ staff.photo.url }}" class="rounded-circle shadow-sm border" width="70" height="70" style="object-fit: cover;">
-                                    {% else %}
-                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center border" style="width: 70px; height: 70px;">
-                                            <i class="fas fa-user text-muted"></i>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="fw-bold text-primary mb-1">{{ staff.name }}</h6>
-                                    <small class="text-dark fw-bold text-uppercase">{{ staff.role }}</small>
-                                    <small class="text-muted d-block mt-1">{{ staff.qualifications }}</small>
-                                </div>
-                                <div class="ms-3 d-none d-md-block">
-                                    <a href="{% url 'staff_detail' staff.slug %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">Profile</a>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-warning">Staff list is being updated.</div>
-                    {% endif %}
-                </div>
-
-                <!-- 4. CONTENT: Contact Info -->
-                <div class="tab-pane fade" id="content-contact">
-                    
-                    <!-- Heading with Blue Line -->
-                    <h3 class="fw-bold text-primary contact-title-underline" style="color: #0077b5 !important;">
-                        Contact Information
-                    </h3>
-                    
-                    <!-- Content Area -->
-                    <div class="contact-details-box mt-3">
-                        <div class="contact-content">
-                            {{ service.contact_info|safe }}
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-</div>
-
 <style>
-    /* ============================================================
-       1. SIDEBAR NAVIGATION (KABALE STYLE)
-       ============================================================ */
-    
-    .list-group-item-action {
-        border-left: 5px solid transparent; 
-        color: #555;
-        transition: all 0.2s ease;
-        border-bottom: 1px solid #eee;
-        font-size: 0.95rem;
-    }
-    
-    /* Hover State: Slide effect */
-    .list-group-item-action:hover {
-        background-color: #f8f9fa;
-        color: #1b1d4e; /* Using your dark theme color */
-        padding-left: 30px !important; 
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
-    /* Active State: Blue background with Gold left border */
-    .list-group-item-action.active {
-        background-color: #0077b5 !important; /* KAB Blue */
-        color: #fff !important;
-        border-left: 5px solid #ffc107; /* Gold Strip */
-        border-color: #0077b5;
-        padding-left: 30px !important;
-    }
+  :root {
+    --purple:  #4a148c;
+    --purple2: #6a1fa8;
+    --gold:    #ffca28;
+    --blue:    #0d6efd;
+    --blue2:   #0077b5;
+    --white:   #ffffff;
+    --soft:    #f8f9fa;
+    --text:    #333333;
+    --muted:   #666666;
+  }
 
-    /* ============================================================
-       2. DROP-CAP (THE FIX)
-       ============================================================ */
-    
-    /* 
-       Targets ONLY the first paragraph that is a DIRECT child of .service-text 
-       inside the Mandate (intro) tab. 
-    */
-    #content-intro .service-text > p:first-of-type::first-letter {
-        font-size: 3.5rem; 
-        color: #1b1d4e; 
-        font-weight: bold;
-        float: left;
-        margin-right: 10px;
-        line-height: 0.85;
-        margin-top: 5px;
-        font-family: serif;
-    }
+  .sd-wrapper {
+    background: var(--soft);
+    font-family: 'Source Sans 3', sans-serif;
+  }
 
-    /* 
-       Safety Reset: Prevents drop-caps from appearing in lists, 
-       even if the CMS wraps list items in <p> tags.
-    */
-    .service-text li p::first-letter,
-    .service-text li::first-letter {
-        font-size: inherit !important;
-        color: inherit !important;
-        font-weight: inherit !important;
-        float: none !important;
-        margin: 0 !important;
-        line-height: inherit !important;
-    }
+  /* ── Hero Banner ── */
+  .sd-hero {
+    background:
+      linear-gradient(160deg, rgba(74,20,140,0.84) 0%, rgba(30,10,70,0.78) 100%),
+      url("{% static 'img/ants.jpg' %}") center center / cover no-repeat;
+    padding: 4rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .sd-hero::after {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,202,40,0.07);
+  }
+  .sd-hero .inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .sd-hero h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 2.6rem;
+    margin: 0 0 .5rem;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .sd-hero .gold-bar {
+    width: 56px; height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin: .6rem 0 .9rem;
+  }
+  .sd-hero .breadcrumb-text {
+    color: rgba(255,255,255,0.65);
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+  .sd-hero .breadcrumb-text a { color: var(--gold); text-decoration: none; }
 
-    /* ============================================================
-       3. CONTACT INFORMATION STYLING
-       ============================================================ */
-    
-    .contact-title-underline {
-        border-bottom: 2px solid #0077b5;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-        display: block;
-        width: 100%;
-    }
+  /* ── Page Grid ── */
+  .sd-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+  @media(max-width: 900px) { .sd-grid { grid-template-columns: 1fr; } }
 
-    .contact-details-box {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
-    }
+  /* ── Sidebar ── */
+  .sd-sidebar { }
 
-    .contact-content {
-        font-size: 1.05rem;
-        color: #333;
-        line-height: 1.6;
-    }
+  /* Profile Card */
+  .profile-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 1.8rem 1.4rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(74,20,140,0.10);
+    margin-bottom: 1.5rem;
+    border-top: 4px solid var(--purple);
+  }
+  .profile-card .avatar {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--gold);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    margin: 0 auto 1rem;
+    display: block;
+  }
+  .profile-card .avatar-placeholder {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: #f0e6ff;
+    border: 4px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .profile-card h5 {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1.1rem;
+    margin: 0 0 .3rem;
+  }
+  .profile-card .role {
+    font-size: .78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .btn-profile {
+    background: var(--purple);
+    color: var(--gold);
+    border: none;
+    border-radius: 25px;
+    padding: .45rem 1.4rem;
+    font-size: .85rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    transition: background .2s, transform .2s;
+  }
+  .btn-profile:hover {
+    background: var(--purple2);
+    color: var(--gold);
+    transform: scale(1.03);
+  }
 
-    /* Auto-style Bold text as Blue Labels */
-    .contact-content strong, 
-    .contact-content b {
-        color: #0077b5 !important;
-        font-weight: 800;
-        margin-right: 5px;
-    }
+  /* Tab Nav */
+  .tab-nav {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 16px rgba(74,20,140,0.09);
+  }
+  .tab-nav button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: .9rem 1.2rem .9rem 1.4rem;
+    border: none;
+    border-bottom: 1px solid #f0eaf8;
+    background: transparent;
+    color: var(--text);
+    font-size: .95rem;
+    font-weight: 500;
+    font-family: 'Source Sans 3', sans-serif;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    transition: all .18s;
+  }
+  .tab-nav button:last-child { border-bottom: none; }
+  .tab-nav button:hover {
+    background: #f5f0ff;
+    color: var(--purple);
+    border-left-color: var(--gold);
+    padding-left: 1.7rem;
+  }
+  .tab-nav button.active {
+    background: var(--purple);
+    color: var(--gold);
+    border-left-color: var(--gold);
+    font-weight: 700;
+    padding-left: 1.7rem;
+  }
 
-    /* ============================================================
-       4. GENERAL CONTENT STYLING
-       ============================================================ */
-    
-    .service-text {
-        font-size: 1.05rem;
-    }
+  /* ── Main Content ── */
+  .sd-main { }
 
-    .service-text p {
-        margin-bottom: 1.5rem;
-    }
+  .tab-content-area { }
+
+  .tab-pane-inner { display: none; }
+  .tab-pane-inner.active { display: block; }
+
+  /* Section titles */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    color: var(--purple);
+    border-left: 4px solid var(--gold);
+    padding-left: .85rem;
+    margin: 0 0 1.4rem;
+    line-height: 1.25;
+  }
+
+  /* Content body */
+  .content-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+  }
+
+  .service-text {
+    font-size: 1.03rem;
+    color: var(--text);
+    line-height: 1.85;
+  }
+  .service-text p { margin-bottom: 1.4rem; }
+
+  /* Drop cap — intro only */
+  #pane-intro .service-text > p:first-of-type::first-letter {
+    font-size: 3.2rem;
+    color: var(--purple);
+    font-weight: 700;
+    float: left;
+    margin-right: 8px;
+    line-height: .85;
+    margin-top: 6px;
+    font-family: 'Playfair Display', serif;
+  }
+  .service-text li p::first-letter,
+  .service-text li::first-letter {
+    font-size: inherit !important; color: inherit !important;
+    font-weight: inherit !important; float: none !important;
+    margin: 0 !important; line-height: inherit !important;
+  }
+
+  /* ── Staff List ── */
+  .staff-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .staff-item {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 4px solid var(--purple);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .staff-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(74,20,140,0.10);
+  }
+  .staff-item img, .staff-item .s-avatar {
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--gold);
+    flex-shrink: 0;
+  }
+  .staff-item .s-avatar {
+    background: #f0e6ff;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--purple);
+  }
+  .staff-item .s-info { flex: 1; }
+  .staff-item .s-info h6 {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1rem;
+    margin: 0 0 .2rem;
+  }
+  .staff-item .s-info .s-role {
+    font-size: .78rem;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  .staff-item .s-info .s-qual {
+    font-size: .85rem;
+    color: #777;
+    margin-top: .2rem;
+  }
+  .btn-view {
+    background: transparent;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+    border-radius: 20px;
+    padding: .35rem 1rem;
+    font-size: .82rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  .btn-view:hover {
+    background: var(--purple);
+    color: var(--gold);
+  }
+
+  /* ── Contact ── */
+  .contact-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem 2.2rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+  }
+  .contact-content {
+    font-size: 1.03rem;
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .contact-content strong,
+  .contact-content b {
+    color: var(--blue2);
+    font-weight: 700;
+    margin-right: 4px;
+  }
 </style>
+
+<div class="sd-wrapper">
+
+  <!-- Hero -->
+  <div class="sd-hero">
+    <div class="inner">
+      <div class="breadcrumb-text">
+        <a href="{% url 'home' %}">Home</a> › Services › {{ service.name }}
+      </div>
+      <h1>{{ service.name }}</h1>
+      <div class="gold-bar"></div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="sd-grid">
+
+    <!-- Sidebar -->
+    <aside class="sd-sidebar">
+
+      <!-- Head of Dept Profile -->
+      <div class="profile-card">
+        {% if service.head_of_dept.photo %}
+          <img src="{{ service.head_of_dept.photo.url }}" class="avatar" alt="{{ service.head_of_dept.name }}">
+        {% else %}
+          <div class="avatar-placeholder">
+            <i class="fas fa-user fa-3x" style="color:#4a148c; opacity:.4;"></i>
+          </div>
+        {% endif %}
+        <h5>{{ service.head_of_dept.name }}</h5>
+        <p class="role">{{ service.head_title }}</p>
+        {% if service.head_of_dept %}
+          <a href="{% url 'staff_detail' service.head_of_dept.slug %}" class="btn-profile">View Profile</a>
+        {% endif %}
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-nav" id="sdTabNav">
+        <button class="active" data-target="pane-intro">Mandate &amp; Overview</button>
+        {% if service.duties %}
+          <button data-target="pane-duties">Duties &amp; Responsibilities</button>
+        {% endif %}
+        {% if service.staff_content or service.staff_list.exists %}
+          <button data-target="pane-staff">Staff Members</button>
+        {% endif %}
+        <button data-target="pane-contact">Contact Information</button>
+      </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="sd-main">
+      <div class="tab-content-area">
+
+        <!-- Mandate & Overview -->
+        <div class="tab-pane-inner active content-card" id="pane-intro">
+          <h2 class="section-title">{{ service.name }}</h2>
+          <div class="service-text">{{ service.introduction|safe }}</div>
+        </div>
+
+        <!-- Duties -->
+        <div class="tab-pane-inner content-card" id="pane-duties">
+          <h2 class="section-title">Duties &amp; Responsibilities</h2>
+          <div class="service-text">{{ service.duties|safe }}</div>
+        </div>
+
+        <!-- Staff -->
+        <div class="tab-pane-inner content-card" id="pane-staff">
+          <h2 class="section-title">Staff Members</h2>
+          {% if service.staff_list.all %}
+            <div class="staff-grid">
+              {% for staff in service.staff_list.all %}
+              <div class="staff-item">
+                {% if staff.photo %}
+                  <img src="{{ staff.photo.url }}" alt="{{ staff.name }}">
+                {% else %}
+                  <div class="s-avatar"><i class="fas fa-user fa-lg"></i></div>
+                {% endif %}
+                <div class="s-info">
+                  <h6>{{ staff.name }}</h6>
+                  <div class="s-role">{{ staff.role }}</div>
+                  <div class="s-qual">{{ staff.qualifications }}</div>
+                </div>
+                <a href="{% url 'staff_detail' staff.slug %}" class="btn-view d-none d-md-inline">Profile</a>
+              </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p style="color:#888;">Staff list is currently being updated.</p>
+          {% endif %}
+        </div>
+
+        <!-- Contact -->
+        <div class="tab-pane-inner contact-card" id="pane-contact">
+          <h2 class="section-title">Contact Information</h2>
+          <div class="contact-content">{{ service.contact_info|safe }}</div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('#sdTabNav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#sdTabNav button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane-inner').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+</script>
 
 {% endblock %}
