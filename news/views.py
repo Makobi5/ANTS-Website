@@ -25,18 +25,22 @@ def news_detail(request, pk):
     # Get recent articles for the sidebar
     recent_articles = NewsArticle.objects.exclude(pk=pk).order_by('-date_posted')[:3]
 
-    # NEW: Get "Related Gallery Albums" (Articles with photos)
-    # We filter for articles that have EITHER a main image OR gallery images
+    # Get "Related Gallery Albums" (Articles with photos)
     related_albums = NewsArticle.objects.annotate(
         photo_count=Count('gallery_images')
     ).filter(
         Q(image__isnull=False) | Q(photo_count__gt=0)
-    ).exclude(pk=pk).order_by('-date_posted')[:3] # Show 3 recent albums
+    ).exclude(pk=pk).order_by('-date_posted')[:3]
+
+    # ✅ NEW: Get upcoming events for the sidebar
+    today = timezone.now().date()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:3]
     
     context = {
         'article': article,
         'recent_articles': recent_articles,
-        'related_albums': related_albums, # <--- Pass this to template
+        'related_albums': related_albums,
+        'upcoming_events': upcoming_events,  # ✅ NEW
     }
     return render(request, 'news/news_detail.html', context)
 

@@ -73,6 +73,11 @@ class Event(models.Model):
     image = models.ImageField(upload_to='event_images/', blank=True, null=True)
     principal_message = models.TextField(blank=True, null=True, help_text="Optional: Message from the Principal")
     created_at = models.DateTimeField(auto_now_add=True)
+    show_on_slider = models.BooleanField(
+        default=False,
+        verbose_name="Show on Homepage Slider",
+        help_text="Check this box if you want this event to appear in the big main slider on the homepage."
+    )
 
     class Meta:
         ordering = ['date', 'time']

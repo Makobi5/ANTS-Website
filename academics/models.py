@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Program(models.Model):
     # These match the links in your Navbar
@@ -28,7 +29,11 @@ class Program(models.Model):
     
     # Descriptions
     summary = models.TextField(help_text="Short description for the list page (2-3 sentences)")
-    overview = models.TextField(help_text="Full detailed description of the course")
+    overview = RichTextUploadingField(help_text="Full detailed description of the course")
+    what_you_will_learn = models.TextField(
+    blank=True, null=True,
+    help_text="Describe what students will learn in this program."
+)
     requirements = models.TextField(help_text="Admission requirements (e.g. 2 Principal Passes)")
     
     # Files

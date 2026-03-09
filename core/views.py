@@ -24,6 +24,9 @@ from .forms import AlumniRegistrationForm
 from news.models import NewsImage 
 from .models import ServiceDepartment, Sermon, OutreachProgram,OutreachProgram, Sermon
 def home(request):
+    # ✅ Define today first — used by both event_slides and upcoming_events
+    today = timezone.now().date()
+
     # 1. Manual Slides
     manual_slides = SliderImage.objects.all().order_by('-created_at')
     
@@ -32,12 +35,19 @@ def home(request):
     
     # 3. Outreach Slides (Marked for Slider)
     outreach_slides = OutreachProgram.objects.filter(show_on_slider=True).exclude(image='')
-    
+
     # 4. Sermon Slides (Marked for Slider)
     sermon_slides = Sermon.objects.filter(show_on_slider=True).exclude(image='')
-    
-    # 5. Combine ALL (Chain them together)
-    combined_slides = list(chain(manual_slides, news_slides, outreach_slides, sermon_slides))
+
+    # 5. ✅ NEW: Upcoming Event Slides (events with images)
+    event_slides = Event.objects.filter(
+        show_on_slider=True,
+        date__gte=today,
+        image__isnull=False
+    ).exclude(image='').order_by('date')[:2]
+
+    # 6. Combine ALL
+    combined_slides = list(chain(manual_slides, news_slides, outreach_slides, sermon_slides, event_slides))
     
     # --- 2. OFFICE OF THE PRINCIPAL ---
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()

@@ -397,4 +397,5 @@ class OutreachImage(models.Model):
     image = models.ImageField(upload_to='outreach_gallery/')
     
     def __str__(self):
-        return f"Image for {self.program.title}"     
+        return f"Image for {self.program.title}"    
+     

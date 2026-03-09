@@ -62,7 +62,29 @@
                                 </p>
                                 {% endif %}
 
-                            <!-- 2. OUTREACH PROGRAM -->
+                            <!-- 2. UPCOMING EVENT -->
+                            {% elif slide.time and slide.location %}
+                                <span class="badge mb-2 fw-bold shadow-sm" style="background:#ffca28; color:#4a148c;">UPCOMING EVENT</span>
+                                <h1 class="display-5 fw-bold text-white mb-2 slider-title">
+                                    <a href="{% url 'event_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">
+                                        {{ slide.title }}
+                                    </a>
+                                </h1>
+                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+                                    <i class="far fa-calendar-alt me-2 text-warning"></i> {{ slide.date|date:"l, d F Y" }}
+                                    &nbsp;|&nbsp;
+                                    <i class="far fa-clock me-2 text-warning"></i> {{ slide.time|time:"h:i A" }}
+                                </p>
+                                <p class="text-white opacity-75 mb-0 small">
+                                    <i class="fas fa-map-marker-alt me-2 text-warning"></i>{{ slide.location }}
+                                </p>
+                                <div class="mt-3">
+                                    <a href="{% url 'event_detail' slide.pk %}" class="btn rounded-pill px-4 fw-bold" style="background:#ffca28; color:#4a148c;">
+                                        View Event Details &rarr;
+                                    </a>
+                                </div>
+
+                            <!-- 3. OUTREACH PROGRAM -->
                             {% elif slide.location %}
                                 <span class="badge bg-success text-white mb-2 fw-bold shadow-sm">COMMUNITY OUTREACH</span>
                                 <h1 class="display-5 fw-bold text-white mb-2 slider-title">
@@ -74,7 +96,7 @@
                                     <i class="fas fa-map-marker-alt me-2 text-warning"></i> {{ slide.location }}
                                 </p>
 
-                            <!-- 3. SERMON -->
+                            <!-- 4. SERMON -->
                             {% elif slide.preacher %}
                                 <span class="badge bg-danger text-white mb-2 fw-bold shadow-sm">LATEST SERMON</span>
                                 <h1 class="display-5 fw-bold text-white mb-2 slider-title">
@@ -91,7 +113,7 @@
                                     </a>
                                 </div>
 
-                            <!-- 4. MANUAL SLIDE (Default) -->
+                            <!-- 5. MANUAL SLIDE (Default) -->
                             {% else %}
                                 {% if slide.title %}
                                 <h1 class="display-4 fw-bold text-white mb-2 slider-title" style="border-left-color: #fff;">
