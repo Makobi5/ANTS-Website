@@ -253,7 +253,9 @@ def life_at_ants(request):
     return render(request, 'core/students/life.html')
 
 def fees_structure(request):
-    return render(request, 'core/students/fees.html')    
+    from .models import FeeStructure
+    fees = FeeStructure.objects.all()
+    return render(request, 'core/students/fees.html', {'fees': fees})   
 def student_manual(request):
     # Fetch policies specifically titled "Student Manual" or category "Manual"
     # For now, let's just fetch ALL policies but show them on a dedicated page

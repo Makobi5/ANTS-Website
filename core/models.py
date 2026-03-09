@@ -398,4 +398,19 @@ class OutreachImage(models.Model):
     
     def __str__(self):
         return f"Image for {self.program.title}"    
-     
+class FeeStructure(models.Model):
+    program_name = models.CharField(max_length=200)
+    tuition_per_semester = models.DecimalField(max_digits=12, decimal_places=0)
+    functional_fees = models.DecimalField(max_digits=12, decimal_places=0)
+    academic_year = models.CharField(max_length=20, default="2026")
+    order = models.PositiveIntegerField(default=0, help_text="Display order")
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return self.program_name
+
+    @property
+    def total(self):
+        return self.tuition_per_semester + self.functional_fees     

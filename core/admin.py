@@ -9,6 +9,7 @@ from .models import ServiceDepartment, Sermon
 from django.contrib import admin
 from .models import DonationCategory, Donation, DonationTestimonial, DonationImpactStory, OutreachProgram, OutreachImage, Sermon
 from staff.models import StaffMember
+from .models import FeeStructure
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -201,6 +202,11 @@ class OutreachProgramAdmin(admin.ModelAdmin):
 
 
 
+
+@admin.register(FeeStructure)
+class FeeStructureAdmin(admin.ModelAdmin):
+    list_display = ('program_name', 'tuition_per_semester', 'functional_fees', 'total', 'academic_year', 'order')
+    list_editable = ('order', 'academic_year')
 
 
     

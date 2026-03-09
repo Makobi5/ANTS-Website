@@ -2,51 +2,205 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold text-primary">Tuition & Fees Structure</h2>
-        <p class="text-muted">Academic Year 2026</p>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+  :root {
+    --purple: #4a148c;
+    --purple2: #6a1fa8;
+    --gold: #ffca28;
+    --soft: #f8f9fa;
+    --text: #333;
+    --muted: #666;
+  }
+
+  .fees-wrapper {
+    background: var(--soft);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── Header ── */
+  .fees-header {
+    background: linear-gradient(135deg, var(--purple), var(--purple2));
+    padding: 3.5rem 2rem 2.5rem;
+    position: relative; overflow: hidden;
+  }
+  .fees-header::after {
+    content: ''; position: absolute;
+    right: -60px; top: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,202,40,0.07);
+  }
+  .fees-header .inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .fees-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: 2.4rem; margin: 0 0 .4rem;
+  }
+  .fees-header p { color: rgba(255,255,255,.65); margin: 0; font-size: .95rem; }
+  .gold-bar { width: 56px; height: 4px; background: var(--gold); border-radius: 2px; margin: .7rem 0 .9rem; }
+
+  /* ── Body ── */
+  .fees-body { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  /* ── Table Card ── */
+  .fees-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(74,20,140,0.10);
+    margin-bottom: 2rem;
+  }
+  .fees-table { width: 100%; border-collapse: collapse; }
+  .fees-table thead tr { background: var(--purple); }
+  .fees-table thead th {
+    padding: 1rem 1.3rem;
+    color: var(--gold);
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    font-weight: 700;
+    text-align: left;
+  }
+  .fees-table tbody tr { border-bottom: 1px solid #f0eaf8; transition: background .15s; }
+  .fees-table tbody tr:last-child { border-bottom: none; }
+  .fees-table tbody tr:hover { background: #fdf9ff; }
+  .fees-table td {
+    padding: 1rem 1.3rem;
+    font-size: .97rem;
+    color: var(--text);
+  }
+  .fees-table .prog-name { font-weight: 700; color: var(--purple); }
+  .fees-table .total-cell {
+    font-weight: 700;
+    color: var(--purple);
+    font-size: 1rem;
+  }
+  .fees-table tfoot tr { background: #f5f0ff; }
+  .fees-table tfoot td {
+    padding: .75rem 1.3rem;
+    font-size: .82rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── Empty state ── */
+  .fees-empty {
+    background: #fff;
+    border-radius: 14px;
+    padding: 3.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    margin-bottom: 2rem;
+  }
+  .fees-empty .icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: #f5f0ff;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
+    font-size: 1.8rem;
+  }
+  .fees-empty h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1.3rem;
+    margin: 0 0 .6rem;
+  }
+  .fees-empty p { color: var(--muted); font-size: .97rem; margin: 0 0 1.4rem; line-height: 1.7; }
+  .btn-contact {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--purple); color: var(--gold);
+    border-radius: 25px; padding: .6rem 1.6rem;
+    font-weight: 700; font-size: .9rem;
+    text-decoration: none;
+    transition: background .2s, transform .2s;
+  }
+  .btn-contact:hover { background: var(--purple2); color: var(--gold); transform: scale(1.03); }
+
+  /* ── Note card ── */
+  .note-card {
+    background: #fffbea;
+    border-left: 4px solid var(--gold);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    font-size: .95rem; color: #555;
+  }
+  .note-card i { color: var(--gold); font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
+  .note-card a { color: var(--purple); font-weight: 600; }
+</style>
+
+<div class="fees-wrapper">
+
+  <!-- Header -->
+  <div class="fees-header">
+    <div class="inner">
+      <h1>Tuition &amp; Fees Structure</h1>
+      <div class="gold-bar"></div>
+      <p>Academic Year {{ fees.first.academic_year|default:"2026" }} &mdash; All fees are in Uganda Shillings (UGX)</p>
+    </div>
+  </div>
+
+  <div class="fees-body">
+
+    {% if fees %}
+      <!-- Fees Table -->
+      <div class="fees-card">
+        <table class="fees-table">
+          <thead>
+            <tr>
+              <th>Program</th>
+              <th>Tuition (Per Semester)</th>
+              <th>Functional Fees</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fee in fees %}
+            <tr>
+              <td class="prog-name">{{ fee.program_name }}</td>
+              <td>UGX {{ fee.tuition_per_semester|floatformat:0 }}</td>
+              <td>UGX {{ fee.functional_fees|floatformat:0 }}</td>
+              <td class="total-cell">UGX {{ fee.total|floatformat:0 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">* Fees are per semester and subject to annual review.</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+    {% else %}
+      <!-- Empty state — fees not yet uploaded -->
+      <div class="fees-empty">
+        <div class="icon">💰</div>
+        <h4>Fees Structure Being Updated</h4>
+        <p>
+          The fees structure for the current academic year is currently being finalised.<br>
+          Please visit or contact the Finance Office directly for accurate fee information.
+        </p>
+        <a href="{% url 'contact' %}" class="btn-contact">
+          <i class="fas fa-envelope"></i> Contact Finance Office
+        </a>
+      </div>
+    {% endif %}
+
+    <!-- Note -->
+    <div class="note-card">
+      <i class="fas fa-exclamation-circle"></i>
+      <div>
+        <strong>Note:</strong> Fees are subject to review. International students may have a different fee structure.
+        Please contact the <a href="{% url 'contact' %}">Bursar's Office</a> for the official PDF fee document
+        or visit the Finance Office on campus.
+      </div>
     </div>
 
-    <div class="table-responsive shadow-sm">
-        <table class="table table-bordered table-hover align-middle mb-0">
-            <thead class="bg-primary text-white text-uppercase">
-                <tr>
-                    <th>Program</th>
-                    <th>Tuition (Per Semester)</th>
-                    <th>Functional Fees</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="fw-bold">Certificate Programs</td>
-                    <td>UGX 400,000</td>
-                    <td>UGX 150,000</td>
-                    <td class="fw-bold text-dark">UGX 550,000</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Diploma Programs</td>
-                    <td>UGX 500,000</td>
-                    <td>UGX 200,000</td>
-                    <td class="fw-bold text-dark">UGX 700,000</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Bachelor Programs</td>
-                    <td>UGX 800,000</td>
-                    <td>UGX 250,000</td>
-                    <td class="fw-bold text-dark">UGX 1,050,000</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="mt-4 alert alert-warning d-flex align-items-center">
-        <i class="fas fa-exclamation-circle fa-2x me-3"></i>
-        <div>
-            <strong>Note:</strong> Fees are subject to review. International students may have a different fee structure. 
-            <br>Please contact the <a href="{% url 'contact' %}" class="alert-link">Bursar's Office</a> for the official PDF document.
-        </div>
-    </div>
+  </div>
 </div>
+
 {% endblock %}
