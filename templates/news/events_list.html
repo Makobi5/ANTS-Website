@@ -3,95 +3,340 @@
 
 {% block content %}
 
-<!-- Header -->
-<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.95), rgba(74, 20, 140, 0.95)), url('{% static 'img/banner.jpg' %}') center/cover;">
-    <div class="container">
-        <h1 class="fw-bold display-5">ANTS Events</h1>
-        <p class="mb-0 text-white-50 text-uppercase">HOME / EVENTS</p>
-    </div>
-</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap');
 
-<div class="container py-5">
-    
-    <!-- UPCOMING EVENTS SECTION -->
-    <h3 class="fw-bold text-primary mb-4 border-start border-5 border-warning ps-3">Upcoming Events</h3>
-    
+  :root {
+    --purple:  #4a148c;
+    --purple2: #6a1fa8;
+    --gold:    #ffca28;
+    --blue2:   #0077b5;
+    --white:   #ffffff;
+    --soft:    #f8f9fa;
+    --text:    #333333;
+    --muted:   #666666;
+  }
+
+  .events-wrapper {
+    background: var(--soft);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── Page Header ── */
+  .events-header {
+    background:
+      linear-gradient(160deg, rgba(74,20,140,0.88) 0%, rgba(30,10,70,0.82) 100%),
+      url("{% static 'img/banner.jpg' %}") center center / cover no-repeat;
+    padding: 4rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .events-header::after {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,202,40,0.07);
+  }
+  .events-header .inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .events-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 2.6rem;
+    margin: 0 0 .4rem;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .events-header .gold-bar {
+    width: 56px; height: 4px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin: .6rem 0 .8rem;
+  }
+  .events-header .breadcrumb-text {
+    color: rgba(255,255,255,0.65);
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+  .events-header .breadcrumb-text a { color: var(--gold); text-decoration: none; }
+
+  /* ── Body ── */
+  .events-body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+  }
+
+  /* ── Section title ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--purple);
+    border-left: 4px solid var(--gold);
+    padding-left: .85rem;
+    margin: 0 0 1.8rem;
+    line-height: 1.2;
+  }
+  .section-title.muted {
+    color: var(--muted);
+    border-left-color: #ccc;
+    font-size: 1.3rem;
+  }
+
+  /* ── Upcoming Events Grid ── */
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .event-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(74,20,140,0.09);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: transform .22s, box-shadow .22s;
+    border-top: 3px solid var(--purple);
+  }
+  .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 36px rgba(74,20,140,0.16);
+  }
+
+  /* Event image */
+  .event-img {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    background: #e8dff5;
+  }
+  .event-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 5s ease;
+  }
+  .event-card:hover .event-img img { transform: scale(1.06); }
+  .event-img .no-img {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: #c4a8e8; font-size: 3rem;
+  }
+
+  /* Date badge on image */
+  .date-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: var(--purple);
+    color: var(--white);
+    border-radius: 10px;
+    padding: .45rem .8rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    line-height: 1.1;
+  }
+  .date-badge .day {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .date-badge .month {
+    display: block;
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  /* Event body */
+  .event-body {
+    padding: 1.2rem 1.3rem 1.4rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .event-body h5 {
+    font-family: 'Playfair Display', serif;
+    color: var(--purple);
+    font-size: 1.05rem;
+    margin: 0 0 .6rem;
+    line-height: 1.3;
+  }
+  .event-meta {
+    display: flex; flex-direction: column; gap: .3rem;
+    font-size: .87rem; color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .event-meta span { display: flex; align-items: center; gap: .45rem; }
+  .event-meta i { color: var(--purple); width: 14px; }
+  .event-cta {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--purple);
+    background: #f5f0ff;
+    border-radius: 20px;
+    padding: .4rem 1rem;
+    align-self: flex-start;
+    transition: background .15s, color .15s;
+  }
+  .event-card:hover .event-cta {
+    background: var(--purple);
+    color: var(--gold);
+  }
+
+  /* Empty state */
+  .empty-state {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.05);
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .empty-state i { font-size: 2.5rem; color: #d4c5f0; margin-bottom: .8rem; display: block; }
+
+  /* ── Past Events ── */
+  .past-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid #e8dff5;
+  }
+  .past-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .past-item {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-left: 3px solid #d4c5f0;
+    transition: border-color .2s, transform .2s;
+  }
+  .past-item:hover {
+    border-left-color: var(--purple);
+    transform: translateX(3px);
+  }
+  .past-date {
+    text-align: center;
+    min-width: 52px;
+    flex-shrink: 0;
+  }
+  .past-date .d {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--purple);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .past-date .m {
+    font-size: .72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  .past-info h6 {
+    font-size: .93rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 .2rem;
+    line-height: 1.3;
+  }
+  .past-info small { font-size: .8rem; color: var(--muted); }
+</style>
+
+<div class="events-wrapper">
+
+  <!-- Header -->
+  <div class="events-header">
+    <div class="inner">
+      <div class="breadcrumb-text">
+        <a href="{% url 'home' %}">Home</a> › Events
+      </div>
+      <h1>ANTS Events</h1>
+      <div class="gold-bar"></div>
+    </div>
+  </div>
+
+  <div class="events-body">
+
+    <!-- Upcoming Events -->
+    <h2 class="section-title">Upcoming Events</h2>
+
     {% if upcoming_events %}
-    <div class="row">
+      <div class="upcoming-grid">
         {% for event in upcoming_events %}
-        <div class="col-lg-6 mb-4">
-            <!-- Make the whole card clickable -->
-            <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none">
-                <div class="card h-100 border shadow-sm overflow-hidden hover-shadow transition-all">
-                    <div class="row g-0 h-100">
-                        
-                        <!-- 1. Date Column (Purple) -->
-                        <div class="col-2 d-flex flex-column align-items-center justify-content-center p-2 text-center text-white" 
-                             style="background-color: var(--ants-purple);">
-                            <span class="display-6 fw-bold">{{ event.date|date:"d" }}</span>
-                            <span class="text-uppercase fw-bold small" style="color: var(--ants-gold);">{{ event.date|date:"M" }}</span>
-                        </div>
-
-                        <!-- 2. Image Column (New!) -->
-                        <div class="col-4 bg-light position-relative">
-                            {% if event.image %}
-                                <img src="{{ event.image.url }}" class="img-fluid h-100 w-100" style="object-fit: cover; position: absolute;">
-                            {% else %}
-                                <div class="d-flex align-items-center justify-content-center h-100 text-muted">
-                                    <i class="fas fa-calendar-alt fa-2x"></i>
-                                </div>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- 3. Details Column -->
-                        <div class="col-6">
-                            <div class="card-body h-100 d-flex flex-column justify-content-center py-2 px-3">
-                                <h6 class="card-title fw-bold text-dark mb-1 lh-sm">{{ event.title|truncatechars:40 }}</h6>
-                                
-                                <div class="text-muted small mb-2" style="font-size: 0.8rem;">
-                                    <i class="far fa-clock text-warning"></i> {{ event.time|time:"h:i A" }} <br>
-                                    <i class="fas fa-map-marker-alt text-danger"></i> {{ event.location|truncatechars:15 }}
-                                </div>
-                                
-                                <span class="badge bg-light text-primary border mt-auto align-self-start">View Details</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+          <a href="{% url 'event_detail' event.pk %}" class="event-card">
+            <div class="event-img">
+              {% if event.image %}
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+              {% else %}
+                <div class="no-img"><i class="fas fa-calendar-alt"></i></div>
+              {% endif %}
+              <div class="date-badge">
+                <span class="day">{{ event.date|date:"d" }}</span>
+                <span class="month">{{ event.date|date:"M" }}</span>
+              </div>
+            </div>
+            <div class="event-body">
+              <h5>{{ event.title }}</h5>
+              <div class="event-meta">
+                <span><i class="far fa-clock"></i> {{ event.time|time:"h:i A" }}</span>
+                <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+              </div>
+              <span class="event-cta">View Details <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></span>
+            </div>
+          </a>
         {% endfor %}
-    </div>
-    <div class="alert alert-info">
-        <i class="fas fa-calendar-times me-2"></i> No upcoming events scheduled at the moment.
-    </div>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-calendar-times"></i>
+        <p style="margin:0; font-size:1rem;">No upcoming events scheduled at the moment. Check back soon.</p>
+      </div>
     {% endif %}
 
-    <!-- PAST EVENTS SECTION -->
-    <div class="mt-5 pt-4 border-top">
-        <h4 class="fw-bold text-muted mb-4">Past Events Archive</h4>
-        
-        {% if past_events %}
-        <div class="row">
-            {% for event in past_events %}
-            <div class="col-md-4 mb-3">
-                <div class="d-flex align-items-center bg-white p-3 rounded shadow-sm border">
-                    <div class="me-3 text-center text-muted" style="min-width: 60px;">
-                        <div class="fw-bold fs-5">{{ event.date|date:"d M" }}</div>
-                        <small>{{ event.date|date:"Y" }}</small>
-                    </div>
-                    <div>
-                        <h6 class="mb-1 fw-bold text-dark">{{ event.title }}</h6>
-                        <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> {{ event.location }}</small>
-                    </div>
-                </div>
+    <!-- Past Events -->
+    <div class="past-section">
+      <h2 class="section-title muted">Past Events Archive</h2>
+
+      {% if past_events %}
+        <div class="past-grid">
+          {% for event in past_events %}
+            <div class="past-item">
+              <div class="past-date">
+                <span class="d">{{ event.date|date:"d" }}</span>
+                <span class="m">{{ event.date|date:"M Y" }}</span>
+              </div>
+              <div class="past-info">
+                <h6>{{ event.title }}</h6>
+                <small><i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}</small>
+              </div>
             </div>
-            {% endfor %}
+          {% endfor %}
         </div>
-        {% else %}
-        <p class="text-muted fst-italic">No past events found.</p>
-        {% endif %}
+      {% else %}
+        <p style="color:var(--muted); font-style:italic;">No past events found.</p>
+      {% endif %}
     </div>
 
+  </div>
 </div>
+
 {% endblock %}
