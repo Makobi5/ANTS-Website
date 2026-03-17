@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +26,22 @@ SECRET_KEY = 'django-insecure-92h_6@t$x$d+u-lv95*0g)xeh&w7r@fn3$@t$3)kc1(b7@d_n9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['ants.ac.ug', 'www.ants.ac.ug']
+
+ALLOWED_HOSTS = [
+    'ants.ac.ug',
+    'www.ants.ac.ug',
+    'admissions.ants.ac.ug',
+    'chapel.ants.ac.ug',
+    'events.ants.ac.ug',
+    'gallery.ants.ac.ug',
+    '127.0.0.1',
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_hosts',
     'taggit',
     'ckeditor',
     'ckeditor_uploader', 
@@ -48,16 +59,22 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'ants_project.urls'
+ROOT_HOSTCONF = 'ants_project.hosts'
+DEFAULT_HOST = 'default'
 
 TEMPLATES = [
     {
@@ -122,14 +139,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #this is to allow  Django know where to look for static files
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # CKEditor Configuration
 CKEDITOR_UPLOAD_PATH = "uploads/"

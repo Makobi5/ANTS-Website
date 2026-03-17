@@ -1,0 +1,514 @@
+/* =========================================
+   1. BRAND COLORS & VARIABLES
+   ========================================= */
+:root {
+    --ants-purple: #4a148c;
+    --ants-gold: #ffca28;
+    --footer-bg: #002147;
+}
+
+/* =========================================
+   2. TOP UTILITY BAR (Secondary Menu)
+   ========================================= */
+.top-utility-bar {
+    background-color: #f8f9fa; /* Light Gray background */
+    padding: 8px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.hover-purple:hover {
+    color: var(--ants-purple) !important;
+    text-decoration: underline !important;
+}
+
+/* =========================================
+   FIXED SOCIAL ICONS & SEARCH BAR
+   ========================================= */
+
+/* container for right side of top bar */
+.top-right-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px; /* Space between icons group and search bar */
+}
+
+.social-utility-icons {
+    display: flex;
+    gap: 5px; /* Space between individual icons */
+}
+
+/* The Icon Circle */
+.social-circle {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+    text-decoration: none !important;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.social-circle:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* BRAND COLORS - FORCE APPLY */
+.sc-facebook { background-color: #1877F2 !important; }
+.sc-twitter  { background-color: #1DA1F2 !important; }
+.sc-x        { background-color: #000000 !important; }
+.sc-youtube  { background-color: #FF0000 !important; }
+.sc-linkedin { background-color: #0A66C2 !important; }
+.sc-tiktok   { background-color: #000000 !important; }
+.sc-telegram { background-color: #0088cc !important; }
+
+/* SEARCH BAR FIX */
+.top-search-form {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #ccc;
+    padding-left: 15px;
+}
+
+.search-input-top {
+    border: 1px solid #ccc;
+    border-right: none; /* Merge with button */
+    border-radius: 20px 0 0 20px; /* Round left side only */
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    outline: none;
+    width: 120px;
+    height: 30px;
+}
+
+.search-btn-circle {
+    width: 35px;
+    height: 30px;
+    border-radius: 0 20px 20px 0; /* Round right side only */
+    background-color: var(--ants-purple); /* Match Theme */
+    color: white;
+    border: 1px solid var(--ants-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-btn-circle:hover {
+    background-color: var(--ants-gold);
+    border-color: var(--ants-gold);
+    color: black;
+}
+
+/* =========================================
+   4. BRAND HEADER (Logo Area)
+   ========================================= */
+.brand-header {
+    background-color: #ffffff;
+    padding: 15px 0;
+}
+
+.brand-logo {
+    height: 85px;  
+    width: auto;   
+    object-fit: contain;
+}
+
+.btn-apply-custom {
+    background-color: var(--ants-gold);
+    color: var(--ants-purple);
+    font-weight: 800; 
+    text-transform: uppercase;
+    padding: 12px 30px;
+    border-radius: 50px; 
+    border: 2px solid var(--ants-gold);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-apply-custom:hover {
+    background-color: white;
+    color: var(--ants-purple);
+    border: 2px solid var(--ants-purple);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+/* --- MAIN NAVIGATION (Sticky with Forced Yellow Line) --- */
+/* --- MAIN NAVIGATION --- */
+.top-navbar {
+    background-color: #4a148c !important; /* ANTS Purple */
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0;
+    
+    /* Removed sticky and border from here because the HTML Wrapper handles it now */
+    border: none !important;
+    box-shadow: none !important; 
+}
+
+.top-navbar .nav-item {
+    position: relative;
+}
+
+.top-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 20px !important;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+/* Gold Underline Effect on Hover */
+.top-navbar .nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px; 
+    width: 0;    
+    background-color: var(--ants-gold);
+    transition: width 0.3s ease;
+    z-index: 10;
+}
+
+.top-navbar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.top-navbar .nav-link:hover:before {
+    width: 100%; 
+}
+
+/* Dropdown Arrow */
+.top-navbar .dropdown-toggle::after {
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 6px;
+    font-size: 0.75em;
+    vertical-align: middle;
+}
+.top-navbar .nav-link:hover::after {
+    color: #ffffff;
+}
+
+/* =========================================
+   6. DROPDOWN MENUS
+   ========================================= */
+@media (min-width: 992px) {
+    .top-navbar .nav-item.dropdown:hover .dropdown-menu {
+        display: block !important;
+        animation: fadeIn 0.2s ease-out;
+        margin-top: 0;
+    }
+}
+
+.top-navbar .dropdown-menu {
+    border: none;
+    border-radius: 0 0 4px 4px;
+    background-color: var(--ants-purple);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    padding: 0;
+}
+
+.top-navbar .dropdown-item {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
+
+.top-navbar .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding-left: 25px; /* Slight slide effect */
+}
+
+/* Mega Menu Headers */
+.dropdown-header-custom {
+    color: var(--ants-gold);
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 15px 20px 5px 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.top-navbar .megamenu-custom {
+    min-width: 550px;
+    padding-bottom: 10px;
+}
+
+/* =========================================
+   7. FOOTER
+   ========================================= */
+footer {
+    background-color: var(--footer-bg);
+    color: white;
+    padding-top: 4rem;
+    padding-bottom: 1.5rem;
+}
+footer a { color: rgba(255,255,255,0.7); text-decoration: none; transition: 0.3s; }
+footer a:hover { color: var(--ants-gold); }
+
+/* =========================================
+   8. ANIMATIONS & AUTH
+   ========================================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Auth Background (Login/Signup) */
+.auth-background {
+    background: linear-gradient(rgba(74, 20, 140, 0.8), rgba(74, 20, 140, 0.8)), url('../img/chapel_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-ants-header {
+    background-color: var(--ants-purple) !important;
+    color: white;
+    border-bottom: 4px solid var(--ants-gold);
+}
+
+.auth-card {
+    background-color: rgba(255, 255, 255, 0.98);
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+/* --- Principal & Why ANTS Section Styling --- */
+
+/* The Why ANTS Section Background */
+.section-why-ants {
+    background-color: #f9f9f9; /* Very light grey to distinguish from white sections */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background decoration (optional geometric shape) */
+.section-why-ants::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 202, 40, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 0;
+}
+
+/* The Image Card (Kabale Style) */
+.kabale-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 5px solid white;
+}
+
+.kabale-card img {
+    transition: transform 0.5s ease;
+}
+
+.kabale-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Play Button Effect */
+.play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    background-color: rgba(233, 30, 99, 0.9); /* The Pink/Red color from KAB */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 0 0 5px rgba(255,255,255,0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(233, 30, 99, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
+}
+
+/* Letter Spacing for headers */
+.ls-2 { letter-spacing: 2px; }
+
+/* --- Program Pathways (Background Image Fix) --- */
+
+.pathway-card {
+    display: block;
+    margin-top: 40px; 
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-radius: 0; 
+    border-bottom: 5px solid var(--ants-gold);
+    transition: transform 0.3s ease;
+    height: 100%; /* Ensures equal height in row */
+}
+
+.pathway-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* Header Box */
+.pathway-header {
+    background-color: var(--ants-purple);
+    padding: 50px 15px 25px 15px; 
+    text-align: center;
+    position: relative;
+    min-height: 130px; 
+}
+
+/* Floating Icon */
+.pathway-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    position: absolute;
+    top: -35px; left: 50%; transform: translateX(-50%);
+    border: 4px solid #ffffff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+/* THE FIX: Background Image Div */
+.pathway-img {
+    height: 300px; /* STRICT HEIGHT LIMIT */
+    width: 100%;
+    background-size: cover; /* Zooms to fill */
+    background-position: center top; /* Focuses on faces/top part */
+    background-repeat: no-repeat; /* Prevents tiling */
+    position: relative;
+    transition: background-size 5s ease; /* Subtle zoom effect */
+}
+
+/* Overlay Button */
+.pathway-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.pathway-card:hover .pathway-overlay { opacity: 1; }
+
+/* Icon Colors */
+.icon-bg-red   { background-color: #e63946; }
+.icon-bg-gold  { background-color: var(--ants-gold); color: black !important; }
+.icon-bg-blue  { background-color: #00aaff; }
+.icon-bg-green { background-color: #2a9d8f; }
+
+/* --- Footer Links (Top Section) --- */
+.footer-nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-nav-links a:hover {
+    color: var(--ants-gold);
+    text-decoration: underline;
+}
+
+/* Ensure they stack nicely on mobile */
+@media (max-width: 768px) {
+    .footer-nav-links li {
+        display: block;
+        margin-bottom: 10px;
+    }
+}
+
+/* Share Icons Styling */
+.share-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    text-decoration: none;
+    transition: transform 0.2s;
+    font-size: 0.9rem;
+}
+.share-icon:hover { transform: translateY(-3px); opacity: 0.9; }
+
+/* Colors matching your screenshot */
+.bg-facebook { background-color: #1877F2; }
+.bg-black    { background-color: #000000; }
+.bg-grey     { background-color: #666666; }
+.bg-linkedin { background-color: #0077b5; }
+.bg-pinterest{ background-color: #bd081c; }
+.bg-telegram { background-color: #0088cc; }
+.bg-whatsapp { background-color: #25D366; }
+/* --- Floating Newsletter Styles (FINAL YELLOW FIX) --- */
+
+.newsletter-floating {
+    background-color: #ffca28 !important; /* ANTS Gold - Forced */
+    color: #333333;
+    
+    /* Layout & Positioning */
+    margin-bottom: -80px; 
+    position: relative;
+    z-index: 20; 
+    border-radius: 0;
+}
+
+/* Force the Input Field to be WHITE */
+.newsletter-floating input.form-control {
+    background-color: #ffffff !important; /* White background */
+    color: #333 !important;
+    border: none !important;
+}
+
+/* Input Focus State */
+.newsletter-floating input.form-control:focus {
+    background-color: #ffffff !important;
+    box-shadow: none !important; /* Removes blue glow */
+    border: 2px solid #2d76b1 !important; /* Blue border on click */
+}
+
+/* The Footer Adjustment (Keeps box floating) */
+footer {
+    padding-top: 120px !important; 
+    background-color: var(--footer-bg);
+    position: relative;
+    z-index: 10;
+}
+
