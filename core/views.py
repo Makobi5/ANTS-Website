@@ -22,47 +22,57 @@ from .models import StudentLeader,PageBanner
 from .models import AlumniMember
 from .forms import AlumniRegistrationForm
 from news.models import NewsImage 
-from .models import ServiceDepartment, Sermon, OutreachProgram,OutreachProgram, Sermon
+from .models import ServiceDepartment, Sermon, OutreachProgram,OutreachProgram
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from itertools import chain
+from news.models import NewsArticle, Event
+from staff.models import StaffMember
+from .models import SliderImage, Partner, Testimonial
+
+# If you have already created the Outreach and Sermon models, ensure they are imported:
+# from outreach.models import OutreachProgram 
+# from chapel.models import Sermon
+
 def home(request):
-    # ✅ Define today first — used by both event_slides and upcoming_events
     today = timezone.now().date()
 
     # 1. Manual Slides
-    manual_slides = SliderImage.objects.all().order_by('-created_at')
+    manual_slides = list(SliderImage.objects.all().order_by('-created_at')[:3])
+    for slide in manual_slides: slide.slide_type = 'manual'
     
-    # 2. News Slides (Marked for Slider)
-    news_slides = NewsArticle.objects.filter(show_on_slider=True).exclude(image='').order_by('-date_posted')
+    # 2. News Slides
+    news_slides = list(NewsArticle.objects.filter(show_on_slider=True).exclude(image='').order_by('-date_posted')[:5])
+    for slide in news_slides: slide.slide_type = 'news'
     
-    # 3. Outreach Slides (Marked for Slider)
-    outreach_slides = OutreachProgram.objects.filter(show_on_slider=True).exclude(image='')
+    # 3. Outreach Slides
+    outreach_slides = list(OutreachProgram.objects.filter(show_on_slider=True).exclude(image='').order_by('-id')[:3])
+    for slide in outreach_slides: slide.slide_type = 'outreach'
 
-    # 4. Sermon Slides (Marked for Slider)
-    sermon_slides = Sermon.objects.filter(show_on_slider=True).exclude(image='')
+    # 4. SERMON SLIDES (FIXED!)
+    # Removed .exclude(image='') so it works with YouTube auto-thumbnails
+    sermon_slides = list(Sermon.objects.filter(show_on_slider=True).order_by('-date_preached')[:2])
+    for slide in sermon_slides: slide.slide_type = 'sermon'
 
-    # 5. ✅ NEW: Upcoming Event Slides (events with images)
-    event_slides = Event.objects.filter(
-        show_on_slider=True,
-        date__gte=today,
-        image__isnull=False
-    ).exclude(image='').order_by('date')[:2]
+    # 5. Upcoming Event Slides (Auto-expires correctly)
+    event_slides = list(Event.objects.filter(show_on_slider=True, date__gte=today).exclude(image='').order_by('date')[:3])
+    for slide in event_slides: slide.slide_type = 'event'
 
-    # 6. Combine ALL
+    # Combine ALL into the slider
     combined_slides = list(chain(manual_slides, news_slides, outreach_slides, sermon_slides, event_slides))
     
-    # --- 2. OFFICE OF THE PRINCIPAL ---
+    # --- OFFICE OF THE PRINCIPAL ---
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()
 
-    # --- 3. UNIVERSITY NEWS GRID (Below Slider) ---
-    # Fetch latest 5 articles generally (regardless of slider setting)
+    # --- UNIVERSITY NEWS GRID ---
     latest_news_list = NewsArticle.objects.all().order_by('-date_posted')[:5]
     featured_news = latest_news_list[0] if latest_news_list else None
-    other_news = latest_news_list[1:] if len(latest_news_list) > 1 else []
+    other_news = latest_news_list[1:] if len(latest_news_list) > 1 else[]
 
-    # --- 4. UPCOMING EVENTS ---
-    today = timezone.now().date()
+    # --- UPCOMING EVENTS ---
     upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:3]
 
-    # --- 5. TESTIMONIALS & PARTNERS ---
+    # --- TESTIMONIALS & PARTNERS ---
     testimonials = Testimonial.objects.all().order_by('-created_at')[:3]
     partners = Partner.objects.all()
 

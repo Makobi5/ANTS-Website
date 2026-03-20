@@ -16,142 +16,142 @@
         {% endfor %}
     </div>
 
-    <div class="carousel-inner">
-        {% for slide in combined_slides %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            
-            <!-- A. The Image Wrapper -->
-            <div class="slider-image-wrapper">
-                
-                <!-- CHECK: Is it News (has date) or Manual Slide? -->
-                {% if slide.date_posted %}
-                    <!-- NEWS: Link to Detail Page -->
-                    <a href="{% url 'news_detail' slide.pk %}">
-                        <!-- We use the MAIN IMAGE here because the slider is wide -->
-                        <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
-                    </a>
-                {% else %}
-                    <!-- MANUAL SLIDE: No automatic link on image -->
-                    <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
-                {% endif %}
-                
-                <!-- B. The Gradient Overlay (Kyambogo Style) -->
-                <!-- Only show gradient if there is text to display -->
-                {% if slide.summary or slide.subtitle %}
-                <div class="kyambogo-gradient"></div>
-                {% endif %}
-            </div>
+        <div class="carousel-inner">
+                {% for slide in combined_slides %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    
+                    <!-- A. The Image Wrapper -->
+                <div class="slider-image-wrapper">
+                    
+                    <!-- CHECK: Is it News, Sermon, Event, Outreach, or Manual Slide? -->
+                    {% if slide.slide_type == 'news' %}
+                        <a href="{% url 'news_detail' slide.pk %}">
+                            <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                        </a>
+                    {% elif slide.slide_type == 'event' %}
+                        <a href="{% url 'event_detail' slide.pk %}">
+                            <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                        </a>
+                    {% elif slide.slide_type == 'sermon' %}
+                        <!-- Assuming you have a chapel_detail URL -->
+                        <a href="#">
+                            {% if slide.image %}
+                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                            {% else %}
+                                <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                            {% endif %}
+                        </a>
+                    {% elif slide.slide_type == 'outreach' %}
+                        <a href="#">
+                            <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                        </a>
+                    {% else %}
+                        <!-- MANUAL SLIDE -->
+                        {% if slide.link %}
+                            <a href="{{ slide.link }}">
+                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                            </a>
+                        {% else %}
+                            <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                        {% endif %}
+                    {% endif %}
+                    
+                    <!-- B. The Overlays (ONLY SHOW IF THERE IS TEXT TO READ) -->
+                    {% if slide.slide_type != 'manual' or slide.title or slide.subtitle %}
+                        <div class="slider-overlay"></div>
+                        <div class="kyambogo-gradient"></div>
+                    {% endif %}
+                </div>
 
-            <!-- C. The Content -->
-            <div class="carousel-caption d-flex flex-column justify-content-end text-start">
-                <div class="container pb-5 mb-2" style="position: relative; z-index: 2;">
-                    <div class="row">
-                        <div class="col-lg-9 col-md-10">
-                            
-                            <!-- 1. NEWS ARTICLE -->
-                            {% if slide.date_posted %}
-                                <span class="badge bg-warning text-dark mb-2 fw-bold shadow-sm">NEWS UPDATE</span>
-                                <h1 class="display-5 fw-bold text-white mb-2 slider-title">
-                                    <a href="{% url 'news_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">
-                                        {{ slide.title }}
-                                    </a>
-                                </h1>
-                                {% if slide.summary %}
-                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
-                                    {{ slide.summary|truncatewords:30 }}
-                                </p>
-                                {% endif %}
+                <!-- B. The Content Box -->
+                <div class="carousel-caption d-flex flex-column justify-content-end text-start">
+                    <div class="container pb-5 mb-2" style="position: relative; z-index: 2;">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-10">
+                                
+                                <!-- 1. NEWS LAYOUT -->
+                                {% if slide.slide_type == 'news' %}
+                                    <span class="badge bg-warning text-dark mb-2 fw-bold shadow-sm">NEWS UPDATE</span>
+                                    <h1 class="display-5 fw-bold text-white mb-2 slider-title">
+                                        <a href="{% url 'news_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
+                                    </h1>
+                                    {% if slide.summary %}
+                                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">{{ slide.summary|truncatewords:30 }}</p>
+                                    {% endif %}
 
-                            <!-- 2. UPCOMING EVENT -->
-                            {% elif slide.time and slide.location %}
-                                <span class="badge mb-2 fw-bold shadow-sm" style="background:#ffca28; color:#4a148c;">UPCOMING EVENT</span>
-                                <h1 class="display-5 fw-bold text-white mb-2 slider-title">
-                                    <a href="{% url 'event_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">
-                                        {{ slide.title }}
-                                    </a>
-                                </h1>
-                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
-                                    <i class="far fa-calendar-alt me-2 text-warning"></i> {{ slide.date|date:"l, d F Y" }}
-                                    &nbsp;|&nbsp;
-                                    <i class="far fa-clock me-2 text-warning"></i> {{ slide.time|time:"h:i A" }}
-                                </p>
-                                <p class="text-white opacity-75 mb-0 small">
-                                    <i class="fas fa-map-marker-alt me-2 text-warning"></i>{{ slide.location }}
-                                </p>
-                                <div class="mt-3">
-                                    <a href="{% url 'event_detail' slide.pk %}" class="btn rounded-pill px-4 fw-bold" style="background:#ffca28; color:#4a148c;">
-                                        View Event Details &rarr;
-                                    </a>
-                                </div>
+                                <!-- 2. SERMON LAYOUT -->
+                                {% elif slide.slide_type == 'sermon' %}
+                                    <span class="badge bg-danger text-white mb-2 fw-bold shadow-sm"><i class="fas fa-play-circle me-1"></i> LATEST SERMON</span>
+                                    <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #dc3545;">
+                                        <a href="#" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
+                                    </h1>
+                                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">Preached by {{ slide.preacher }} on {{ slide.date_preached|date:"M d, Y" }}</p>
 
-                            <!-- 3. OUTREACH PROGRAM -->
-                            {% elif slide.location %}
-                                <span class="badge bg-success text-white mb-2 fw-bold shadow-sm">COMMUNITY OUTREACH</span>
-                                <h1 class="display-5 fw-bold text-white mb-2 slider-title">
+                                <!-- 3. EVENT LAYOUT -->
+                                {% elif slide.slide_type == 'event' %}
+                                    <span class="badge bg-info text-dark mb-2 fw-bold shadow-sm"><i class="far fa-calendar-alt me-1"></i> UPCOMING EVENT</span>
+                                    <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #0dcaf0;">
+                                        <a href="{% url 'event_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
+                                    </h1>
+                                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">Join us on {{ slide.date|date:"F d, Y" }} at {{ slide.location }}.</p>
+
+<!-- 4. OUTREACH LAYOUT -->
+                            {% elif slide.slide_type == 'outreach' %}
+                                <span class="badge bg-success text-white mb-2 fw-bold shadow-sm">
+                                    <i class="fas fa-hands-helping me-1"></i> COMMUNITY OUTREACH
+                                </span>
+                                
+                                <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #198754;">
                                     <a href="{% url 'community_outreach' %}" class="text-white text-decoration-none hover-underline">
                                         {{ slide.title }}
                                     </a>
                                 </h1>
-                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
-                                    <i class="fas fa-map-marker-alt me-2 text-warning"></i> {{ slide.location }}
-                                </p>
-
-                            <!-- 4. SERMON -->
-                            {% elif slide.preacher %}
-                                <span class="badge bg-danger text-white mb-2 fw-bold shadow-sm">LATEST SERMON</span>
-                                <h1 class="display-5 fw-bold text-white mb-2 slider-title">
-                                    <a href="{% url 'ants_chapel' %}" class="text-white text-decoration-none hover-underline">
-                                        {{ slide.title }}
-                                    </a>
-                                </h1>
-                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
-                                    Preached by {{ slide.preacher }}
-                                </p>
-                                <div class="mt-3">
-                                    <a href="{% url 'ants_chapel' %}" class="btn btn-outline-light rounded-pill px-4 fw-bold">
-                                        <i class="fas fa-play-circle me-2"></i> Watch Now
-                                    </a>
-                                </div>
-
-                            <!-- 5. MANUAL SLIDE (Default) -->
-                            {% else %}
-                                {% if slide.title %}
-                                <h1 class="display-4 fw-bold text-white mb-2 slider-title" style="border-left-color: #fff;">
-                                    {{ slide.title }}
-                                </h1>
-                                {% endif %}
-                                {% if slide.subtitle %}
-                                <p class="lead text-warning fw-bold mb-3" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
-                                    {{ slide.subtitle }}
+                                
+                                <!-- The Description -->
+                                {% if slide.description %}
+                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                                    {{ slide.description|striptags|truncatewords:25 }}
                                 </p>
                                 {% endif %}
-                                {% if slide.link %}
-                                <a href="{{ slide.link }}" class="btn btn-outline-light rounded-pill px-4 fw-bold mt-2">
-                                    {{ slide.button_text|default:"Learn More" }} &rarr;
+                                
+                                <!-- Optional: A button to read more -->
+                                <a href="{% url 'community_outreach' %}" class="btn btn-success btn-sm fw-bold rounded-pill px-4 mt-3 shadow-sm">
+                                    Learn More <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
-                                {% endif %}
-                            {% endif %}
 
+                                <!-- 5. MANUAL SLIDER LAYOUT -->
+                                {% else %}
+                                    {% if slide.title %}
+                                    <h1 class="display-4 fw-bold text-white mb-2 slider-title" style="border-left-color: #fff;">{{ slide.title }}</h1>
+                                    {% endif %}
+                                    
+                                    {% if slide.subtitle %}
+                                    <p class="lead text-warning fw-bold mb-3" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">{{ slide.subtitle }}</p>
+                                    {% endif %}
+                                    
+                                    {% if slide.link %}
+                                    <a href="{{ slide.link }}" class="btn btn-outline-light rounded-pill px-4 fw-bold mt-2">{{ slide.button_text|default:"Learn More" }} &rarr;</a>
+                                    {% endif %}
+                                {% endif %}
+
+                            </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
-           
-
-        </div>
-        {% empty %}
-        <!-- Fallback Slide -->
-        <div class="carousel-item active">
-            <div class="slider-image-wrapper bg-primary"></div>
-            <div class="carousel-caption d-flex flex-column justify-content-end text-start">
-                <div class="container pb-5">
-                    <h1 class="text-white fw-bold">Welcome to ANTS</h1>
-                    <p class="text-white opacity-75">Preparing Servants for the Harvest.</p>
+            {% empty %}
+            <!-- Fallback Slide -->
+            <div class="carousel-item active">
+                <div class="slider-image-wrapper bg-primary"></div>
+                <div class="carousel-caption d-flex flex-column justify-content-end text-start">
+                    <div class="container pb-5">
+                        <h1 class="text-white fw-bold">Welcome to ANTS</h1>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
 
     <!-- D. Controls (Bottom Right) -->
     <div class="slider-controls">
