@@ -651,7 +651,7 @@
                   <span><i class="fas fa-user-tie"></i> {{ latest_sermon.preacher }}</span>
                   <span><i class="far fa-calendar-alt"></i> {{ latest_sermon.date_preached }}</span>
                 </div>
-                <p class="video-desc">{{ latest_sermon.description }}</p>
+                <div class="video-desc">{{ latest_sermon.description|linebreaks }}</div>
               </div>
             </div>
           {% else %}
