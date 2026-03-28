@@ -34,7 +34,7 @@
                         </a>
                     {% elif slide.slide_type == 'sermon' %}
                         <!-- Assuming you have a chapel_detail URL -->
-                        <a href="#">
+                        <a href="{% url 'ants_chapel' %}">
                             {% if slide.image %}
                                 <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
                             {% else %}
@@ -83,7 +83,7 @@
                                 {% elif slide.slide_type == 'sermon' %}
                                     <span class="badge bg-danger text-white mb-2 fw-bold shadow-sm"><i class="fas fa-play-circle me-1"></i> LATEST SERMON</span>
                                     <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #dc3545;">
-                                        <a href="#" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
+                                        <a href="{% url 'ants_chapel' %}" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
                                     </h1>
                                     <p class="lead text-white opacity-90 mb-0 d-none d-md-block">Preached by {{ slide.preacher }} on {{ slide.date_preached|date:"M d, Y" }}</p>
 
