@@ -666,7 +666,7 @@
         <div class="recent-sermons">
           <div class="rs-header">Recent Messages</div>
           {% for sermon in recent_sermons %}
-            <a class="sermon-item" data-bs-toggle="modal" data-bs-target="#videoModal{{ sermon.id }}">
+            <a class="sermon-item" href="https://www.youtube.com/watch?v={{ sermon.get_video_id }}" target="_blank">
               <div class="sermon-thumb">
                 <img src="https://img.youtube.com/vi/{{ sermon.get_video_id }}/mqdefault.jpg" alt="{{ sermon.title }}">
                 <div class="play-icon"><i class="fas fa-play"></i></div>
