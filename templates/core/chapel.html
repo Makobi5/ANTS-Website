@@ -26,42 +26,53 @@
   /* ── Hero ── */
   .chapel-hero {
     position: relative;
-    height: 300px;
+    height: 440px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .chapel-hero img {
+    position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    object-position: center 40%;
-    filter: brightness(0.75);
-    transition: transform 8s ease;
+    object-position: center center;
+    filter: brightness(0.48) saturate(0.5);
+    transition: transform 10s ease;
   }
-  .chapel-hero:hover img { transform: scale(1.04); }
+  .chapel-hero:hover img { transform: scale(1.03); }
   .chapel-hero-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to right, rgba(74,20,140,0.65) 0%, rgba(74,20,140,0.25) 60%, rgba(74,20,140,0.1) 100%);
-    display: flex; align-items: flex-end;
-    padding: 2rem 3rem;
+    background: rgba(0,0,0,0.12);
+  }
+  .chapel-hero-text {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 1.5rem 2rem;
   }
   .chapel-hero-text h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Source Sans 3', sans-serif;
     color: var(--white);
-    font-size: 3rem;
-    margin: 0 0 .4rem;
-    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    font-size: 3.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin: 0 0 .6rem;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+    line-height: 1.1;
   }
   .chapel-hero-text .subtitle {
-    color: rgba(255,255,255,0.72);
-    font-size: .95rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: .8rem;
+    font-family: 'Playfair Display', serif;
+    color: rgba(255,255,255,0.92);
+    font-size: 1.7rem;
+    font-style: italic;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    letter-spacing: 0;
+    text-transform: none;
   }
-  .gold-bar {
-    width: 60px; height: 4px;
-    background: var(--gold);
-    border-radius: 2px;
-  }
+  .gold-bar { display: none; }
 
   /* ── Body ── */
   .chapel-body {
@@ -526,13 +537,11 @@
 
   <!-- Hero -->
   <div class="chapel-hero">
-    <img src="{% static 'img/chapel.jpg' %}" alt="ANTS Chapel">
-    <div class="chapel-hero-overlay">
-      <div class="chapel-hero-text">
-        <div class="subtitle">Spiritual Life &amp; Worship</div>
-        <h1>ANTS Chapel</h1>
-        <div class="gold-bar"></div>
-      </div>
+    <img src="{% static 'img/bible.jpg' %}" alt="ANTS Chapel">
+    <div class="chapel-hero-overlay"></div>
+    <div class="chapel-hero-text">
+      <h1>ANTS Chapel</h1>
+      <p class="subtitle">Spiritual Life & Worship</p>
     </div>
   </div>
 
@@ -787,7 +796,7 @@
           {% else %}
             <div class="no-sermon">
               <i class="fab fa-youtube"></i>
-              <p>No sermons uploaded yet. Add them via the Admin Panel.</p>
+              <p>No sermons uploaded yet. Check back later</p>
             </div>
           {% endif %}
         </div>

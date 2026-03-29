@@ -47,7 +47,9 @@ def home(request):
     for slide in news_slides: slide.slide_type = 'news'
     
     # 3. Outreach Slides
-    outreach_slides = list(OutreachProgram.objects.filter(show_on_slider=True).exclude(image='').order_by('-id')[:3])
+    outreach_slides = list(OutreachProgram.objects.filter(
+        show_on_slider=True
+    ).exclude(image='').order_by('-id')[:3])
     for slide in outreach_slides: slide.slide_type = 'outreach'
 
     # 4. SERMON SLIDES (FIXED!)
@@ -55,8 +57,8 @@ def home(request):
     sermon_slides = list(Sermon.objects.filter(show_on_slider=True).order_by('-date_preached')[:2])
     for slide in sermon_slides: slide.slide_type = 'sermon'
     chapel_event_slides = list(ChapelEvent.objects.filter(
-    show_on_slider=True, date__gte=today
-    ).order_by('date')[:2])
+        show_on_slider=True, date__gte=today
+    ).exclude(image='').exclude(image=None).order_by('date')[:2])
     for slide in chapel_event_slides: slide.slide_type = 'chapel_event'
     # 5. Upcoming Event Slides (Auto-expires correctly)
     event_slides = list(Event.objects.filter(show_on_slider=True, date__gte=today).exclude(image='').order_by('date')[:3])
