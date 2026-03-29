@@ -467,6 +467,59 @@
     font-weight: 600;
   }
 
+  /* ── Chapel Events ── */
+  .chapel-events-section {
+    margin-bottom: 5rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid #e8dff5;
+  }
+  .events-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media(max-width:900px){ .events-layout{ grid-template-columns: 1fr; } }
+
+  .event-featured { background: var(--white); border-radius: 18px; overflow: hidden; box-shadow: 0 8px 36px rgba(74,20,140,0.13); }
+  .event-featured-banner {
+    background: linear-gradient(135deg, var(--purple), #7b1fa2);
+    padding: 2.5rem 2rem 2rem; position: relative; overflow: hidden;
+  }
+  .event-featured-banner::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; border-radius:50%; background:rgba(255,202,40,0.12); }
+  .efb-badge { display:inline-block; background:var(--gold); color:var(--purple); font-size:.72rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:.3rem .9rem; border-radius:4px; margin-bottom:1rem; }
+  .event-featured-banner h3 { font-family:'Playfair Display',serif; color:var(--white); font-size:1.7rem; margin:0 0 .5rem; line-height:1.25; position:relative; z-index:1; }
+  .efb-theme { color:rgba(255,255,255,.7); font-style:italic; font-size:.95rem; position:relative; z-index:1; }
+  .event-featured-body { padding: 1.8rem 2rem; }
+
+  .event-timeline { list-style:none; padding:0; margin:0; }
+  .et-item { display:flex; gap:1rem; padding:.9rem 0; border-bottom:1px solid #f5f0ff; align-items:flex-start; }
+  .et-item:last-child { border-bottom:none; }
+  .et-day { flex-shrink:0; width:80px; background:#f5f0ff; border-radius:8px; padding:.4rem .5rem; text-align:center; }
+  .et-day .day-name { font-size:.68rem; font-weight:800; color:var(--purple); text-transform:uppercase; letter-spacing:.5px; }
+  .et-day .day-date { font-size:.78rem; color:var(--muted); }
+  .et-content { flex:1; }
+  .et-content strong { display:block; font-size:.92rem; color:var(--text); font-weight:700; margin-bottom:.2rem; }
+  .et-content span { font-size:.82rem; color:var(--muted); }
+  .et-icon { flex-shrink:0; width:32px; height:32px; border-radius:50%; background:#f5f0ff; display:flex; align-items:center; justify-content:center; color:var(--purple); font-size:.8rem; margin-top:.1rem; }
+  .et-icon.special { background:var(--gold); color:var(--purple); }
+
+  .events-sidebar {}
+  .es-header { background:linear-gradient(135deg,var(--purple),var(--purple2)); color:var(--white); padding:1.2rem 1.4rem; border-radius:14px 14px 0 0; font-family:'Playfair Display',serif; font-size:1.05rem; }
+  .es-body { background:var(--white); border-radius:0 0 14px 14px; box-shadow:0 6px 24px rgba(74,20,140,0.09); overflow:hidden; }
+
+  .chapel-event-item { display:flex; gap:.9rem; padding:1rem 1.2rem; border-bottom:1px solid #f5f0ff; text-decoration:none; transition:background .15s; align-items:flex-start; }
+  .chapel-event-item:last-child { border-bottom:none; }
+  .chapel-event-item:hover { background:#fdf9ff; }
+  .cei-date-box { flex-shrink:0; width:46px; height:46px; background:linear-gradient(135deg,var(--purple),var(--purple2)); border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--white); }
+  .cei-date-box .day { font-size:1.1rem; font-weight:800; line-height:1; }
+  .cei-date-box .mon { font-size:.6rem; text-transform:uppercase; letter-spacing:.5px; opacity:.8; }
+  .cei-info h6 { font-size:.87rem; color:var(--text); font-weight:700; margin:0 0 .2rem; line-height:1.3; }
+  .cei-info small { font-size:.76rem; color:var(--muted); display:flex; align-items:center; gap:.3rem; }
+  .no-events { padding:2rem; text-align:center; color:var(--muted); font-size:.9rem; font-style:italic; }
+  .add-event-cta { background:#f5f0ff; padding:.9rem 1.2rem; text-align:center; border-radius:0 0 14px 14px; }
+  .add-event-cta small { font-size:.8rem; color:var(--muted); }
+
 </style>
 
 <div class="chapel-wrapper">
@@ -612,8 +665,85 @@
         </div>
       </div>
     </div>
+    <!-- 4. CHAPEL EVENTS -->
+    <div class="chapel-events-section" id="chapel-events">
+      <div class="section-label">Upcoming &amp; Current</div>
+      <h2 class="section-title">Chapel Events</h2>
+      <div class="section-divider"></div>
 
-    <!-- 3. Sermon Archive -->
+      <div class="events-layout">
+
+        <!-- Featured Event Card -->
+        <div class="event-featured">
+          <div class="event-featured-banner">
+            <div class="efb-badge">📅 Upcoming Chapel Program</div>
+            {% if chapel_events %}
+              <h3>{{ chapel_events.0.title }}</h3>
+              {% if chapel_events.0.description %}
+              <p class="efb-theme"><em>{{ chapel_events.0.description|truncatewords:15 }}</em></p>
+              {% endif %}
+            {% else %}
+              <h3>Chapel Events</h3>
+              <p class="efb-theme"><em>Events will appear here once added via the Admin Panel.</em></p>
+            {% endif %}
+          </div>
+
+          <div class="event-featured-body">
+            {% if chapel_events %}
+              <ul class="event-timeline">
+                {% for event in chapel_events %}
+                <li class="et-item">
+                  <div class="et-icon {% if event.icon == 'fas fa-fire' or event.icon == 'fas fa-sun' %}special{% endif %}">
+                    <i class="{{ event.icon|default:'fas fa-calendar-alt' }}"></i>
+                  </div>
+                  <div class="et-day">
+                    <div class="day-name">{{ event.date|date:"D" }}{% if event.end_date %}&ndash;{{ event.end_date|date:"D" }}{% endif %}</div>
+                    <div class="day-date">{{ event.date|date:"M d" }}{% if event.end_date %}&ndash;{{ event.end_date|date:"M d" }}{% endif %}</div>
+                  </div>
+                  <div class="et-content">
+                    <strong>{{ event.title }}</strong>
+                    <span>{{ event.description }}</span>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color:var(--muted);font-style:italic;padding:1rem 0;">
+                No upcoming chapel events. Add them via the <a href="/admin/" style="color:var(--purple);">Admin Panel</a>.
+              </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Upcoming Events Sidebar -->
+        <div class="events-sidebar">
+          <div class="es-header">
+            <i class="far fa-calendar-check me-2"></i> Upcoming Chapel Events
+          </div>
+          <div class="es-body">
+            {% if chapel_events %}
+              {% for event in chapel_events %}
+              <a href="#chapel-events" class="chapel-event-item">
+                <div class="cei-date-box">
+                  <span class="day">{{ event.date|date:"d" }}</span>
+                  <span class="mon">{{ event.date|date:"M" }}</span>
+                </div>
+                <div class="cei-info">
+                  <h6>{{ event.title }}</h6>
+                  <small><i class="far fa-clock"></i> {{ event.time|default:"See program" }}</small>
+                </div>
+              </a>
+              {% endfor %}
+            {% else %}
+              <p class="no-events">No upcoming events scheduled.</p>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5. Sermon Archive -->
     <div class="sermons-section">
       <div class="sermons-header">
         <div>

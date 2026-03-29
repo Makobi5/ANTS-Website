@@ -29,6 +29,7 @@ from itertools import chain
 from news.models import NewsArticle, Event
 from staff.models import StaffMember
 from .models import SliderImage, Partner, Testimonial
+from .models import ChapelEvent
 
 # If you have already created the Outreach and Sermon models, ensure they are imported:
 # from outreach.models import OutreachProgram 
@@ -53,13 +54,18 @@ def home(request):
     # Removed .exclude(image='') so it works with YouTube auto-thumbnails
     sermon_slides = list(Sermon.objects.filter(show_on_slider=True).order_by('-date_preached')[:2])
     for slide in sermon_slides: slide.slide_type = 'sermon'
-
+    chapel_event_slides = list(ChapelEvent.objects.filter(
+    show_on_slider=True, date__gte=today
+    ).order_by('date')[:2])
+    for slide in chapel_event_slides: slide.slide_type = 'chapel_event'
     # 5. Upcoming Event Slides (Auto-expires correctly)
     event_slides = list(Event.objects.filter(show_on_slider=True, date__gte=today).exclude(image='').order_by('date')[:3])
     for slide in event_slides: slide.slide_type = 'event'
 
+    
+
     # Combine ALL into the slider
-    combined_slides = list(chain(manual_slides, news_slides, outreach_slides, sermon_slides, event_slides))
+    combined_slides = list(chain(manual_slides, news_slides, outreach_slides, sermon_slides, event_slides,chapel_event_slides ))
     
     # --- OFFICE OF THE PRINCIPAL ---
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()
@@ -291,20 +297,22 @@ def service_detail(request, slug):
     service = get_object_or_404(ServiceDepartment, slug=slug)
     return render(request, 'core/services/service_detail.html', {'service': service})
 
-
 def ants_chapel(request):
-    # Get all sermons
-    sermons = Sermon.objects.all()
-    
-    # Get the very latest one for the big player
+    sermons = Sermon.objects.all().order_by('-date_preached')
     latest_sermon = sermons.first()
-    
-    # Get the rest for the sidebar list
     recent_sermons = sermons[1:] if len(sermons) > 1 else []
+    
+    # Featured event with its timeline items
+    featured_event = ChapelEvent.objects.filter(is_featured=True).order_by('date').first()
+    chapel_events = ChapelEvent.objects.filter(
+        is_featured=True, date__gte=timezone.now().date()
+    ).order_by('date')[:8]
 
     return render(request, 'core/chapel.html', {
         'latest_sermon': latest_sermon,
-        'recent_sermons': recent_sermons
+        'recent_sermons': recent_sermons,
+        'chapel_events': chapel_events,
+        'featured_event': featured_event,
     })
 
 def donations(request):

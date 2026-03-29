@@ -282,12 +282,17 @@
     {% if upcoming_events %}
       <div class="upcoming-grid">
         {% for event in upcoming_events %}
-          <a href="{% url 'event_detail' event.pk %}" class="event-card">
+          {% if event.is_chapel_event %}
+            <a href="{% url 'ants_chapel' %}#chapel-events" class="event-card">
+          {% else %}
+            <a href="{% url 'event_detail' event.pk %}" class="event-card">
+          {% endif %}
+
             <div class="event-img">
               {% if event.image %}
                 <img src="{{ event.image.url }}" alt="{{ event.title }}">
               {% else %}
-                <div class="no-img"><i class="fas fa-calendar-alt"></i></div>
+                <div class="no-img"><i class="fas fa-church"></i></div>
               {% endif %}
               <div class="date-badge">
                 <span class="day">{{ event.date|date:"d" }}</span>
@@ -297,8 +302,13 @@
             <div class="event-body">
               <h5>{{ event.title }}</h5>
               <div class="event-meta">
-                <span><i class="far fa-clock"></i> {{ event.time|time:"h:i A" }}</span>
-                <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+                {% if event.is_chapel_event %}
+                  <span><i class="fas fa-church"></i> Chapel Event</span>
+                  {% if event.time %}<span><i class="far fa-clock"></i> {{ event.time }}</span>{% endif %}
+                {% else %}
+                  <span><i class="far fa-clock"></i> {{ event.time|time:"h:i A" }}</span>
+                  <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+                {% endif %}
               </div>
               <span class="event-cta">View Details <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></span>
             </div>

@@ -10,6 +10,7 @@ from django.contrib import admin
 from .models import DonationCategory, Donation, DonationTestimonial, DonationImpactStory, OutreachProgram, OutreachImage, Sermon
 from staff.models import StaffMember
 from .models import FeeStructure
+from .models import ChapelEvent
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -108,6 +109,13 @@ class SermonAdmin(admin.ModelAdmin):
     list_display = ('title', 'preacher', 'date_preached', 'show_on_slider')
     list_editable = ('show_on_slider',)  
     
+
+@admin.register(ChapelEvent)
+class ChapelEventAdmin(admin.ModelAdmin):
+    list_display = ['title', 'date', 'end_date', 'is_featured', 'show_on_slider']
+    list_editable = ['is_featured', 'show_on_slider']
+    list_filter = ['is_featured', 'show_on_slider']
+    ordering = ['date']    
 @admin.register(DonationCategory)
 class DonationCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'category_type', 'target_amount', 'is_active', 'order']

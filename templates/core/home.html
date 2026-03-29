@@ -32,15 +32,14 @@
                         <a href="{% url 'event_detail' slide.pk %}">
                             <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
                         </a>
-                    {% elif slide.slide_type == 'sermon' %}
-                        <!-- Assuming you have a chapel_detail URL -->
-                        <a href="{% url 'ants_chapel' %}">
-                            {% if slide.image %}
-                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
-                            {% else %}
-                                <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
-                            {% endif %}
-                        </a>
+                        {% elif slide.slide_type == 'chapel_event' %}
+                            <a href="{% url 'ants_chapel' %}#chapel-events">
+                                {% if slide.image %}
+                                    <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit:cover;" alt="{{ slide.title }}">
+                                {% else %}
+                                    <div class="d-block w-100 h-100" style="background:linear-gradient(135deg,#4a148c,#7b1fa2);"></div>
+                                {% endif %}
+                            </a>
                     {% elif slide.slide_type == 'outreach' %}
                         <a href="#">
                             <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
@@ -118,7 +117,26 @@
                                 <a href="{% url 'community_outreach' %}" class="btn btn-success btn-sm fw-bold rounded-pill px-4 mt-3 shadow-sm">
                                     Learn More <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
-
+{% elif slide.slide_type == 'chapel_event' %}
+    <span class="badge mb-2 fw-bold shadow-sm" style="background:#7b1fa2;color:#fff;">
+        <i class="fas fa-church me-1"></i> CHAPEL EVENT
+    </span>
+    <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color:#ffca28;">
+        <a href="{% url 'ants_chapel' %}#chapel-events" class="text-white text-decoration-none hover-underline">
+            {{ slide.title }}
+                        </a>
+                    </h1>
+                    {% if slide.description %}
+                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">{{ slide.description|truncatewords:20 }}</p>
+                    {% endif %}
+                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">
+                        <i class="far fa-calendar-alt me-1"></i> {{ slide.date|date:"F d, Y" }}
+                        {% if slide.time %} · {{ slide.time }}{% endif %}
+                    </p>
+                    <a href="{% url 'ants_chapel' %}#chapel-events" class="btn btn-sm fw-bold rounded-pill px-4 mt-3 shadow-sm"
+                    style="background:#ffca28;color:#4a148c;">
+                        View Program <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
                                 <!-- 5. MANUAL SLIDER LAYOUT -->
                                 {% else %}
                                     {% if slide.title %}

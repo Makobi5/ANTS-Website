@@ -14,6 +14,7 @@ from .models import Subscriber
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags 
+from core.models import ChapelEvent
 def news_list(request):
     # Get all news, newest first
     articles = NewsArticle.objects.all().order_by('-date_posted')
@@ -46,16 +47,27 @@ def news_detail(request, pk):
 
 def events_list(request):
     today = timezone.now().date()
-    
-    # Events happening today or in the future
-    upcoming_events = Event.objects.filter(date__gte=today).order_by('date', 'time')
-    
-    # Events that already happened
-    past_events = Event.objects.filter(date__lt=today).order_by('-date', '-time')
-    
+
+    # Regular events
+    upcoming_events = list(Event.objects.filter(date__gte=today).order_by('date', 'time'))
+    past_events = list(Event.objects.filter(date__lt=today).order_by('-date'))
+
+    # Chapel events — merge in
+    upcoming_chapel = list(ChapelEvent.objects.filter(date__gte=today).order_by('date'))
+    past_chapel = list(ChapelEvent.objects.filter(date__lt=today).order_by('-date'))
+
+    # Tag them so template knows which type
+    for e in upcoming_chapel: e.is_chapel_event = True
+    for e in past_chapel: e.is_chapel_event = True
+
+    # Combine and sort
+    from itertools import chain
+    all_upcoming = sorted(chain(upcoming_events, upcoming_chapel), key=lambda e: e.date)
+    all_past = sorted(chain(past_events, past_chapel), key=lambda e: e.date, reverse=True)
+
     context = {
-        'upcoming_events': upcoming_events,
-        'past_events': past_events
+        'upcoming_events': all_upcoming,
+        'past_events': all_past,
     }
     return render(request, 'news/events_list.html', context)
 

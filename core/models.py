@@ -414,3 +414,22 @@ class FeeStructure(models.Model):
     @property
     def total(self):
         return self.tuition_per_semester + self.functional_fees     
+
+class ChapelEvent(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    time = models.CharField(max_length=100, blank=True, help_text="e.g. 6:00 AM – 11:00 PM")
+    icon = models.CharField(max_length=50, blank=True, help_text="FontAwesome class e.g. fas fa-cross")
+    # ADD THIS ↓
+    image = models.ImageField(upload_to='chapel_events/', blank=True, null=True,
+                              help_text="Banner image for slider and events page")
+    is_featured = models.BooleanField(default=False, help_text="Show in featured event timeline")
+    show_on_slider = models.BooleanField(default=False, help_text="Feature on homepage slider")
+
+    class Meta:
+        ordering = ['date']
+
+    def __str__(self):
+        return f"{self.title} ({self.date})"      
