@@ -80,7 +80,20 @@ def home(request):
     other_news = latest_news_list[1:] if len(latest_news_list) > 1 else[]
 
     # --- UPCOMING EVENTS ---
-    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')[:3]
+        # --- UPCOMING EVENTS (Combined: Regular + Chapel Events) ---
+    regular_events = list(Event.objects.filter(date__gte=today).order_by('date')[:3])
+    for e in regular_events:
+        e.event_type = 'regular'
+
+    chapel_upcoming = list(ChapelEvent.objects.filter(date__gte=today).order_by('date')[:3])
+    for e in chapel_upcoming:
+        e.event_type = 'chapel'
+
+    # Merge and sort by date, take the nearest 3
+    upcoming_events = sorted(
+        regular_events + chapel_upcoming,
+        key=lambda x: x.date
+    )[:3]
 
     # --- TESTIMONIALS & PARTNERS ---
     testimonials = Testimonial.objects.all().order_by('-created_at')[:3]

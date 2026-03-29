@@ -560,7 +560,11 @@
                 <div class="card border-0 shadow h-100 event-card-kabale">
                     <div class="card-body p-4 d-flex flex-column">
                         <h5 class="fw-bold text-primary mb-3">
-                            <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none text-primary">{{ event.title }}</a>
+                            {% if event.event_type == 'chapel' %}
+                                <a href="{% url 'ants_chapel' %}#chapel-events" class="text-decoration-none text-primary">{{ event.title }}</a>
+                            {% else %}
+                                <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none text-primary">{{ event.title }}</a>
+                            {% endif %}
                         </h5>
                         
                         <p class="small text-muted mb-4 flex-grow-1">
@@ -570,11 +574,18 @@
                         <div class="text-dark small fw-bold mb-2">
                             <i class="fas fa-calendar-alt text-warning me-2"></i> {{ event.date|date:"F d, Y" }}
                         </div>
+
+                        {% if event.event_type == 'chapel' %}
+                        <div class="text-dark small mb-3">
+                            <i class="fas fa-church text-primary me-2"></i> ANTS Chapel
+                        </div>
+                        <a href="{% url 'ants_chapel' %}#chapel-events" class="btn btn-primary w-100 fw-bold btn-sm">VIEW PROGRAM</a>
+                        {% else %}
                         <div class="text-dark small mb-3">
                             <i class="fas fa-map-marker-alt text-danger me-2"></i> {{ event.location }}
                         </div>
-
                         <a href="{% url 'event_detail' event.pk %}" class="btn btn-primary w-100 fw-bold btn-sm">LEARN MORE</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
