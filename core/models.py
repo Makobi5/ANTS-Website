@@ -433,3 +433,24 @@ class ChapelEvent(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.date})"      
+class ChapelPreacher(models.Model):
+    SERVICE_CHOICES = [
+        ('chapel', 'Chapel Service (Mon-Fri)'),
+        ('friday_prayer', 'Friday Evening Prayer'),
+        ('sunday_worship', 'Sunday Worship Service'),
+    ]
+    DAY_CHOICES = [
+        ('Mon','Monday'),('Tue','Tuesday'),('Wed','Wednesday'),
+        ('Thu','Thursday'),('Fri','Friday'),('Sun','Sunday'),
+    ]
+    service_type = models.CharField(max_length=20, choices=SERVICE_CHOICES)
+    day = models.CharField(max_length=3, choices=DAY_CHOICES, blank=True)
+    preacher_name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100, blank=True, help_text="e.g. Presider, Preacher, Worship Leader")
+    week_of = models.DateField(help_text="Monday of the week this applies to")
+
+    class Meta:
+        ordering = ['week_of', 'service_type', 'day']
+
+    def __str__(self):
+        return f"{self.get_service_type_display()} — {self.preacher_name}"  

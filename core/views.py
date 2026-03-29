@@ -30,6 +30,8 @@ from news.models import NewsArticle, Event
 from staff.models import StaffMember
 from .models import SliderImage, Partner, Testimonial
 from .models import ChapelEvent
+from .models import ChapelPreacher
+from datetime import date, timedelta
 
 # If you have already created the Outreach and Sermon models, ensure they are imported:
 # from outreach.models import OutreachProgram 
@@ -303,7 +305,9 @@ def ants_chapel(request):
     sermons = Sermon.objects.all().order_by('-date_preached')
     latest_sermon = sermons.first()
     recent_sermons = sermons[1:] if len(sermons) > 1 else []
-    
+    today = date.today()
+    monday = today - timedelta(days=today.weekday())
+    chapel_preachers = ChapelPreacher.objects.filter(week_of=monday)
     # Featured event with its timeline items
     featured_event = ChapelEvent.objects.filter(is_featured=True).order_by('date').first()
     chapel_events = ChapelEvent.objects.filter(
