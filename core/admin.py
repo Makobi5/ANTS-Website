@@ -11,6 +11,8 @@ from .models import DonationCategory, Donation, DonationTestimonial, DonationImp
 from staff.models import StaffMember
 from .models import FeeStructure
 from .models import ChapelEvent
+from .models import ChapelPreacher
+
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):
@@ -116,6 +118,13 @@ class ChapelEventAdmin(admin.ModelAdmin):
     list_editable = ['is_featured', 'show_on_slider']
     list_filter = ['is_featured', 'show_on_slider']
     ordering = ['date']    
+
+@admin.register(ChapelPreacher)
+class ChapelPreacherAdmin(admin.ModelAdmin):
+    list_display = ('week_of', 'day', 'preacher_name', 'role', 'service_type')
+    list_filter = ('week_of', 'service_type')
+    ordering = ('-week_of', 'day')
+        
 @admin.register(DonationCategory)
 class DonationCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'category_type', 'target_amount', 'is_active', 'order']

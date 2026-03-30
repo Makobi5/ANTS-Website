@@ -319,7 +319,12 @@ def ants_chapel(request):
     latest_sermon = sermons.first()
     recent_sermons = sermons[1:] if len(sermons) > 1 else []
     today = date.today()
-    monday = today - timedelta(days=today.weekday())
+    # If today is Sunday (weekday=6), show NEXT week's preachers
+    # Otherwise show the current week's Monday
+    if today.weekday() == 6:  # Sunday
+        monday = today + timedelta(days=1)
+    else:
+        monday = today - timedelta(days=today.weekday())
     chapel_preachers = ChapelPreacher.objects.filter(week_of=monday)
     # Featured event with its timeline items
     featured_event = ChapelEvent.objects.filter(is_featured=True).order_by('date').first()
@@ -332,6 +337,7 @@ def ants_chapel(request):
         'recent_sermons': recent_sermons,
         'chapel_events': chapel_events,
         'featured_event': featured_event,
+        'chapel_preachers': chapel_preachers,
     })
 
 def donations(request):
