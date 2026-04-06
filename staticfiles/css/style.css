@@ -512,3 +512,35 @@ footer {
     z-index: 10;
 }
 
+/* =========================================
+   HOMEPAGE SLIDER
+   ========================================= */
+.slider-image-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 55.9%; /* Exact 1000x559 ratio */
+    overflow: hidden;
+    background-color: #000;
+}
+
+.slider-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Manual banners — stretch to fill exactly, no bars */
+.carousel-item.manual-slide .slider-image-wrapper img {
+    object-fit: fill;
+}
+
+@media (max-width: 768px) {
+    .slider-image-wrapper {
+        padding-top: 55.9%;
+    }
+}

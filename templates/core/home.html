@@ -18,7 +18,7 @@
 
         <div class="carousel-inner">
                 {% for slide in combined_slides %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="carousel-item {% if forloop.first %}active{% endif %} {% if slide.slide_type == 'manual' %}manual-slide{% endif %}">
                     
                     <!-- A. The Image Wrapper -->
                 <div class="slider-image-wrapper">
@@ -26,39 +26,39 @@
                     <!-- CHECK: Is it News, Sermon, Event, Outreach, Chapel Event, or Manual Slide? -->
                     {% if slide.slide_type == 'news' %}
                         <a href="{% url 'news_detail' slide.pk %}">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">{% endif %}
+                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" alt="{{ slide.title }}">{% endif %}
                         </a>
                     {% elif slide.slide_type == 'event' %}
                         <a href="{% url 'event_detail' slide.pk %}">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">{% endif %}
+                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">{% endif %}
                         </a>
                     {% elif slide.slide_type == 'sermon' %}
                         <a href="{% url 'ants_chapel' %}">
                             {% if slide.image %}
-                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" " alt="{{ slide.title }}">
                             {% else %}
-                                <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                                <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" class="d-block w-100 h-100"  alt="{{ slide.title }}">
                             {% endif %}
                         </a>
                     {% elif slide.slide_type == 'chapel_event' %}
                         <a href="{% url 'ants_chapel' %}#chapel-events">
                             {% if slide.image %}
-                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">
+                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">
                             {% else %}
                                 <div class="d-block w-100 h-100" style="background:linear-gradient(135deg,#4a148c,#7b1fa2);"></div>
                             {% endif %}
                         </a>
                     {% elif slide.slide_type == 'outreach' %}
                         <a href="{% url 'community_outreach' %}">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">{% endif %}
+                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" alt="{{ slide.title }}">{% endif %}
                         </a>
                     {% else %}
                         {% if slide.link %}
                             <a href="{{ slide.link }}">
-                                {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">{% endif %}
+                                {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">{% endif %}
                             </a>
                         {% else %}
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" style="object-fit: cover;" alt="{{ slide.title }}">{% endif %}
+                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">{% endif %}
                         {% endif %}
                     {% endif %}
                     
