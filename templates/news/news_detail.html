@@ -71,21 +71,76 @@
             </div>
             {% endif %}
 
-            <!-- 5. Internal Gallery -->
-            {% if article.gallery_images.all %}
-            <div class="mb-5">
-                <h4 class="fw-bold border-start border-5 border-warning ps-3 mb-4">Event Gallery</h4>
-                <div class="row g-2">
-                    {% for photo in article.gallery_images.all %}
-                    <div class="col-md-4 col-6">
-                        <a href="{{ photo.image.url }}" target="_blank">
-                            <img src="{{ photo.image.url }}" class="img-fluid rounded shadow-sm hover-zoom" style="height: 150px; width: 100%; object-fit: cover;">
-                        </a>
+                        <!-- 5. Internal Gallery -->
+                {% if article.gallery_images.all %}
+                <div class="mb-5">
+                    <h4 class="fw-bold border-start border-5 border-warning ps-3 mb-4">Event Gallery</h4>
+                    <div class="row g-2">
+                        {% for photo in article.gallery_images.all %}
+                        <div class="col-md-4 col-6">
+                            <div class="gallery-thumb-wrapper" 
+                                onclick="openLightbox('{{ photo.image.url }}', '{{ photo.caption|default:article.title }}', '{{ request.build_absolute_uri }}')"
+                                style="cursor:pointer;">
+                                <img src="{{ photo.image.url }}" 
+                                    class="img-fluid rounded shadow-sm hover-zoom gallery-thumb" 
+                                    alt="{{ photo.caption|default:article.title }}"
+                                    style="height: 150px; width: 100%; object-fit: cover;">
+                                <div class="gallery-thumb-overlay">
+                                    <i class="fas fa-expand-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
-            {% endif %}
+
+                <!-- ===== LIGHTBOX MODAL ===== -->
+                <div id="galleryLightbox" class="lightbox-backdrop" onclick="closeLightboxOnBackdrop(event)">
+                    <div class="lightbox-container">
+
+                        <!-- Top Bar -->
+                        <div class="lightbox-topbar">
+                            <span id="lightboxCaption" class="lightbox-caption-text"></span>
+                            <div class="lightbox-topbar-actions">
+                                <button class="lb-icon-btn" onclick="toggleShareMenu(event)" title="Share">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <button class="lb-icon-btn" id="downloadBtn" onclick="downloadImage()" title="Download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="lb-icon-btn" onclick="closeLightbox()" title="Close">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Share Dropdown -->
+                        <div id="shareMenu" class="lb-share-menu" style="display:none;">
+                            <a id="shareFacebook" href="#" target="_blank" class="lb-share-item">
+                                <i class="fab fa-facebook-f lb-share-icon facebook"></i> Share on Facebook
+                            </a>
+                            <a id="shareTwitter" href="#" target="_blank" class="lb-share-item">
+                                <i class="fa-brands fa-x-twitter lb-share-icon twitter"></i> Share on X
+                            </a>
+                            <a id="shareWhatsapp" href="#" target="_blank" class="lb-share-item">
+                                <i class="fab fa-whatsapp lb-share-icon whatsapp"></i> Share on WhatsApp
+                            </a>
+                            <a id="shareLinkedin" href="#" target="_blank" class="lb-share-item">
+                                <i class="fab fa-linkedin-in lb-share-icon linkedin"></i> Share on LinkedIn
+                            </a>
+                            <button onclick="copyLink()" class="lb-share-item lb-share-btn-plain" id="copyLinkBtn">
+                                <i class="fas fa-link lb-share-icon copy"></i> Copy Link
+                            </button>
+                        </div>
+
+                        <!-- Image -->
+                        <div class="lightbox-img-wrap">
+                            <img id="lightboxImg" src="" alt="" class="lightbox-img">
+                        </div>
+
+                    </div>
+                </div>
+                {% endif %}
 
             <!-- 6. SHARE & LIKE (Moved Inside Column for better alignment) -->
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 py-4 border-top border-bottom">
@@ -287,6 +342,217 @@
         background-color: #eec111;
         transform: translateX(-2px);
     }
+
+    /* ===== GALLERY THUMB HOVER ===== */
+.gallery-thumb-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+}
+.gallery-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    color: white;
+    font-size: 1.4rem;
+}
+.gallery-thumb-wrapper:hover .gallery-thumb-overlay { opacity: 1; }
+
+/* ===== LIGHTBOX ===== */
+.lightbox-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+.lightbox-backdrop.active { display: flex; }
+
+.lightbox-container {
+    position: relative;
+    max-width: 900px;
+    width: 95vw;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+}
+
+/* Top bar */
+.lightbox-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #111;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+}
+.lightbox-caption-text {
+    color: #ccc;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}
+.lightbox-topbar-actions { display: flex; gap: 6px; }
+.lb-icon-btn {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #ddd;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s, color 0.2s;
+}
+.lb-icon-btn:hover { background: #eec111; color: #000; border-color: #eec111; }
+
+/* Share menu */
+.lb-share-menu {
+    position: absolute;
+    top: 54px; right: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    z-index: 10001;
+    overflow: hidden;
+    min-width: 200px;
+    animation: fadeInDown 0.2s ease;
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.lb-share-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    color: #222;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    cursor: pointer;
+}
+.lb-share-item:hover { background: #f5f5f5; color: #000; }
+.lb-share-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+}
+.lb-share-icon.facebook  { background: #1877F2; }
+.lb-share-icon.twitter   { background: #000; }
+.lb-share-icon.whatsapp  { background: #25D366; }
+.lb-share-icon.linkedin  { background: #0077b5; }
+.lb-share-icon.copy      { background: #888; }
+
+/* Image area */
+.lightbox-img-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 16px;
+    background: #111;
+}
+.lightbox-img {
+    max-width: 100%;
+    max-height: calc(92vh - 80px);
+    object-fit: contain;
+    border-radius: 4px;
+}
 </style>
 
+<script>
+let currentImageUrl = '';
+let currentPageUrl = '';
+let currentCaption = '';
+
+function openLightbox(imgUrl, caption, pageUrl) {
+    currentImageUrl = imgUrl;
+    currentPageUrl = pageUrl;
+    currentCaption = caption;
+
+    document.getElementById('lightboxImg').src = imgUrl;
+    document.getElementById('lightboxCaption').textContent = caption;
+
+    // Update share links
+    const encoded = encodeURIComponent(pageUrl);
+    const text    = encodeURIComponent(caption);
+    document.getElementById('shareFacebook').href  = `https://www.facebook.com/sharer/sharer.php?u=${encoded}`;
+    document.getElementById('shareTwitter').href   = `https://twitter.com/intent/tweet?text=${text}&url=${encoded}&via=antsuganda`;
+    document.getElementById('shareWhatsapp').href  = `https://api.whatsapp.com/send?text=*${text}*%0A${encoded}`;
+    document.getElementById('shareLinkedin').href  = `https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`;
+
+    document.getElementById('shareMenu').style.display = 'none';
+    document.getElementById('galleryLightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('galleryLightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeLightboxOnBackdrop(e) {
+    if (e.target === document.getElementById('galleryLightbox')) closeLightbox();
+}
+
+function toggleShareMenu(e) {
+    e.stopPropagation();
+    const menu = document.getElementById('shareMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+function downloadImage() {
+    const a = document.createElement('a');
+    a.href = currentImageUrl;
+    a.download = currentCaption.replace(/\s+/g, '_') || 'photo';
+    a.target = '_blank';
+    a.click();
+}
+
+async function copyLink() {
+    try {
+        await navigator.clipboard.writeText(currentPageUrl);
+        const btn = document.getElementById('copyLinkBtn');
+        btn.innerHTML = '<i class="fas fa-check lb-share-icon copy" style="background:#28a745"></i> Copied!';
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-link lb-share-icon copy"></i> Copy Link';
+        }, 2000);
+    } catch(e) { alert('Copy failed. Please copy manually.'); }
+}
+
+// Close share menu when clicking outside
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('shareMenu');
+    if (menu && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+    }
+});
+
+// Keyboard: Escape to close
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+});
+</script>
 {% endblock %}
