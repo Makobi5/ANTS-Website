@@ -319,17 +319,21 @@ def ants_chapel(request):
     latest_sermon = sermons.first()
     recent_sermons = sermons[1:] if len(sermons) > 1 else []
     today = date.today()
-    # If today is Sunday (weekday=6), show NEXT week's preachers
-    # Otherwise show the current week's Monday
+
     if today.weekday() == 6:  # Sunday
         monday = today + timedelta(days=1)
     else:
         monday = today - timedelta(days=today.weekday())
-    chapel_preachers = ChapelPreacher.objects.filter(week_of=monday)
-    # Featured event with its timeline items
+
+    DAY_ORDER = {'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sun': 5}
+    chapel_preachers = sorted(
+        ChapelPreacher.objects.filter(week_of=monday),
+        key=lambda p: DAY_ORDER.get(p.day, 99)
+    )
     featured_event = ChapelEvent.objects.filter(is_featured=True).order_by('date').first()
     chapel_events = ChapelEvent.objects.filter(
-        is_featured=True, date__gte=timezone.now().date()
+        is_featured=True,
+        end_date__gte=timezone.now().date()
     ).order_by('date')[:8]
 
     return render(request, 'core/chapel.html', {
