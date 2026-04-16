@@ -12,6 +12,7 @@ from staff.models import StaffMember
 from .models import FeeStructure
 from .models import ChapelEvent
 from .models import ChapelPreacher
+from .models import Notice
 
 
 @admin.register(Policy)
@@ -226,4 +227,19 @@ class FeeStructureAdmin(admin.ModelAdmin):
     list_editable = ('order', 'academic_year')
 
 
-    
+@admin.register(Notice)
+class NoticeAdmin(admin.ModelAdmin):
+    list_display   = ('title', 'category', 'target_audience', 'date_posted', 'is_published', 'is_pinned')
+    list_filter    = ('category', 'target_audience', 'is_published', 'is_pinned')
+    search_fields  = ('title', 'content')
+    list_editable  = ('is_published', 'is_pinned')
+    ordering       = ('-is_pinned', '-date_posted')
+    date_hierarchy = 'date_posted'
+    fieldsets = (
+        ('Notice Details', {
+            'fields': ('title', 'content', 'category', 'target_audience', 'attachment')
+        }),
+        ('Publishing', {
+            'fields': ('date_posted', 'is_published', 'is_pinned')
+        }),
+    )    

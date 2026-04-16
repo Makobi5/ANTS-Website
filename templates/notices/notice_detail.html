@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Banner -->
+<div class="py-4 text-white" style="background: linear-gradient(135deg, var(--ants-purple), #1a1a5e);">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="/" class="text-white-50 text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'notices_list' %}" class="text-white-50 text-decoration-none">Noticeboard</a></li>
+                <li class="breadcrumb-item active text-white">{{ notice.title|truncatechars:40 }}</li>
+            </ol>
+        </nav>
+        <h1 class="fw-bold h2 mb-1">{{ notice.title }}</h1>
+        <div class="d-flex flex-wrap gap-2 align-items-center justify-content-center mt-2">
+            <span class="badge fw-bold" style="background: var(--ants-gold); color: #000;">
+                {{ notice.get_category_display }}
+            </span>
+            <span class="text-white-50 small">
+                <i class="far fa-calendar-alt me-1"></i> {{ notice.date_posted|date:"F d, Y" }}
+            </span>
+            <span class="text-white-50 small">
+                <i class="fas fa-users me-1"></i> {{ notice.get_target_audience_display }}
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <div class="bg-white rounded shadow-sm p-4 p-md-5">
+
+                    <!-- Notice Body (CKEditor rich text) -->
+                    <div class="notice-content" style="font-size: 1.05rem; line-height: 1.9; color: #333;">
+                        {{ notice.content|safe }}
+                    </div>
+
+                    <!-- Attachment Download Button (same style as Kabale's) -->
+                    {% if notice.attachment %}
+                    <div class="mt-4 pt-4" style="border-top: 2px solid var(--ants-gold);">
+                        <a href="{{ notice.attachment.url }}" target="_blank"
+                           class="btn fw-bold px-4 py-2"
+                           style="background: var(--ants-purple); color: white; border-radius: 4px;">
+                            <i class="fas fa-download me-2"></i> Download Attachment
+                        </a>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <!-- Back Link -->
+                <div class="mt-4">
+                    <a href="{% url 'notices_list' %}" class="fw-bold text-decoration-none"
+                       style="color: var(--ants-purple);">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Noticeboard
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

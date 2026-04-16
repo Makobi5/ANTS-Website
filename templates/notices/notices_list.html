@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Banner -->
+<div class="py-5 text-white text-center" style="background: linear-gradient(135deg, var(--ants-purple), #1a1a5e);">
+    <div class="container">
+        <h1 class="fw-bold display-5">ANTS Noticeboard</h1>
+        <p class="lead opacity-75 mb-0">Official announcements from All Nations Theological College & Seminary</p>
+    </div>
+</div>
+
+<div class="py-5 bg-light">
+    <div class="container">
+
+        <!-- Category Filter Tabs -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a href="?category=all"
+               class="btn btn-sm fw-bold rounded-pill px-4 {% if active_category == 'all' %}text-white{% else %}btn-outline-secondary{% endif %}"
+               style="{% if active_category == 'all' %}background: var(--ants-purple); border-color: var(--ants-purple);{% endif %}">
+                All
+            </a>
+            {% for value, label in categories %}
+            <a href="?category={{ value }}"
+               class="btn btn-sm fw-bold rounded-pill px-4 {% if active_category == value %}text-dark{% else %}btn-outline-secondary{% endif %}"
+               style="{% if active_category == value %}background: var(--ants-gold); border-color: var(--ants-gold);{% endif %}">
+                {{ label }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Notice List -->
+        <div class="bg-white rounded shadow-sm overflow-hidden">
+            {% for notice in notices %}
+            <div class="d-flex align-items-start gap-3 px-4 py-4" style="border-bottom: 1px dashed #e0e0e0;">
+
+                <!-- Date -->
+                <div class="text-center flex-shrink-0" style="min-width: 52px;">
+                    <div class="fw-bold" style="font-size: 1.4rem; color: var(--ants-purple); line-height: 1;">
+                        {{ notice.date_posted|date:"d" }}
+                    </div>
+                    <div class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">
+                        {{ notice.date_posted|date:"M Y" }}
+                    </div>
+                </div>
+
+                <!-- Gold accent bar -->
+                <div class="flex-shrink-0" style="width: 4px; background: var(--ants-gold); border-radius: 2px; align-self: stretch; min-height: 48px;"></div>
+
+                <!-- Content -->
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                        {% if notice.is_pinned %}
+                        <span class="badge bg-danger" style="font-size: 0.65rem;">
+                            <i class="fas fa-thumbtack me-1"></i> Pinned
+                        </span>
+                        {% endif %}
+                        <span class="badge fw-bold" style="background: var(--ants-gold); color: #000; font-size: 0.65rem;">
+                            {{ notice.get_category_display }}
+                        </span>
+                        <span class="badge bg-light text-muted border" style="font-size: 0.65rem;">
+                            {{ notice.get_target_audience_display }}
+                        </span>
+                    </div>
+
+                    <a href="{% url 'notice_detail' notice.pk %}" class="fw-bold text-decoration-none d-block mb-1"
+                       style="color: var(--ants-purple); font-size: 1rem;">
+                        {{ notice.title }}
+                    </a>
+
+                    <a href="{% url 'notice_detail' notice.pk %}" class="small fw-bold text-decoration-none"
+                       style="color: var(--ants-gold);">
+                        Read More <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+
+            </div>
+            {% empty %}
+            <div class="py-5 text-center text-muted">
+                <i class="fas fa-bell-slash fa-3x mb-3 d-block opacity-25"></i>
+                <p>No notices found in this category.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

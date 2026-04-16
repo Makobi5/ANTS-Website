@@ -454,3 +454,46 @@ class ChapelPreacher(models.Model):
 
     def __str__(self):
         return f"{self.get_service_type_display()} — {self.preacher_name}"  
+    
+class Notice(models.Model):
+ 
+    CATEGORY_CHOICES = [
+        ('academic',   'Academic'),
+        ('admissions', 'Admissions'),
+        ('chapel',     'Chapel'),
+        ('finance',    'Finance'),
+        ('staff',      'Staff'),
+        ('general',    'General'),
+    ]
+ 
+    TARGET_CHOICES = [
+        ('all',      'Everyone'),
+        ('students', 'Students'),
+        ('staff',    'Staff'),
+        ('public',   'Public'),
+    ]
+ 
+    title           = models.CharField(max_length=255)
+    content         = RichTextUploadingField(help_text="Full body of the notice.")
+    category        = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default='general')
+    target_audience = models.CharField(max_length=20, choices=TARGET_CHOICES, default='all',
+                                       help_text="Who this notice is directed at.")
+    attachment      = models.FileField(upload_to='notice_attachments/', blank=True, null=True,
+                                       help_text="Optional PDF or document.")
+    date_posted     = models.DateTimeField(default=timezone.now)
+    is_published    = models.BooleanField(default=True,
+                                          help_text="Uncheck to hide from the website.")
+    is_pinned       = models.BooleanField(default=False,
+                                          help_text="Pinned notices always appear at the top.")
+ 
+    class Meta:
+        ordering = ['-is_pinned', '-date_posted']
+        verbose_name = 'Notice'
+        verbose_name_plural = 'Notices'
+ 
+    def __str__(self):
+        return self.title
+ 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('notice_detail', kwargs={'pk': self.pk})    

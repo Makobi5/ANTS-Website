@@ -32,6 +32,7 @@ from .models import SliderImage, Partner, Testimonial
 from .models import ChapelEvent
 from .models import ChapelPreacher
 from datetime import date, timedelta
+from .models import Notice
 
 # If you have already created the Outreach and Sermon models, ensure they are imported:
 # from outreach.models import OutreachProgram 
@@ -78,7 +79,8 @@ def home(request):
     latest_news_list = NewsArticle.objects.all().order_by('-date_posted')[:5]
     featured_news = latest_news_list[0] if latest_news_list else None
     other_news = latest_news_list[1:] if len(latest_news_list) > 1 else[]
-
+    latest_notices = Notice.objects.filter(is_published=True).order_by('-is_pinned', '-date_posted')[:5]
+    
     # --- UPCOMING EVENTS ---
         # --- UPCOMING EVENTS (Combined: Regular + Chapel Events) ---
     regular_events = list(Event.objects.filter(date__gte=today).order_by('date')[:3])
@@ -105,6 +107,7 @@ def home(request):
         'featured_news': featured_news,
         'other_news': other_news,
         'upcoming_events': upcoming_events,
+        'latest_notices': latest_notices,
         'testimonials': testimonials,
         'partners': partners,
     })
@@ -117,6 +120,22 @@ def testimonial_detail(request, pk):
     return render(request, 'core/testimonial_detail.html', {'testimonial': testimonial, 'others': others})    
 def about(request):
     return render(request, 'core/about.html')
+
+def notices_list(request):
+    category = request.GET.get('category', 'all')
+    notices = Notice.objects.filter(is_published=True)
+    if category and category != 'all':
+        notices = notices.filter(category=category)
+    return render(request, 'notices/notices_list.html', {
+        'notices': notices,
+        'active_category': category,
+        'categories': Notice.CATEGORY_CHOICES,
+    })
+ 
+def notice_detail(request, pk):
+    notice = get_object_or_404(Notice, pk=pk, is_published=True)
+    return render(request, 'notices/notice_detail.html', {'notice': notice})
+
 
 def who_we_are(request):
     # Fetch the banner specifically for the "Who We Are" page
