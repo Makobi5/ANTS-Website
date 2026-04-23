@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+
+{% block userlinks %}
+    <a href="{% url 'edit_profile' %}">MY PROFILE</a> /
+    {{ block.super }}
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">ANTS</a></h1>
+{% endblock %}

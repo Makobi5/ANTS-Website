@@ -1,0 +1,27 @@
+/* DEFAULT (Professional Blue) */
+body.theme-default {
+    --admin-bg: #f8f9fa;
+    --admin-header: #4a148c; /* Your ANTS Purple */
+    --admin-sidebar: #ffffff;
+}
+
+/* DARK THEME */
+body.theme-dark {
+    --admin-bg: #121212;
+    --admin-header: #1f1f1f;
+    --admin-sidebar: #1e1e1e;
+    color: #e0e0e0;
+}
+
+/* GOLD THEME */
+body.theme-gold {
+    --admin-bg: #fffdf5;
+    --admin-header: #ffca28; /* Your ANTS Gold */
+    --admin-sidebar: #fff;
+    color: #4a148c;
+}
+
+/* APPLY THE VARIABLES TO DJANGO ADMIN */
+#header { background: var(--admin-header) !important; }
+body { background: var(--admin-bg) !important; }
+.module h2, .module caption { background: var(--admin-header) !important; opacity: 0.9; }

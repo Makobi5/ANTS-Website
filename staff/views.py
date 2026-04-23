@@ -1,5 +1,27 @@
 from django.shortcuts import render, get_object_or_404
 from .models import StaffMember
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    profile = user.profile  # Assumes UserProfile model from previous step
+    
+    if request.method == 'POST':
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        profile.ui_theme = request.POST.get('ui_theme')
+        
+        user.save()
+        profile.save()
+        messages.success(request, "Success! Your profile and theme preferences have been updated.")
+        return redirect('edit_profile')
+
+    return render(request, 'admin/edit_profile.html', {'profile_user': user})
 
 def staff_list(request):
     principal = StaffMember.objects.filter(category='PRINCIPAL').first()

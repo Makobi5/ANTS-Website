@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin/css/dashboard_themes.css' %}">
+{% endblock %}
+
+{% block bodyclass %}
+    {{ block.super }} 
+    {# Using a safer check here #}
+    {% if user.is_authenticated %}
+        theme-{{ user.profile.ui_theme|default:'default' }}
+    {% else %}
+        theme-default
+    {% endif %}
+{% endblock %}

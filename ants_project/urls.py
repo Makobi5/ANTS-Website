@@ -2,8 +2,10 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.views.static import serve
+from staff.views import edit_profile
 
 urlpatterns =[
+    path('admin/profile/', edit_profile, name='edit_profile'),
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('staff/', include('staff.urls')),

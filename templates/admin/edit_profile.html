@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<div id="content-main" style="max-width: 800px; margin: 0 auto;">
+    <h1>User Settings: {{ profile_user.username }}</h1>
+    
+    <div class="module">
+        <form method="post" style="padding: 20px; background: white; border-radius: 8px;">
+            {% csrf_token %}
+            
+            <fieldset class="module aligned">
+                <div class="form-row">
+                    <label>First Name:</label>
+                    <input type="text" name="first_name" value="{{ profile_user.first_name }}" class="vTextField">
+                </div>
+                <div class="form-row">
+                    <label>Last Name:</label>
+                    <input type="text" name="last_name" value="{{ profile_user.last_name }}" class="vTextField">
+                </div>
+                <div class="form-row">
+                    <label>Email:</label>
+                    <input type="email" name="email" value="{{ profile_user.email }}" class="vTextField">
+                </div>
+                <div class="form-row">
+                    <label>Dashboard Theme:</label>
+                    <select name="ui_theme" style="padding: 5px; min-width: 200px;">
+                        <option value="default" {% if profile_user.profile.ui_theme == 'default' %}selected{% endif %}>Professional Purple (Default)</option>
+                        <option value="dark" {% if profile_user.profile.ui_theme == 'dark' %}selected{% endif %}>Midnight Dark</option>
+                        <option value="gold" {% if profile_user.profile.ui_theme == 'gold' %}selected{% endif %}>University Gold</option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <div class="submit-row" style="background: none; border: none; text-align: left; padding-left: 0;">
+                <input type="submit" value="Save Profile Settings" class="default" style="background: #4a148c; color: white;">
+                <a href="{% url 'admin:password_change' %}" class="closelink" style="margin-left: 20px;">Change Password</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

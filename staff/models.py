@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class StaffMember(models.Model):
     CATEGORY_CHOICES = [
@@ -45,3 +48,31 @@ class StaffMember(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.role}"
+    
+class UserProfile(models.Model):
+    THEME_CHOICES = [
+        ('default', 'Professional Blue (Default)'),
+        ('dark', 'Midnight Dark'),
+        ('light', 'Clean Light'),
+        ('accent', 'University Gold'),
+    ]
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    # Links the login user to the public StaffMember record if applicable
+    staff_record = models.OneToOneField('StaffMember', on_delete=models.SET_NULL, null=True, blank=True)
+    
+    # UI Customization
+    ui_theme = models.CharField(max_length=20, choices=THEME_CHOICES, default='default')
+    
+    def __str__(self):
+        return f"Profile for {self.user.username}"
+
+# Automatic profile creation when a new User is created
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()    
