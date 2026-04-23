@@ -7,6 +7,40 @@ from .forms import ApplicationForm, StudentSignUpForm
 from .models import StudentApplication
 from .models import StudentApplication, StudentProfile # <--- Import Profile
 from django.shortcuts import render, redirect, get_object_or_404 # <--- Add get_object_or_404
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+def download_application_pdf(request, application_id):
+    application = get_object_or_404(StudentApplication, id=application_id)
+    template_path = 'admissions/application_pdf.html'
+    context = {'application': application}
+    
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf')
+    
+    # Generate clean filename without trailing characters
+    clean_name = application.full_name.strip().replace(' ', '_')
+    filename = f"Application_{clean_name}.pdf"
+    
+    # Force download with the correct filename
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    
+    # Find the template and render it
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # Create the PDF
+    pisa_status = pisa.CreatePDF(
+       html, dest=response
+    )
+    
+    # If error, return normal HTML response
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    
+    return response
 
 # 1. Sign Up View (Updated to save Phone)
 def student_signup(request):

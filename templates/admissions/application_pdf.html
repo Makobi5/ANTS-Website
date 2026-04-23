@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 2.5cm 1.5cm;
+            @frame header_frame {
+                -pdf-frame-content: header_content;
+                left: 0pt; width: 595pt; top: 0pt; height: 130pt;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 0pt; width: 595pt; top: 770pt; height: 70pt;
+            }
+        }
+        body { font-family: 'Helvetica', sans-serif; font-size: 10pt; color: #333; line-height: 1.4; }
+        .header-table { width: 100%; border: none; }
+        .header-text { text-align: center; color: #002147; }
+        .header-text h1 { margin: 0; font-size: 18pt; font-weight: bold; }
+        .header-text p { margin: 2px; font-size: 9pt; }
+        
+        .blue-line { border-bottom: 4px solid #4a148c; margin-top: 10px; width: 100%; }
+        .gold-line { border-bottom: 4px solid #ffca28; margin-top: 5px; width: 100%; }
+
+        .section-title { 
+            background-color: #f2f2f2; 
+            padding: 6px 10px; 
+            font-weight: bold; 
+            border-left: 5px solid #4a148c; 
+            margin: 20px 0 10px 0;
+            text-transform: uppercase;
+            font-size: 11pt;
+        }
+        table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        table.data-table td { padding: 6px; vertical-align: top; border-bottom: 0.5pt solid #eee; }
+        .label { font-weight: bold; width: 35%; color: #444; }
+        
+        .photo-box { text-align: right; }
+        
+        #footer_content { 
+            text-align: center; 
+            font-size: 8pt; 
+            color: #444; 
+            border-top: 4px solid #4a148c; 
+            padding-top: 15px; 
+        }
+        .social-icons { margin-top: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div id="header_content">
+        <table class="header-table">
+            <tr>
+                <td width="20%">
+                    <!-- IMPORTANT: Put the absolute path to your logo here -->
+                    <img src="G:\ANTS\Projects\ANTS-Website\static\img\logo.png" width="80">
+                </td>
+                <td width="80%" class="header-text">
+                    <h1>All Nations Theological College & Seminary (ANTS)</h1>
+                    <p>P.O. Box 84 Kisubi, Uganda | (+256) 707396619</p>
+                    <p>info@ants.ac.ug | admissions@ants.ac.ug</p>
+                </td>
+            </tr>
+        </table>
+        <div class="blue-line"></div>
+    </div>
+
+    <h2 style="text-align: center; text-decoration: underline; margin-top: 0;">STUDENT ADMISSION APPLICATION</h2>
+    <p style="text-align: right;"><strong>Date Submitted:</strong> {{ application.submitted_at|date:"F d, Y" }}</p>
+
+    <!-- 1. PERSONAL DETAILS -->
+    <div class="section-title">1. Personal Information</div>
+    <table class="data-table">
+        <tr>
+            <td class="label">Full Name:</td>
+            <td><strong>{{ application.full_name }}</strong></td>
+        </tr>
+        <tr>
+            <td class="label">Gender / Status:</td>
+            <td>{{ application.get_gender_display }} / {{ application.marital_status }}</td>
+        </tr>
+        <tr>
+            <td class="label">Date of Birth:</td>
+            <td>{{ application.date_of_birth|date:"d/m/Y" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Nationality / Tribe:</td>
+            <td>{{ application.nationality }} ({{ application.tribe }})</td>
+        </tr>
+        <tr>
+            <td class="label">Contact Details:</td>
+            <td>Ph: {{ application.phone }} <br> Email: {{ application.email }}</td>
+        </tr>
+        <tr>
+            <td class="label">Permanent Address:</td>
+            <td>{{ application.permanent_address|linebreaksbr }}</td>
+        </tr>
+    </table>
+
+    <!-- NEXT OF KIN -->
+    <table class="data-table">
+        <tr>
+            <td class="label">Next of Kin Name:</td>
+            <td>{{ application.next_of_kin_name }} ({{ application.next_of_kin_relationship }})</td>
+        </tr>
+        <tr>
+            <td class="label">Next of Kin Contact:</td>
+            <td>{{ application.next_of_kin_contact }}</td>
+        </tr>
+    </table>
+
+    <!-- 2. CHURCH INFO -->
+    <div class="section-title">2. Church & Religious Information</div>
+    <table class="data-table">
+        <tr>
+            <td class="label">Attending Church:</td>
+            <td>{{ application.attending_church }} ({{ application.church_location }})</td>
+        </tr>
+        <tr>
+            <td class="label">Church Title / Baptism:</td>
+            <td>Title: {{ application.church_title|default:"N/A" }} <br> Baptized: {{ application.baptism_date|default:"N/A" }}</td>
+        </tr>
+        <tr>
+            <td class="label">Senior Pastor:</td>
+            <td>{{ application.senior_pastor }} (Contact: {{ application.pastor_contact }})</td>
+        </tr>
+    </table>
+
+    <!-- 3. EDUCATION -->
+    <div class="section-title">3. Educational Background</div>
+    <div style="padding: 0 10px;">
+        {{ application.education_history|linebreaks }}
+    </div>
+
+    <!-- 4. PROGRAM & FINANCE -->
+    <div class="section-title">4. Program & Financial Plan</div>
+    <table class="data-table">
+        <tr>
+            <td class="label">Program Applied For:</td>
+            <td><strong>{{ application.program_choice }}</strong></td>
+        </tr>
+        <tr>
+            <td class="label">Funding Method:</td>
+            <td>{{ application.get_finance_method_display }}</td>
+        </tr>
+        {% if application.sponsor_name %}
+        <tr>
+            <td class="label">Sponsor Name:</td>
+            <td>{{ application.sponsor_name }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <!-- FOOTER -->
+    <div id="footer_content">
+        <div class="social-icons">
+            www.ants.ac.ug | @antsuganda | Make Disciples of All Nations
+        </div>
+    </div>
+
+</body>
+</html>
