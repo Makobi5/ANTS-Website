@@ -11,35 +11,65 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from django.contrib.staticfiles import finders
+import os
+from django.conf import settings
+# This helper function finds the absolute path for images
+def link_callback(uri, rel):
+    """
+    Convert HTML URIs to absolute system paths so xhtml2pdf can access
+    those resources on the local disk.
+    """
+    static_url = settings.STATIC_URL      # e.g. /static/
+    static_root = settings.STATIC_ROOT    # folder on disk
+    media_url = settings.MEDIA_URL        # e.g. /media/
+    media_root = settings.MEDIA_ROOT      # folder on disk
+
+    # 1. Handle Media Files (Passport Photos, etc.)
+    if uri.startswith(media_url):
+        path = os.path.join(media_root, uri.replace(media_url, ""))
+        
+    # 2. Handle Static Files (Logo, Header, Footer)
+    elif uri.startswith(static_url):
+        # We try to find the file in static folders
+        from django.contrib.staticfiles import finders
+        path = finders.find(uri.replace(static_url, ""))
+        if not path:
+            # Fallback for production
+            path = os.path.join(static_root, uri.replace(static_url, ""))
+            
+    else:
+        # If it's already an absolute path or external URL, return as is
+        return uri
+
+    # Make sure the file exists
+    if not os.path.isfile(path):
+        # We return uri as fallback instead of crashing
+        return uri
+        
+    return path
 
 def download_application_pdf(request, application_id):
     application = get_object_or_404(StudentApplication, id=application_id)
     template_path = 'admissions/application_pdf.html'
-    context = {'application': application}
+    context = {
+        'application': application,
+        }
     
-    # Create a Django response object, and specify content_type as pdf
     response = HttpResponse(content_type='application/pdf')
-    
-    # Generate clean filename without trailing characters
-    clean_name = application.full_name.strip().replace(' ', '_')
-    filename = f"Application_{clean_name}.pdf"
-    
-    # Force download with the correct filename
+    filename = f"Application_{application.full_name.replace(' ', '_')}.pdf"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     
-    # Find the template and render it
     template = get_template(template_path)
     html = template.render(context)
 
-    # Create the PDF
+    # ADD THE link_callback HERE
     pisa_status = pisa.CreatePDF(
-       html, dest=response
+       html, dest=response, link_callback=link_callback
     )
     
-    # If error, return normal HTML response
     if pisa_status.err:
-       return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    
+       return HttpResponse('Error generating PDF')
     return response
 
 # 1. Sign Up View (Updated to save Phone)
