@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import ApplicationForm, StudentSignUpForm
 from .models import StudentApplication
+from .forms import ApplicationForm, EmploymentFormSet, EducationFormSet
 from .models import StudentApplication, StudentProfile # <--- Import Profile
 from django.shortcuts import render, redirect, get_object_or_404 # <--- Add get_object_or_404
 from django.shortcuts import get_object_or_404
@@ -131,30 +132,39 @@ def student_dashboard(request):
     my_apps = StudentApplication.objects.filter(applicant=request.user)
     return render(request, 'admissions/dashboard.html', {'my_apps': my_apps})
 
-# 5. The Application Form (Now Protected)
+# Update only the apply_now function in admissions/views.py
+
 @login_required(login_url='student_login')
 def apply_now(request):
     if request.method == 'POST':
         form = ApplicationForm(request.POST, request.FILES)
-        if form.is_valid():
+        education_formset = EducationFormSet(request.POST)
+        employment_formset = EmploymentFormSet(request.POST)
+
+        if form.is_valid() and education_formset.is_valid() and employment_formset.is_valid():
             application = form.save(commit=False)
             application.applicant = request.user
             application.save()
+            
+            # Connect and save the tables
+            education_formset.instance = application
+            education_formset.save()
+            
+            employment_formset.instance = application
+            employment_formset.save()
+            
             messages.success(request, "Application submitted successfully!")
             return redirect('student_dashboard')
     else:
-        # Pre-fill data
-        initial_data = {
-            'full_name': f"{request.user.first_name} {request.user.last_name}",
-            'email': request.user.email,
-            
-            # NEW: Check if the URL has a course_id (e.g. ?course_id=5)
-            # If yes, select that program automatically!
-            'program_choice': request.GET.get('course_id')
-        }
-        form = ApplicationForm(initial=initial_data)
+        form = ApplicationForm()
+        education_formset = EducationFormSet()
+        employment_formset = EmploymentFormSet()
 
-    return render(request, 'admissions/apply.html', {'form': form})
+    return render(request, 'admissions/apply.html', {
+        'form': form,
+        'education_formset': education_formset,
+        'employment_formset': employment_formset
+    })
 
 @login_required(login_url='student_login')
 def view_application(request, pk):

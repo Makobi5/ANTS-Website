@@ -5,196 +5,383 @@
 <div class="bg-light min-vh-100 py-5">
     <div class="container">
         
-        <!-- Page Title Section -->
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h2 class="fw-bold text-primary">ONLINE ADMISSIONS</h2>
-                <p class="text-muted">Fill in the form below to apply for our programs.</p>
+        <div class="row mb-4 text-center">
+            <div class="col-12">
+                <h2 class="fw-bold text-primary">STUDENT ADMISSION APPLICATION</h2>
+                <p class="text-muted">ANTS: Make Disciples of All Nations</p>
             </div>
         </div>
 
         <div class="row justify-content-center">
-            
-            <!-- LEFT COLUMN: Instructions / "Sidebar" style -->
-            <div class="col-lg-3 d-none d-lg-block">
-                <div class="card shadow-sm border-0 mb-3">
-                    <div class="card-header bg-primary text-white fw-bold">
-                        <i class="fas fa-info-circle me-2"></i> Instructions
-                    </div>
-                    <div class="card-body small text-muted">
-                        <p>1. Ensure all information provided is accurate.</p>
-                        <p>2. Upload clear copies of your result slips and passport photo.</p>
-                        <p>3. Fields marked with <span class="text-danger">*</span> are mandatory.</p>
-                        <hr>
-                        <p class="mb-0">Need help? Call Registry:</p>
-                        <strong>+256 700 000 000</strong>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT COLUMN: The Application Form -->
-            <div class="col-lg-9">
+            <div class="col-lg-10">
                 <div class="card shadow border-0">
-                    <div class="card-header bg-white py-3 border-bottom">
-                        <h5 class="mb-0 fw-bold text-dark border-start border-5 border-warning ps-3">
-                            Application Form 2026 Intake
-                        </h5>
-                    </div>
-                    
-                    <div class="card-body p-4">
+                    <div class="card-body p-5">
                         <form method="POST" enctype="multipart/form-data">
-                                                        <!-- Error Reporting Block -->
-                                {% if form.errors %}
-                                    <div class="alert alert-danger">
-                                        <h5 class="fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Please fix the following errors:</h5>
-                                        <ul>
-                                            {% for field, errors in form.errors.items %}
-                                                <li>
-                                                    <strong>{{ field|title }}:</strong> 
-                                                    {% for error in errors %} {{ error }} {% endfor %}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                {% endif %}
                             {% csrf_token %}
 
-                            <!-- SECTION 1: Personal Details -->
-                            <h6 class="text-uppercase text-primary fw-bold mb-3 mt-2">1. Personal Details</h6>
+                            <!-- ERROR BLOCK -->
+                            {% if form.errors or education_formset.errors or employment_formset.errors %}
+                                <div class="alert alert-danger shadow-sm border-start border-5 border-danger">
+                                    <h5 class="fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Application Not Submitted</h5>
+                                    <ul class="mb-0">
+                                        {% for field in form %}
+                                            {% if field.errors %}
+                                                <li><strong>{{ field.label }}:</strong> {{ field.errors|striptags }}</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <!-- 1. PERSONAL DETAILS -->
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">1</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Personal Details</h5>
+                            </div>
+                            
                             <div class="row g-3">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <label class="form-label">Full Name <span class="text-danger">*</span></label>
                                     {{ form.full_name }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    <label class="form-label">Gender</label>
                                     {{ form.gender }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                                <div class="col-md-4">
+                                    <label class="form-label">Date of Birth</label>
                                     {{ form.date_of_birth }}
-                                </div>
-                                <div class="col-md-6">
-                                <label class="form-label">Place of Birth</label>
-                                    {{ form.place_of_birth }}
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Marital Status</label>
                                     {{ form.marital_status }}
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Tribe</label>
-                                    {{ form.tribe }}
-                                </div>
-                                <div class="col-md-4">
                                     <label class="form-label">Nationality</label>
                                     {{ form.nationality }}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                    <label class="form-label">Place of Birth</label>
+                                    {{ form.place_of_birth }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Tribe</label>
+                                    {{ form.tribe }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Telephone No. <span class="text-danger">*</span></label>
                                     {{ form.phone }}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                    <label class="form-label">Email Address</label>
                                     {{ form.email }}
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Permanent Address</label>
                                     {{ form.permanent_address }}
+                                <div class="col-12 mt-3">
+                                    <label class="form-label fw-bold mb-3">Number of Family Members:</label>
+                                    <div class="family-grid p-3 bg-white border rounded shadow-sm d-flex flex-wrap gap-3">
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Father</label>
+                                            {{ form.num_father }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Mother</label>
+                                            {{ form.num_mother }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Brother</label>
+                                            {{ form.num_brother }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Sister</label>
+                                            {{ form.num_sister }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Wife</label>
+                                            {{ form.num_wife }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Husband</label>
+                                            {{ form.num_husband }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Son</label>
+                                            {{ form.num_son }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Daughter</label>
+                                            {{ form.num_daughter }}
+                                        </div>
+                                        <div class="family-item">
+                                            <label class="small text-muted d-block">Others</label>
+                                            {{ form.num_others }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Contact of Family (1) <span class="text-danger">*</span></label>
+                                    {{ form.family_contact_1 }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Contact of Family (2)</label>
+                                    {{ form.family_contact_2 }}
                                 </div>
                             </div>
-                            
-                            <hr class="my-4">
 
-                            <!-- SECTION 2: Next of Kin -->
-                            <h6 class="text-uppercase text-primary fw-bold mb-3">2. Next of Kin</h6>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">Next of Kin Name</label>
-                                    {{ form.next_of_kin_name }}
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Relationship</label>
-                                    {{ form.next_of_kin_relationship }}
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Contact Number</label>
-                                    {{ form.next_of_kin_contact }}
-                                </div>
+                            <hr class="my-5">
+
+                            <!-- 2. EDUCATIONAL BACKGROUND -->
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">2</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Educational Background</h5>
                             </div>
 
-                            <hr class="my-4">
+                            <div class="table-responsive bg-white rounded border p-2 mb-2">
+                                <table class="table align-middle" id="education-table">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Institute</th>
+                                            <th style="width: 25%;">Period</th>
+                                            <th>Certificate/Diploma/Degree</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="education-formset-body">
+                                        {{ education_formset.management_form }}
+                                        {% for f in education_formset %}
+                                        <tr class="education-form-row">
+                                            <td>{{ f.institute }}{{ f.id }}</td>
+                                            <td>{{ f.period }}</td>
+                                            <td>{{ f.award }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mb-4">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="add-education-btn">
+                                    <i class="fas fa-plus-circle me-1"></i> Add another school
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">3. Academic Prizes and Distinctions</label>
+                                {{ form.academic_prizes }}
+                            </div>
 
-                            <!-- SECTION 3: Church Background -->
-                            <h6 class="text-uppercase text-primary fw-bold mb-3">3. Church Background</h6>
+                            <hr class="my-5">
+
+                            <!-- 3. CHURCH BACKGROUND -->
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">3</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Church & Religious Information</h5>
+                            </div>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">Attending Church</label>
+                                    <label class="form-label">Church Currently Attending <span class="text-danger">*</span></label>
                                     {{ form.attending_church }}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Church Location</label>
-                                    {{ form.church_location }}
+                                    <label class="form-label">Location of Church <span class="text-danger">*</span></label>
+                                    {{ form.location_of_church }}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Senior Pastor's Name</label>
+                                    <label class="form-label">Title in Church (e.g. Deacon)</label>
+                                    {{ form.church_title }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Time of Baptism</label>
+                                    {{ form.time_of_baptism }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Senior Pastor's Name <span class="text-danger">*</span></label>
                                     {{ form.senior_pastor }}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Pastor's Contact</label>
+                                    <label class="form-label">Pastor's Contact <span class="text-danger">*</span></label>
                                     {{ form.pastor_contact }}
                                 </div>
+                                <div class="col-12">
+                                    <label class="form-label">Denomination / Number of Churches</label>
+                                    {{ form.denomination }}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Name of a Person known to ANTS</label>
+                                    {{ form.person_known_to_ants }}
+                                </div>
+                                
+                                <<div class="row g-3 mt-3">
+                                <!-- Question 1 -->
+                                <div class="col-md-6">
+                                    <label class="form-label d-block fw-bold">Is this your first and/or subsequent study?</label>
+                                    <div class="d-flex gap-4 p-2 bg-white border rounded">
+                                        {% for radio in form.is_first_study %}
+                                            <div class="form-check d-flex align-items-center">
+                                                {{ radio.tag }}
+                                                <label class="form-check-label ms-2" for="{{ radio.id_for_label }}">
+                                                    {{ radio.choice_label }}  <!-- THIS IS THE LABEL "Yes" or "No" -->
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Question 2 -->
+                                <div class="col-md-6">
+                                    <label class="form-label d-block fw-bold">Was English the language of instruction?</label>
+                                    <div class="d-flex gap-4 p-2 bg-white border rounded">
+                                        {% for radio in form.english_instruction %}
+                                            <div class="form-check d-flex align-items-center">
+                                                {{ radio.tag }}
+                                                <label class="form-check-label ms-2" for="{{ radio.id_for_label }}">
+                                                    {{ radio.choice_label }} <!-- THIS IS THE LABEL "Yes" or "No" -->
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-5">
+
+                            <!-- 4. EMPLOYMENT -->
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">4</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Employment (Working Experience)</h5>
+                            </div>
+                            <div class="table-responsive bg-white rounded border p-2 mb-2">
+                                <table class="table align-middle" id="employment-table">
+                                    <thead class="table-light">
+                                        <tr><th style="width: 25%;">Period</th><th>Employer / Company</th><th>Post Held / Main Duties</th></tr>
+                                    </thead>
+                                    <tbody id="employment-formset-body">
+                                        {{ employment_formset.management_form }}
+                                        {% for f in employment_formset %}
+                                        <tr class="employment-form-row">
+                                            <td>{{ f.period }}{{ f.id }}</td>
+                                            <td>{{ f.employer }}</td>
+                                            <td>{{ f.post_held }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mb-4">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="add-employment-btn">
+                                    <i class="fas fa-plus-circle me-1"></i> Add another job
+                                </button>
                             </div>
 
-                            <hr class="my-4">
+                            <hr class="my-5">
 
-                            <!-- SECTION 4: Academics & Program -->
-                            <h6 class="text-uppercase text-primary fw-bold mb-3">4. Program & Qualifications</h6>
+                            <!-- 5. PROGRAM & FINANCE -->
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">5</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Program & Finance</h5>
+                            </div>
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <label class="form-label">Educational Background (Previous Schools)</label>
-                                    {{ form.education_history }}
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="form-label fw-bold">Select Program Applying For <span class="text-danger">*</span></label>
+                                    <label class="form-label fw-bold">Program choice <span class="text-danger">*</span></label>
                                     {{ form.program_choice }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Funding Method</label>
+                                <div class="col-md-6 mt-3">
+                                    <label class="form-label fw-bold">Funding Method</label>
                                     {{ form.finance_method }}
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Sponsor Name (If applicable)</label>
+                                <div class="col-md-6 mt-3">
+                                    <label class="form-label">Sponsor Name (if applicable)</label>
                                     {{ form.sponsor_name }}
                                 </div>
                             </div>
 
-                            <hr class="my-4">
+                            <hr class="my-5">
 
-                            <!-- SECTION 5: Uploads -->
-                            <h6 class="text-uppercase text-primary fw-bold mb-3">5. Attachments</h6>
-                            <div class="p-3 bg-light rounded border">
-                                <div class="mb-3">
-                                    <label class="form-label">Passport Photo <span class="text-danger">*</span></label>
+                            <!-- 6. SOURCE & GOALS -->
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">6</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Information Source & Goals</h5>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">7. How did you get information about ANTS?</label>
+                                    <div class="p-4 bg-white border rounded shadow-sm">
+                                        <!-- Radio Buttons Grid -->
+                                        <div class="row mb-3">
+                                            {% for radio in form.source_of_info %}
+                                                <div class="col-md-4 col-sm-6 mb-2">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        {{ radio.tag }}
+                                                        <label class="form-check-label ms-2" for="{{ radio.id_for_label }}">
+                                                            {{ radio.choice_label }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <!-- THE SPECIFY BOX -->
+                                        <!-- We removed 'display: none' so it's visible by default for safety -->
+                                        <div id="specify-details-wrapper" class="mt-3 border-top pt-3">
+                                            <label class="small text-muted fw-bold d-block mb-2">Please specify details (e.g. TikTok, Facebook, Name of Student/Pastor):</label>
+                                            {{ form.source_details }}
+                                            {% if form.source_details.errors %}
+                                                <div class="text-danger small">{{ form.source_details.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mt-4">
+                                    <label class="form-label fw-bold">8. Purpose of studying at ANTS</label>
+                                    {{ form.purpose_of_study }}
+                                </div>
+                                <div class="col-12 mt-3">
+                                    <label class="form-label fw-bold">9. What is your future plan after studying at ANTS?</label>
+                                    {{ form.future_plan }}
+                                </div>
+                            </div>
+                            <hr class="my-5">
+
+                            <!-- 7. ATTACHMENTS -->
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="bg-primary text-white px-3 py-1 rounded-circle me-3">7</div>
+                                <h5 class="mb-0 fw-bold text-primary text-uppercase">Attachments & Uploads</h5>
+                            </div>
+
+                            <div class="p-4 bg-light border rounded mb-4">
+                                <p class="text-danger fw-bold mb-3">10. Confirm documents being attached:</p>
+                                <div class="row">
+                                    <div class="col-md-6"><div class="form-check">{{ form.has_certificates }} <label class="ms-2">Certificates</label></div></div>
+                                    <div class="col-md-6"><div class="form-check">{{ form.has_transcripts }} <label class="ms-2">Transcripts / Equated</label></div></div>
+                                    <div class="col-md-6 mt-2"><div class="form-check">{{ form.has_recommendation }} <label class="ms-2">Recommendation Letter</label></div></div>
+                                    <div class="col-md-6 mt-2"><div class="form-check">{{ form.has_testimony }} <label class="ms-2">Personal Testimony</label></div></div>
+                                </div>
+                            </div>
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Passport Photo <span class="text-danger">*</span></label>
                                     {{ form.passport_photo }}
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Academic Documents (PDF) <span class="text-danger">*</span></label>
-                                    {{ form.academic_documents }}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Academic Docs (One PDF) <span class="text-danger">*</span></label>
+                                    {{ form.academic_docs_file }}
                                 </div>
-                                <div>
+                                <div class="col-md-6">
                                     <label class="form-label">Recommendation Letter (Optional)</label>
                                     {{ form.recommendation_letter }}
                                 </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Personal Testimony File (Optional)</label>
+                                    {{ form.testimony_file }}
+                                </div>
                             </div>
 
-                            <!-- Submit Button -->
-                            <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-warning btn-lg px-5 fw-bold shadow-sm">
-                                    <i class="fas fa-paper-plane me-2"></i> SUBMIT APPLICATION
+                            <div class="mt-5 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-lg rounded-pill">
+                                    SUBMIT OFFICIAL APPLICATION
                                 </button>
                             </div>
-                        
                         </form>
                     </div>
                 </div>
@@ -202,4 +389,156 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* 1. RADIO & CHECKBOX ALIGNMENT - FIXES MISSING/OFFSET LABELS */
+    .form-check { 
+        display: flex !important; 
+        align-items: center !important; 
+        margin-bottom: 0; 
+    }
+
+    .form-check-input { 
+        margin-top: 0 !important; 
+        margin-right: 10px !important; 
+        cursor: pointer; 
+        width: 1.2em;
+        height: 1.2em;
+    }
+
+    .form-check-label { 
+        cursor: pointer; 
+        line-height: 1.4; 
+        font-weight: 500;
+        color: #333;
+        display: inline-block;
+    }
+
+    /* 2. REMOVE DJANGO DEFAULT LIST BULLETS FROM RADIO GROUPS */
+    .form-check ul, .p-4 ul, .d-flex ul {
+        list-style: none !important;
+        padding-left: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* 3. RESET NAVBAR OVERLAY - STOPS MENU FROM COVERING FORM */
+    .top-navbar .dropdown-menu {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0;
+    }
+
+    .top-navbar .nav-item.dropdown:hover > .dropdown-menu {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1;
+    }
+
+    /* Ensure Navbar stays on top of the Card shadow */
+    .top-navbar { 
+        z-index: 2000 !important; 
+        position: sticky; 
+        top: 0; 
+    }
+
+    /* 4. TABLE STYLING FOR DYNAMIC ROWS */
+    .table input.form-control {
+        border: 1px solid #ced4da;
+        padding: 0.375rem 0.75rem;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        color: #4a148c; /* ANTS Purple */
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+
+    /* 5. FIX OVERLAPPING TEXT IN INFO SOURCE BOX */
+    .gap-4 {
+        gap: 1.5rem !important;
+    }
+
+.family-item {
+        width: 70px; /* Small width for each box */
+        text-align: center;
+    }
+    .small-box {
+        text-align: center;
+        padding: 5px !important;
+    }    
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- PART 1: DYNAMIC FORMSET TABLES (Education & Employment) ---
+    function addFormsetRow(prefix, btnId, tbodyId, rowClass) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+
+        btn.addEventListener('click', function() {
+            const totalFormsInput = document.getElementById(`id_${prefix}-TOTAL_FORMS`);
+            let formCount = parseInt(totalFormsInput.value);
+            const tbody = document.getElementById(tbodyId);
+            const rows = tbody.getElementsByClassName(rowClass);
+            
+            // Clone the first row
+            const newRow = rows[0].cloneNode(true);
+
+            // Update names and IDs
+            const suffixRegex = new RegExp(`${prefix}-0-`, 'g');
+            newRow.innerHTML = newRow.innerHTML.replace(suffixRegex, `${prefix}-${formCount}-`);
+
+            // Clear values in new row
+            const inputs = newRow.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.value = '';
+                if (input.type === 'checkbox' || input.type === 'radio') input.checked = false;
+                if (input.type === 'hidden') input.removeAttribute('value');
+            });
+
+            tbody.appendChild(newRow);
+            totalFormsInput.value = formCount + 1;
+        });
+    }
+
+    // Initialize Table Buttons
+    addFormsetRow('education_entries', 'add-education-btn', 'education-formset-body', 'education-form-row');
+    addFormsetRow('employment_entries', 'add-employment-btn', 'employment-formset-body', 'employment-form-row');
+
+
+    // --- PART 2: SOURCE OF INFO TOGGLE ("Other" Box) ---
+    const radioButtons = document.querySelectorAll('input[name="source_of_info"]');
+    const detailsWrapper = document.getElementById('specify-details-wrapper');
+    const detailsInput = document.querySelector('input[name="source_details"]');
+
+    function toggleSourceDetails() {
+        const selectedRadio = document.querySelector('input[name="source_of_info"]:checked');
+        const val = selectedRadio ? selectedRadio.value : "";
+        
+        // List of choices that require extra explanation
+        const needsDetails = ['Other', 'Social Media', 'Student', 'Missionary', 'Pastor', 'Professor'].includes(val);
+        
+        if (needsDetails) {
+            detailsWrapper.style.display = 'block';
+            if (detailsInput) detailsInput.setAttribute('required', 'required');
+        } else {
+            detailsWrapper.style.display = 'none';
+            if (detailsInput) {
+                detailsInput.removeAttribute('required');
+                detailsInput.value = ''; // Reset the value
+            }
+        }
+    }
+
+    // Attach listener to radio buttons
+    radioButtons.forEach(btn => {
+        btn.addEventListener('change', toggleSourceDetails);
+    });
+
+    // Run once on load
+    toggleSourceDetails();
+
+});
+</script>
 {% endblock %}

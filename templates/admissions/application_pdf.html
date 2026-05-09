@@ -2,9 +2,12 @@
 <html>
 <head>
     <style>
+        /* css-lint: disable unknownAtRules */
         @page {
             size: a4 portrait;
+            /* Margins allow space for the absolute-positioned header/footer frames */
             margin: 140pt 40pt 90pt 40pt; 
+
             @frame header_frame {
                 -pdf-frame-content: header_content;
                 left: 0pt; width: 595pt; top: 0pt; height: 140pt;
@@ -14,6 +17,7 @@
                 left: 0pt; width: 595pt; top: 760pt; height: 80pt;
             }
         }
+        
         body { font-family: 'Helvetica', sans-serif; font-size: 9pt; color: #333; line-height: 1.4; }
         .full-width-img { width: 100%; display: block; }
 
@@ -26,20 +30,30 @@
             text-transform: uppercase;
             font-size: 10pt;
         }
-        table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-        table.data-table td { padding: 4px 6px; vertical-align: top; border-bottom: 0.5pt solid #eee; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        td { padding: 4px 6px; vertical-align: top; border-bottom: 0.5pt solid #eee; }
         .label { font-weight: bold; width: 30%; color: #444; }
         
-        .passport-photo { 
-            width: 100px; 
-            height: 120px; 
-            border: 1px solid #ccc;
-            float: right;
-            margin-bottom: 10px;
+        /* Grid styling for family numbers */
+        .family-box { border: 1px solid #999; padding: 2px 8px; font-weight: bold; }
+        
+        /* Table styling for Education/Employment */
+        .data-table th { 
+            background-color: #f8f9fa; 
+            text-align: left; 
+            padding: 5px; 
+            border-bottom: 1pt solid #4a148c;
+            font-size: 8pt;
         }
+        .data-table td { border-bottom: 0.5pt solid #ddd; font-size: 9pt; }
+
+        .highlight-row { background-color: #f8f1ff; }
+        .purple-text { color: #4a148c; }
     </style>
 </head>
 <body>
+    <!-- FIXED HEADER & FOOTER IMAGES -->
     <div id="header_content">
         <img src="/static/img/ants_header.png" class="full-width-img">
     </div>
@@ -48,85 +62,143 @@
         <img src="/static/img/ants_footer.png" class="full-width-img">
     </div>
 
-<h2 style="text-align: center; text-decoration: underline; margin-top: 0; font-size: 14pt;">STUDENT ADMISSION APPLICATION</h2>
+    <h2 style="text-align: center; text-decoration: underline; margin-top: 0; font-size: 14pt;">STUDENT ADMISSION APPLICATION</h2>
 
-    <!-- INFO ROW: Date on Left, Photo on Right -->
-    <table style="width: 100%; border: none; margin-bottom: 0px;">
+    <!-- TOP ROW: DATE AND PASSPORT -->
+    <table style="border: none; border-bottom: none;">
         <tr>
-            <td style="vertical-align: bottom; text-align: left; padding-bottom: 5px;">
-                <p style="font-size: 10pt;"><strong>Date Submitted:</strong> {{ application.submitted_at|date:"F d, Y" }}</p>
+            <td style="vertical-align: bottom; border-bottom: none;">
+                <p><strong>Date Submitted:</strong> {{ application.submitted_at|date:"F d, Y" }}</p>
+                <p><strong>Application Status:</strong> {{ application.status|upper }}</p>
             </td>
-            <td style="text-align: right; width: 110px;">
+            <td style="text-align: right; width: 110px; border-bottom: none;">
                 {% if application.passport_photo %}
-                    <!-- Sized specifically for the passport slot -->
-                    <img src="{{ application.passport_photo.url }}" 
-                         style="width: 100px; height: 120px; border: 1px solid #333; padding: 1px; object-fit: cover;">
+                    <img src="{{ application.passport_photo.url }}" style="width: 100px; height: 120px; border: 1pt solid #333; object-fit: cover;">
                 {% else %}
-                    <div style="width: 100px; height: 120px; border: 1px dashed #ccc; text-align: center; font-size: 8pt; padding-top: 50px;">
-                        No Photo
-                    </div>
+                    <div style="width: 100px; height: 120px; border: 1pt dashed #ccc;"></div>
                 {% endif %}
             </td>
         </tr>
     </table>
 
-    <!-- 1. PROGRAM & FINANCIAL OVERVIEW -->
+    <!-- 1. PROGRAM & FINANCE -->
     <div class="section-title">1. Program & Financial Overview</div>
-    
-    <!-- We set this table to 100% now because the photo is no longer pushing it -->
-    <table class="data-table" style="width: 100%;">
-        <tr style="background-color: #f8f1ff;">
-            <td class="label" style="color: #4a148c; font-size: 11pt;">PROGRAM APPLIED FOR:</td>
-            <td style="font-size: 12pt; color: #4a148c;"><strong>{{ application.program_choice|upper }}</strong></td>
+    <table>
+        <tr class="highlight-row">
+            <td class="label purple-text">PROGRAM APPLIED FOR:</td>
+            <td class="purple-text" style="font-size: 11pt;"><strong>{{ application.program_choice|upper }}</strong></td>
         </tr>
         <tr>
             <td class="label">Funding Method:</td>
-            <td style="font-size: 11pt;"><strong>{{ application.get_finance_method_display }}</strong></td>
+            <td><strong>{{ application.get_finance_method_display }}</strong> {% if application.sponsor_name %}(Sponsor: {{ application.sponsor_name }}){% endif %}</td>
         </tr>
-        {% if application.sponsor_name %}
-        <tr>
-            <td class="label">Sponsor Name:</td>
-            <td>{{ application.sponsor_name }}</td>
-        </tr>
-        {% endif %}
     </table>
 
-    <!-- SECTION 2: PERSONAL INFORMATION -->
+    <!-- 2. PERSONAL DETAILS -->
     <div class="section-title">2. Personal Information</div>
-    <table class="data-table">
+    <table>
         <tr><td class="label">Full Name:</td><td><strong>{{ application.full_name }}</strong></td></tr>
-        <tr><td class="label">Gender / Status:</td><td>{{ application.get_gender_display }} / {{ application.marital_status }}</td></tr>
-        <tr><td class="label">Date of Birth:</td><td>{{ application.date_of_birth|date:"d/m/Y" }}</td></tr>
-        <tr><td class="label">Place of Birth:</td><td>{{ application.place_of_birth }}</td></tr>
-        <tr><td class="label">Nationality / Tribe:</td><td>{{ application.nationality }} {% if application.tribe %}({{ application.tribe }}){% endif %}</td></tr>
-        <tr><td class="label">Contact Details:</td><td>Ph: {{ application.phone }} | Email: {{ application.email }}</td></tr>
-        <tr><td class="label">Permanent Address:</td><td>{{ application.permanent_address|linebreaksbr }}</td></tr>
+        <tr><td class="label">Bio Data:</td><td>{{ application.get_gender_display }} | {{ application.marital_status }} | DOB: {{ application.date_of_birth|date:"d/m/Y" }}</td></tr>
+        <tr><td class="label">Origin:</td><td>{{ application.place_of_birth }} | Tribe: {{ application.tribe|default:"N/A" }} | Nationality: {{ application.nationality }}</td></tr>
+        <tr><td class="label">Contact:</td><td>Tel: {{ application.phone }} | Email: {{ application.email }}</td></tr>
+        <tr><td class="label">Address:</td><td>{{ application.permanent_address|linebreaksbr }}</td></tr>
     </table>
 
-    <!-- SECTION 3: NEXT OF KIN -->
-    <div class="section-title">3. Next of Kin / Family Contact</div>
-    <table class="data-table">
-        <tr><td class="label">Name:</td><td>{{ application.next_of_kin_name }} ({{ application.next_of_kin_relationship }})</td></tr>
-        <tr><td class="label">Phone:</td><td>{{ application.next_of_kin_contact }}</td></tr>
-    </table>
-
-    <!-- SECTION 4: CHURCH INFO -->
-    <div class="section-title">4. Church & Religious Information</div>
-    <table class="data-table">
-        <tr><td class="label">Church & Location:</td><td>{{ application.attending_church }} ({{ application.church_location }})</td></tr>
-        <tr><td class="label">Title / Baptism:</td><td>Title: {{ application.church_title|default:"None" }} | Baptism: {{ application.baptism_date|default:"N/A" }}</td></tr>
-        <tr><td class="label">Senior Pastor:</td><td>{{ application.senior_pastor }} ({{ application.pastor_contact }})</td></tr>
-    </table>
-
-    <!-- SECTION 5: EDUCATION -->
-    <div class="section-title">5. Educational Background</div>
-    <div style="padding: 5px 10px; border: 0.5pt solid #eee;">
-        {{ application.education_history|linebreaks }}
+    <!-- FAMILY GRID -->
+    <div style="padding-left: 6px; margin-bottom: 10px;">
+        <strong>Family Composition:</strong><br>
+        Father: <span class="family-box">{{ application.num_father }}</span> &nbsp; 
+        Mother: <span class="family-box">{{ application.num_mother }}</span> &nbsp; 
+        Brothers: <span class="family-box">{{ application.num_brother }}</span> &nbsp; 
+        Sisters: <span class="family-box">{{ application.num_sister }}</span> &nbsp; 
+        Wife/Husband: <span class="family-box">{% if application.num_wife > 0 %}{{ application.num_wife }}{% else %}{{ application.num_husband }}{% endif %}</span> &nbsp; 
+        Sons: <span class="family-box">{{ application.num_son }}</span> &nbsp; 
+        Daughters: <span class="family-box">{{ application.num_daughter }}</span>
     </div>
 
-    <div style="margin-top: 30px; font-size: 8pt; font-style: italic; text-align: center;">
-        This is an official electronically generated application form from the ANTS Admissions Portal.
-    </div>
+    <!-- 3. CHURCH & RELIGIOUS -->
+    <div class="section-title">3. Church & Religious Information</div>
+    <table>
+        <tr><td class="label">Church:</td><td>{{ application.attending_church }} (Location: {{ application.location_of_church }})</td></tr>
+        <tr><td class="label">Details:</td><td>Denomination: {{ application.denomination|default:"N/A" }} | Title: {{ application.church_title|default:"N/A" }}</td></tr>
+        <tr><td class="label">Senior Pastor:</td><td>{{ application.senior_pastor }} (Contact: {{ application.pastor_contact }})</td></tr>
+        <tr><td class="label">Connection:</td><td>Known Person at ANTS: {{ application.person_known_to_ants|default:"None" }}</td></tr>
+        <tr><td class="label">Other info:</td><td>
+            English Instruction: {% if application.english_instruction %}Yes{% else %}No{% endif %} | 
+            First/Subsequent Study: {% if application.is_first_study %}Yes{% else %}No{% endif %}
+        </td></tr>
+    </table>
 
+    <!-- 4. EDUCATIONAL BACKGROUND (TABLE) -->
+    <div class="section-title">4. Educational Background</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Institute</th>
+                <th>Period</th>
+                <th>Certificate/Diploma/Degree</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in application.education_entries.all %}
+            <tr>
+                <td>{{ entry.institute }}</td>
+                <td>{{ entry.period }}</td>
+                <td>{{ entry.award }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No education history recorded.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if application.academic_prizes %}
+    <p style="padding-left: 6px;"><strong>Academic Prizes/Distinctions:</strong> {{ application.academic_prizes }}</p>
+    {% endif %}
+
+    <!-- 5. EMPLOYMENT (TABLE) -->
+    <div class="section-title">5. Employment (Working Experience)</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Period</th>
+                <th>Employer / Company</th>
+                <th>Post Held / Main Duties</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in application.employment_entries.all %}
+            <tr>
+                <td>{{ entry.period }}</td>
+                <td>{{ entry.employer }}</td>
+                <td>{{ entry.post_held }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No employment history recorded.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 6. STATEMENT & SOURCE -->
+    <div class="section-title">6. Statements & Goals</div>
+    <table>
+        <tr><td class="label">How they heard:</td><td>{{ application.source_of_info }} {% if application.source_details %}(Details: {{ application.source_details }}){% endif %}</td></tr>
+        <tr><td class="label">Purpose:</td><td>{{ application.purpose_of_study|linebreaksbr }}</td></tr>
+        <tr><td class="label">Future Plan:</td><td>{{ application.future_plan|linebreaksbr }}</td></tr>
+    </table>
+
+    <!-- 7. ATTACHMENTS CHECKLIST -->
+    <div class="section-title">7. Attachments Provided</div>
+    <table style="border: 0.5pt solid #ccc;">
+        <tr>
+            <td>[ {% if application.has_certificates %}X{% else %}&nbsp;{% endif %} ] Certificates</td>
+            <td>[ {% if application.has_transcripts %}X{% else %}&nbsp;{% endif %} ] Transcripts / Equated</td>
+            <td>[ {% if application.has_recommendation %}X{% else %}&nbsp;{% endif %} ] Recommendation Letter</td>
+            <td>[ {% if application.has_testimony %}X{% else %}&nbsp;{% endif %} ] Personal Testimony</td>
+        </tr>
+    </table>
+
+    <div style="margin-top: 40px; font-size: 8pt; font-style: italic; text-align: center;">
+        This is an official document generated by the All Nations Theological College & Seminary Admissions System.
+    </div>
 </body>
 </html>
