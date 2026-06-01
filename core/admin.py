@@ -13,7 +13,27 @@ from .models import FeeStructure
 from .models import ChapelEvent
 from .models import ChapelPreacher
 from .models import Notice
+from .models import  PopupBanner
 
+@admin.register(PopupBanner)
+class PopupBannerAdmin(admin.ModelAdmin):
+    list_display  = ('title', 'theme', 'is_active')
+    list_editable = ('is_active',)   # toggle on/off directly from the list view
+    fieldsets = (
+        ('Content', {
+            'fields': ('title', 'subtitle', 'body_text', 'footer_note')
+        }),
+        ('Appearance', {
+            'fields': ('theme',)
+        }),
+        ('Call to Action', {
+            'fields': ('cta_text', 'cta_url')
+        }),
+        ('Visibility', {
+            'fields': ('is_active',),
+            'description': '⚠️ Only ONE popup should be active at a time.'
+        }),
+    )
 
 @admin.register(Policy)
 class PolicyAdmin(admin.ModelAdmin):

@@ -523,5 +523,106 @@
     </footer>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% if popup_banner %}
+<!-- ===== ANTS POPUP BANNER ===== -->
+<style>
+  #ants-popup-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  #ants-popup-overlay.ants-hidden { display: none !important; }
+  #ants-popup-card {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%; max-width: 360px;
+    overflow: hidden;
+    animation: antsPopIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  @keyframes antsPopIn {
+    from { opacity:0; transform:scale(0.8) translateY(24px); }
+    to   { opacity:1; transform:scale(1)   translateY(0);    }
+  }
+  .ants-pop-header {
+    background: #4a148c; padding: 1.2rem 1.4rem 1rem; position: relative;
+  }
+  .ants-pop-close {
+    position:absolute; top:10px; right:12px;
+    background:rgba(255,255,255,0.2); border:none; color:#fff;
+    width:28px; height:28px; border-radius:50%; font-size:15px;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:background 0.2s; line-height:1;
+  }
+  .ants-pop-close:hover { background:rgba(255,255,255,0.38); }
+  .ants-pop-badge {
+    display:inline-block; background:#ffca28; color:#4a148c;
+    font-size:10px; font-weight:800; letter-spacing:1px;
+    text-transform:uppercase; padding:3px 10px; border-radius:20px; margin-bottom:8px;
+  }
+  .ants-pop-institution { font-size:11px; color:rgba(255,255,255,0.7); margin:0 0 4px; }
+  .ants-pop-title { font-size:19px; font-weight:700; color:#fff; line-height:1.3; margin:0; }
+  .ants-pop-title span { color:#ffca28; }
+  .ants-pop-subtitle { font-size:12px; color:rgba(255,255,255,0.75); margin:6px 0 0; }
+  .ants-pop-body { padding:1.1rem 1.4rem; }
+  .ants-pop-body-text { font-size:13px; color:#555; line-height:1.6; margin:0 0 14px; }
+  .ants-pop-cta {
+    display:block; width:100%; padding:11px; border:none; border-radius:8px;
+    background:#4a148c; color:#ffca28; font-size:14px; font-weight:700;
+    letter-spacing:0.5px; text-transform:uppercase; text-align:center;
+    text-decoration:none; cursor:pointer; transition:background 0.2s, transform 0.1s;
+  }
+  .ants-pop-cta:hover { background:#6a1dbd; color:#ffca28; transform:translateY(-1px); }
+  .ants-pop-cta:active { transform:translateY(0); }
+  .ants-pop-footer {
+    background:#ffca28; padding:8px 14px; text-align:center;
+    font-size:11px; font-weight:700; color:#4a148c; letter-spacing:0.3px;
+  }
+</style>
+
+<div id="ants-popup-overlay" class="ants-hidden" role="dialog" aria-modal="true" aria-label="ANTS Announcement">
+  <div id="ants-popup-card">
+    <div class="ants-pop-header">
+      <button class="ants-pop-close" id="antsPopClose" aria-label="Close announcement">&times;</button>
+      <div class="ants-pop-badge">{{ popup_banner.get_theme_display }}</div>
+      <p class="ants-pop-institution">All Nations Theological College &amp; Seminary</p>
+      <h2 class="ants-pop-title">{{ popup_banner.title }}</h2>
+      {% if popup_banner.subtitle %}
+        <p class="ants-pop-subtitle">{{ popup_banner.subtitle }}</p>
+      {% endif %}
+    </div>
+    <div class="ants-pop-body">
+      {% if popup_banner.body_text %}
+        <p class="ants-pop-body-text">{{ popup_banner.body_text }}</p>
+      {% endif %}
+      <a href="{{ popup_banner.cta_url }}" class="ants-pop-cta">{{ popup_banner.cta_text }} &rarr;</a>
+    </div>
+    {% if popup_banner.footer_note %}
+    <div class="ants-pop-footer">&#127891; {{ popup_banner.footer_note }}</div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+(function(){
+  var overlay = document.getElementById('ants-popup-overlay');
+  var key = 'ants_popup_{{ popup_banner.pk }}';
+  if (!sessionStorage.getItem(key)) {
+    setTimeout(function(){
+      overlay.classList.remove('ants-hidden');
+      sessionStorage.setItem(key, '1');
+    }, 2500);
+  }
+  function close() { overlay.classList.add('ants-hidden'); }
+  document.getElementById('antsPopClose').addEventListener('click', close);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>
+<!-- ===== END ANTS POPUP BANNER ===== -->
+{% endif %}
 </body>
 </html>

@@ -497,3 +497,31 @@ class Notice(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('notice_detail', kwargs={'pk': self.pk})    
+
+# ============================================================
+# PopupBanner — controls the site-wide popup from Admin
+# ============================================================
+class PopupBanner(models.Model):
+    THEME_CHOICES = [
+        ('admissions', 'Admissions'),
+        ('event',      'Event'),
+        ('notice',     'General Notice'),
+        ('graduation', 'Graduation'),
+    ]
+
+    title       = models.CharField(max_length=200, help_text="Bold headline e.g. 'Admissions Now Open'")
+    subtitle    = models.CharField(max_length=300, blank=True, help_text="Smaller line below the headline")
+    body_text   = models.TextField(blank=True, help_text="Short paragraph (1–2 sentences)")
+    theme       = models.CharField(max_length=20, choices=THEME_CHOICES, default='admissions')
+    cta_text    = models.CharField(max_length=50, default="Apply Now", help_text="Button label")
+    cta_url     = models.URLField(default="https://admissions.ants.ac.ug", help_text="Button link")
+    footer_note = models.CharField(max_length=200, blank=True, help_text="Gold bar text e.g. 'Deadline: 30th June 2026'")
+    is_active   = models.BooleanField(default=False, help_text="Check to show popup on every page. Uncheck to hide it.")
+
+    class Meta:
+        verbose_name = 'Popup Banner'
+        verbose_name_plural = 'Popup Banners'
+
+    def __str__(self):
+        status = '✅ ACTIVE' if self.is_active else '⬜ inactive'
+        return f"[{status}] {self.title}"
