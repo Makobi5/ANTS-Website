@@ -513,6 +513,8 @@ class PopupBanner(models.Model):
     subtitle    = models.CharField(max_length=300, blank=True, help_text="Smaller line below the headline")
     body_text   = models.TextField(blank=True, help_text="Short paragraph (1–2 sentences)")
     theme       = models.CharField(max_length=20, choices=THEME_CHOICES, default='admissions')
+    image       = models.ImageField(upload_to='popup_banners/', blank=True, null=True,
+                                    help_text="Optional photo — shown on the left side of the popup (portrait/square works best, e.g. a graduate photo)")
     cta_text    = models.CharField(max_length=50, default="Apply Now", help_text="Button label")
     cta_url     = models.URLField(default="https://admissions.ants.ac.ug", help_text="Button link")
     footer_note = models.CharField(max_length=200, blank=True, help_text="Gold bar text e.g. 'Deadline: 30th June 2026'")

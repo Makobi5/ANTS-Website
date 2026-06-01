@@ -21,7 +21,7 @@ class PopupBannerAdmin(admin.ModelAdmin):
     list_editable = ('is_active',)   # toggle on/off directly from the list view
     fieldsets = (
         ('Content', {
-            'fields': ('title', 'subtitle', 'body_text', 'footer_note')
+            'fields': ('title', 'subtitle','image', 'body_text', 'footer_note')
         }),
         ('Appearance', {
             'fields': ('theme',)
