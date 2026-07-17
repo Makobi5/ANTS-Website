@@ -1,0 +1,32 @@
+/* ROOT VARIABLES - Default (Professional Blue/Purple) */
+:root {
+    --dash-primary: #4a148c;   /* ANTS Purple */
+    --dash-accent: #ffca28;    /* ANTS Gold */
+    --dash-bg: #f4f7f6;
+    --dash-card-bg: #ffffff;
+    --dash-text: #333333;
+}
+
+/* DARK THEME */
+body.theme-dark {
+    --dash-primary: #1f1f1f;
+    --dash-accent: #ffca28;
+    --dash-bg: #121212;
+    --dash-card-bg: #1e1e1e;
+    --dash-text: #e0e0e0;
+}
+
+/* GOLD THEME */
+body.theme-gold {
+    --dash-primary: #ffca28;
+    --dash-accent: #4a148c;
+    --dash-bg: #fffdf5;
+    --dash-card-bg: #ffffff;
+    --dash-text: #4a148c;
+}
+
+/* APPLY TO UI ELEMENTS */
+body { background-color: var(--dash-bg); color: var(--dash-text); transition: all 0.3s ease; }
+.card { background-color: var(--dash-card-bg); border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.btn-primary { background-color: var(--dash-primary); border-color: var(--dash-primary); color: white; }
+.btn-primary:hover { opacity: 0.9; background-color: var(--dash-primary); }
