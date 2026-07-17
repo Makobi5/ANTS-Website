@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -122,77 +123,204 @@
   .philosophy-card strong { color: #f0c040; }
   .philosophy-card em { color: #fff; font-style: normal; }
 
-  /* ── Timeline ── */
-  .timeline { position: relative; padding: 1rem 0; margin-top: 1rem; }
-  .timeline::before {
+  /* ── DYNAMIC STORYTELLING TIMELINE ── */
+  .story-timeline {
+    position: relative;
+    padding: 2rem 0 1rem 0;
+    margin-top: 0.5rem;
+  }
+
+  /* vertical line with gradient animation */
+  .story-timeline::before {
     content: '';
     position: absolute;
-    left: 22px; top: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(to bottom, #3b0080, #f0c040);
-    border-radius: 2px;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #3b0080, #f0c040, #3b0080);
+    border-radius: 4px;
+    opacity: 0.35;
+    transition: opacity 0.5s;
   }
-  .tl-item {
+
+  .story-item {
     display: flex;
-    gap: 1.2rem;
-    margin-bottom: 1.8rem;
+    gap: 1.8rem;
+    margin-bottom: 2.6rem;
     align-items: flex-start;
     position: relative;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, filter 0.3s;
+    filter: grayscale(0.3);
   }
-  .tl-dot {
+
+  .story-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: grayscale(0);
+  }
+
+  /* dot with year – with pulse & hover */
+  .story-dot {
     flex-shrink: 0;
-    width: 46px; height: 46px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: #3b0080;
     color: #f0c040;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Playfair Display', serif;
-    font-size: .72rem;
+    font-size: 0.9rem;
     font-weight: 700;
     text-align: center;
     line-height: 1.1;
-    box-shadow: 0 0 0 4px #fff, 0 0 0 6px #e0d4f5;
-    z-index: 1;
+    box-shadow: 0 0 0 4px #fff, 0 0 0 7px rgba(240, 192, 64, 0.2);
+    z-index: 2;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s;
+    position: relative;
+    cursor: default;
   }
-  .tl-content {
-    background: #fff;
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
+  .story-dot::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(240, 192, 64, 0.15);
+    animation: pulse-ring 3s infinite;
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 0.1; }
+    100% { transform: scale(1); opacity: 0.6; }
+  }
+
+  .story-item:hover .story-dot {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 4px #fff, 0 0 0 12px rgba(240, 192, 64, 0.35);
+    background: #5a189a;
+  }
+
+  .story-content {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem 1.8rem;
     flex: 1;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    border-top: 3px solid #3b0080;
-    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.02);
+    border-left: 6px solid #3b0080;
+    transition: transform 0.25s ease, box-shadow 0.4s ease, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
   }
-  .tl-content:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59,0,128,0.12);
+  .story-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at 100% 0%, rgba(240, 192, 64, 0.05), transparent 70%);
+    border-radius: 0 0 0 100px;
+    pointer-events: none;
   }
-  .tl-content h6 {
-    font-family: 'Playfair Display', serif;
-    color: #3b0080;
-    font-size: 1rem;
-    margin: 0 0 .4rem;
+  .story-content:hover {
+    transform: translateY(-4px) scale(1.005);
+    box-shadow: 0 16px 40px rgba(59, 0, 128, 0.10);
+    border-left-color: #f0c040;
   }
-  .tl-content p {
-    font-size: .93rem;
-    color: #555;
-    margin: 0;
-    line-height: 1.6;
-  }
-  .tl-badge {
+
+  .story-badge {
     display: inline-block;
     background: #f0c040;
     color: #3b0080;
-    font-size: .7rem;
+    font-size: 0.6rem;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-bottom: .4rem;
-    letter-spacing: .5px;
+    padding: 0.2rem 1rem;
+    border-radius: 30px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    box-shadow: 0 1px 8px rgba(240, 192, 64, 0.25);
+    transition: background 0.2s;
+  }
+  .story-content:hover .story-badge {
+    background: #d4a830;
   }
 
-  /* Stat pills */
+  .story-content h6 {
+    font-family: 'Playfair Display', serif;
+    color: #3b0080;
+    font-size: 1.15rem;
+    margin: 0 0 0.3rem;
+    font-weight: 700;
+  }
+
+  .story-content p {
+    font-size: 0.95rem;
+    color: #444;
+    margin: 0;
+    line-height: 1.7;
+  }
+  .story-content .highlight {
+    color: #5a189a;
+    font-weight: 600;
+  }
+
+  /* ── progress indicator ── */
+  .story-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 1.5rem 0;
+    padding: 0.4rem 0.8rem;
+    background: #fff;
+    border-radius: 60px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: 1px solid #ede7f5;
+  }
+  .story-progress .label {
+    font-size: 0.8rem;
+    color: #3b0080;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .story-progress .bar-track {
+    flex: 1;
+    height: 4px;
+    background: #e0d4f5;
+    border-radius: 4px;
+    margin: 0 1rem;
+    overflow: hidden;
+  }
+  .story-progress .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b0080, #f0c040);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .story-progress .skip-btn {
+    background: transparent;
+    border: 1.5px solid #3b0080;
+    color: #3b0080;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 1rem;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .story-progress .skip-btn:hover {
+    background: #3b0080;
+    color: #fff;
+    border-color: #3b0080;
+  }
+
+  /* stats row */
   .stats-row {
     display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.8rem 0;
   }
@@ -216,6 +344,13 @@
     color: #777;
     text-transform: uppercase;
     letter-spacing: .5px;
+  }
+
+  @media (max-width: 640px) {
+    .story-item { gap: 1rem; }
+    .story-dot { width: 48px; height: 48px; font-size: 0.7rem; }
+    .story-timeline::before { left: 22px; }
+    .story-content { padding: 0.9rem 1rem; }
   }
 </style>
 
@@ -275,119 +410,126 @@
           institution drawing students from across East Africa.
         </p>
 
-        <!-- Timeline -->
-        <div class="timeline">
+        <!-- ═══════ STORYTELLING TIMELINE with JS ═══════ -->
+        <div class="story-progress" id="storyProgress">
+          <span class="label">⏳ Journey</span>
+          <div class="bar-track">
+            <div class="bar-fill" id="progressFill"></div>
+          </div>
+          <button class="skip-btn" id="skipToToday">✨ Skip to today</button>
+        </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">1993</div>
-            <div class="tl-content">
-              <span class="tl-badge">Founded</span>
+        <div class="story-timeline" id="storyTimeline">
+
+          <div class="story-item" data-year="1993">
+            <div class="story-dot">1993</div>
+            <div class="story-content">
+              <span class="story-badge">Founded</span>
               <h6>ANTS Opens Its Doors</h6>
-              <p>Launched with 17 students and 6 lecturers, offering a 2-year Diploma in Theology.</p>
+              <p>Launched with <span class="highlight">17 students and 6 lecturers</span>, offering a 2-year Diploma in Theology.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">1995</div>
-            <div class="tl-content">
-              <span class="tl-badge">Milestone</span>
+          <div class="story-item" data-year="1995">
+            <div class="story-dot">1995</div>
+            <div class="story-content">
+              <span class="story-badge">Milestone</span>
               <h6>First Graduation</h6>
-              <p>11 pioneer students received their diplomas — the first fruits of the ANTS vision.</p>
+              <p><span class="highlight">11 pioneer students</span> received their diplomas — the first fruits of the ANTS vision.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">1996</div>
-            <div class="tl-content">
-              <span class="tl-badge">Infrastructure</span>
+          <div class="story-item" data-year="1996">
+            <div class="story-dot">1996</div>
+            <div class="story-content">
+              <span class="story-badge">Infrastructure</span>
               <h6>Main Office Building</h6>
-              <p>Construction of the main administrative office building, cementing the college's permanent home.</p>
+              <p>Construction of the main administrative office building, cementing the college’s permanent home.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">1997</div>
-            <div class="tl-content">
-              <span class="tl-badge">Academics</span>
+          <div class="story-item" data-year="1997">
+            <div class="story-dot">1997</div>
+            <div class="story-content">
+              <span class="story-badge">Academics</span>
               <h6>3-Year Advanced Diploma</h6>
               <p>Introduction of the Advanced Diploma in Theology, deepening the academic offering for ministry training.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2003</div>
-            <div class="tl-content">
-              <span class="tl-badge">Infrastructure</span>
+          <div class="story-item" data-year="2003">
+            <div class="story-dot">2003</div>
+            <div class="story-content">
+              <span class="story-badge">Infrastructure</span>
               <h6>Chapel Construction Completed</h6>
               <p>The ANTS Chapel — a central place of worship and spiritual formation — was completed, becoming the heart of campus life.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2004</div>
-            <div class="tl-content">
-              <span class="tl-badge">Growth</span>
+          <div class="story-item" data-year="2004">
+            <div class="story-dot">2004</div>
+            <div class="story-content">
+              <span class="story-badge">Growth</span>
               <h6>Dormitory Completed</h6>
               <p>Completion of the student dormitory enabled more students from distant regions to reside on campus full-time.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2008</div>
-            <div class="tl-content">
-              <span class="tl-badge">Resources</span>
+          <div class="story-item" data-year="2008">
+            <div class="story-dot">2008</div>
+            <div class="story-content">
+              <span class="story-badge">Resources</span>
               <h6>Ilam Library Constructed</h6>
-              <p>A dedicated library facility was built, providing students with rich theological and academic resources to support their studies.</p>
+              <p>A dedicated library facility was built, providing students with rich theological and academic resources.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2009</div>
-            <div class="tl-content">
-              <span class="tl-badge">Programs</span>
+          <div class="story-item" data-year="2009">
+            <div class="story-dot">2009</div>
+            <div class="story-content">
+              <span class="story-badge">Programs</span>
               <h6>ESL Program Launched</h6>
-              <p>The English as a Second Language (ESL) program was introduced, broadening access for students from diverse linguistic backgrounds.</p>
+              <p>English as a Second Language (ESL) program introduced, broadening access for diverse linguistic backgrounds.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2011</div>
-            <div class="tl-content">
-              <span class="tl-badge">Outreach</span>
+          <div class="story-item" data-year="2011">
+            <div class="story-dot">2011</div>
+            <div class="story-content">
+              <span class="story-badge">Outreach</span>
               <h6>PTC Program – Kamuli</h6>
-              <p>The Pastoral Training Centre (PTC) Program was launched in Kamuli, extending ANTS's ministry training beyond the main campus.</p>
+              <p>The Pastoral Training Centre (PTC) Program was launched in Kamuli, extending training beyond the main campus.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2012</div>
-            <div class="tl-content">
-              <span class="tl-badge">Accreditation</span>
+          <div class="story-item" data-year="2012">
+            <div class="story-dot">2012</div>
+            <div class="story-content">
+              <span class="story-badge">Accreditation</span>
               <h6>Provisional License — NCHE</h6>
-              <p>ANTS received a Provisional License from the National Council for Higher Education (NCHE), recognising it as a formal Tertiary Institution.
-              Programs expanded to include Diplomas in Theology, Mission Studies, and Christian Education.</p>
+              <p>ANTS received a Provisional License from the National Council for Higher Education (NCHE). Programs expanded to include Diplomas in Theology, Mission Studies, and Christian Education.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2018</div>
-            <div class="tl-content">
-              <span class="tl-badge">Full Accreditation</span>
+          <div class="story-item" data-year="2018">
+            <div class="story-dot">2018</div>
+            <div class="story-content">
+              <span class="story-badge">Full Accreditation</span>
               <h6>Accredited by NCHE</h6>
-              <p>ANTS achieved full accreditation as a Tertiary Institution by NCHE — a landmark achievement validating decades of academic and ministerial excellence.</p>
+              <p>ANTS achieved full accreditation as a Tertiary Institution by NCHE — a landmark achievement validating decades of excellence.</p>
             </div>
           </div>
 
-          <div class="tl-item">
-            <div class="tl-dot">2024</div>
-            <div class="tl-content">
-              <span class="tl-badge">Celebration</span>
+          <div class="story-item" data-year="2024" id="todayItem">
+            <div class="story-dot">2024</div>
+            <div class="story-content">
+              <span class="story-badge">Celebration</span>
               <h6>28th Graduation Ceremony</h6>
               <p>ANTS celebrated its 28th graduation, marking over three decades of faithfully equipping men and women for the Gospel ministry across East Africa.</p>
             </div>
           </div>
 
-        </div><!-- /timeline -->
+        </div><!-- /story-timeline -->
 
         <!-- Our Philosophy -->
         <h2 class="section-title">Our Philosophy</h2>
@@ -411,5 +553,98 @@
     </div><!-- /grid -->
   </div>
 </div>
+
+<!-- ─── JAVASCRIPT: Intersection Observer + Progress + Skip ─── -->
+<script>
+  (function() {
+    const items = document.querySelectorAll('.story-item');
+    const progressFill = document.getElementById('progressFill');
+    const skipBtn = document.getElementById('skipToToday');
+    const todayItem = document.getElementById('todayItem');
+
+    // ---- Intersection Observer: reveal items ----
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.25,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    items.forEach(item => observer.observe(item));
+
+    // ---- update progress bar based on visible items ----
+    function updateProgress() {
+      let visibleCount = 0;
+      items.forEach(item => {
+        if (item.classList.contains('visible')) visibleCount++;
+      });
+      const total = items.length;
+      const pct = Math.min(100, (visibleCount / total) * 100);
+      progressFill.style.width = pct + '%';
+    }
+
+    // also update on scroll / intersection changes (debounced)
+    let progressTimer;
+    const progressObserver = new IntersectionObserver(() => {
+      clearTimeout(progressTimer);
+      progressTimer = setTimeout(updateProgress, 120);
+    }, { threshold: 0.1 });
+
+    items.forEach(item => progressObserver.observe(item));
+
+    // initial progress after a moment
+    setTimeout(updateProgress, 300);
+
+    // ---- skip to today: reveal all, scroll to 2024 ----
+    skipBtn.addEventListener('click', function() {
+      items.forEach(item => item.classList.add('visible'));
+      updateProgress();
+      // scroll smoothly to today's item
+      if (todayItem) {
+        todayItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // highlight effect
+        todayItem.querySelector('.story-content').style.transition = 'box-shadow 0.3s';
+        todayItem.querySelector('.story-content').style.boxShadow = '0 0 0 4px #f0c040, 0 8px 30px rgba(240,192,64,0.3)';
+        setTimeout(() => {
+          todayItem.querySelector('.story-content').style.boxShadow = '';
+        }, 1800);
+      }
+    });
+
+    // ---- additional: if user scrolls near the bottom, auto-reveal remaining (just in case) ----
+    const scrollCheck = () => {
+      const scrollY = window.scrollY + window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      if (scrollY > docHeight - 300) {
+        items.forEach(item => item.classList.add('visible'));
+        updateProgress();
+      }
+    };
+    window.addEventListener('scroll', scrollCheck);
+
+    // ---- manual reveal on click on dot (optional storytelling) ----
+    items.forEach(item => {
+      const dot = item.querySelector('.story-dot');
+      if (dot) {
+        dot.addEventListener('click', function(e) {
+          e.stopPropagation();
+          item.classList.add('visible');
+          updateProgress();
+          // subtle pulse
+          item.querySelector('.story-content').style.transition = 'box-shadow 0.2s';
+          item.querySelector('.story-content').style.boxShadow = '0 0 0 3px #f0c040, 0 8px 24px rgba(240,192,64,0.2)';
+          setTimeout(() => {
+            item.querySelector('.story-content').style.boxShadow = '';
+          }, 800);
+        });
+      }
+    });
+
+  })();
+</script>
 
 {% endblock %}
