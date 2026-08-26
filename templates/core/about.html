@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -11,47 +12,40 @@
     font-family: 'Source Sans 3', sans-serif;
   }
 
-  /* ── Page Header ── */
-  .about-page-header {
-    background: linear-gradient(135deg, #3b0080 0%, #5a189a 100%);
-    padding: 3.5rem 2rem 2.5rem;
+  /* ── Hero Banner (same as Who We Are) ── */
+  .about-hero {
     position: relative;
+    width: 100%;
+    height: 420px;
     overflow: hidden;
+    border-radius: 0 0 2px 2px;
   }
-  .about-page-header::after {
-    content: '';
-    position: absolute;
-    right: -60px; top: -60px;
-    width: 280px; height: 280px;
-    border-radius: 50%;
-    background: rgba(240,192,64,0.08);
+  .about-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.72);
+    transition: transform 6s ease;
   }
-  .about-page-header::before {
-    content: '';
-    position: absolute;
-    left: -40px; bottom: -80px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.04);
+  .about-hero:hover img { transform: scale(1.04); }
+  .about-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(74,0,130,0.55) 0%, rgba(20,20,60,0.6) 100%);
+    display: flex; align-items: flex-end;
+    padding: 2.5rem 3rem;
   }
-  .about-page-header h1 {
+  .about-hero-text h1 {
     font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
     color: #fff;
-    font-size: 2.6rem;
-    margin: 0 0 .5rem;
-    position: relative;
-  }
-  .about-page-header p {
-    color: rgba(255,255,255,0.75);
-    font-size: 1rem;
     margin: 0;
-    position: relative;
+    line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
   }
-  .gold-bar {
-    width: 56px; height: 4px;
+  .about-hero-text .gold-bar {
+    width: 60px; height: 4px;
     background: #f0c040;
     border-radius: 2px;
-    margin: .75rem 0 1rem;
+    margin-top: .75rem;
   }
 
   /* ── Layout ── */
@@ -117,6 +111,11 @@
     box-shadow: 0 3px 16px rgba(0,0,0,0.06);
     position: relative;
     overflow: hidden;
+    transition: transform .25s, box-shadow .3s;
+  }
+  .mv-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(59,0,128,0.10);
   }
   .mv-card::before {
     content: '';
@@ -185,13 +184,24 @@
     font-weight: 500;
   }
 
-  /* ── Students From Banner ── */
+  /* ── Students From Banner (enhanced) ── */
   .students-banner {
     background: linear-gradient(135deg, #3b0080, #5a189a);
     border-radius: 12px;
     padding: 2rem 2.2rem;
     margin-top: 2.8rem;
     color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .students-banner::after {
+    content: '🌍';
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    font-size: 6rem;
+    opacity: 0.08;
+    pointer-events: none;
   }
   .students-banner h5 {
     font-family: 'Playfair Display', serif;
@@ -209,17 +219,41 @@
     border-radius: 20px;
     padding: .3rem 1rem;
     font-size: .85rem;
+    transition: all .2s;
+    cursor: default;
   }
+  .country-pill:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+
+  /* ── Dynamic "scroll to reveal" for countries ── */
+  .country-pill {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+  }
+  .country-pill.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* stagger delay via JS */
 </style>
 
 <div class="about-wrapper">
 
-  <!-- Page Header -->
-  <div class="about-page-header">
-    <div style="max-width:920px; margin:0 auto;">
-      <h1>About ANTS</h1>
-      <div class="gold-bar"></div>
-      <p>All Nations Theological College and Seminary — Equipping Leaders for the Gospel since 1993</p>
+  <!-- Hero Banner (same as Who We Are) -->
+  <div class="about-hero">
+    {% if banner %}
+      <img src="{{ banner.image.url }}" alt="{{ banner.caption|default:'ANTS Campus' }}">
+    {% else %}
+      <img src="{% static 'img/banner.jpg' %}" alt="ANTS Chapel">
+    {% endif %}
+    <div class="about-hero-overlay">
+      <div class="about-hero-text">
+        <h1>About ANTS</h1>
+        <div class="gold-bar"></div>
+      </div>
     </div>
   </div>
 
@@ -266,10 +300,10 @@
       <div class="value-item"><div class="value-num">8</div><div class="value-text">Mission Driven</div></div>
     </div>
 
-    <!-- Students From -->
+    <!-- Students From (with dynamic reveal) -->
     <div class="students-banner">
       <h5>🌍 Our Students Come From</h5>
-      <div class="country-pills">
+      <div class="country-pills" id="countryContainer">
         <span class="country-pill">Uganda</span>
         <span class="country-pill">Kenya</span>
         <span class="country-pill">South Sudan</span>
@@ -278,11 +312,48 @@
         <span class="country-pill">Burundi</span>
         <span class="country-pill">Tanzania</span>
         <span class="country-pill">Ethiopia</span>
-        <span class="country-pill">& more</span>
+        <span class="country-pill">&amp; more</span>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- ─── JAVASCRIPT: dynamic reveal for country pills ─── -->
+<script>
+  (function() {
+    const pills = document.querySelectorAll('.country-pill');
+    if (!pills.length) return;
+
+    // reveal with stagger
+    function revealPills() {
+      pills.forEach((pill, index) => {
+        setTimeout(() => {
+          pill.classList.add('revealed');
+        }, 80 + index * 60);
+      });
+    }
+
+    // use IntersectionObserver to trigger reveal when banner comes into view
+    const banner = document.querySelector('.students-banner');
+    if (banner) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            revealPills();
+            observer.unobserve(banner);
+          }
+        });
+      }, { threshold: 0.25 });
+      observer.observe(banner);
+    } else {
+      // fallback: reveal after a short delay
+      setTimeout(revealPills, 400);
+    }
+
+    // if any pill already visible (e.g. fast scroll), ensure they get revealed
+    // but observer handles it.
+  })();
+</script>
 
 {% endblock %}

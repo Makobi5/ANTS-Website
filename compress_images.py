@@ -1,8 +1,8 @@
 from PIL import Image
 import os
 
-input_folder = r'F:\ANTS\ants photos\2026\9th July All Nations Nurery school Tour\sorted'
-output_folder = r'F:\ANTS\ants photos\2026\9th July All Nations Nurery school Tour\sorted\compressed'
+input_folder = r'G:\ANTS\Chapel\Aug 2026\week 2\photos'
+output_folder = r'G:\ANTS\Chapel\Aug 2026\week 2\photos\compressed'
 
 # Create output folder if it doesn't exist
 os.makedirs(output_folder, exist_ok=True)

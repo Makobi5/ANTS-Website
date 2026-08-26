@@ -597,6 +597,21 @@
   .add-event-cta { background:#f5f0ff; padding:.9rem 1.2rem; text-align:center; border-radius:0 0 14px 14px; }
   .add-event-cta small { font-size:.8rem; color:var(--muted); }
 
+.sermon-toggle-btn {
+    color: var(--purple); 
+    font-weight: 700; 
+    border: 1px solid #e8dff5; 
+    border-radius: 20px; 
+    padding: 5px 20px;
+    transition: all 0.2s ease;
+}
+
+.sermon-toggle-btn:hover {
+    background-color: var(--purple);
+    color: white !important;
+    border-color: var(--purple);
+}
+
 </style>
 
 <div class="chapel-wrapper">
@@ -994,36 +1009,13 @@
           {% endif %}
         </div>
 
-        <!-- Recent sidebar -->
         <div class="recent-sermons">
           <div class="rs-header">Recent Messages</div>
-          {% for sermon in recent_sermons %}
-            <a class="sermon-item" href="https://www.youtube.com/watch?v={{ sermon.get_video_id }}" target="_blank">
-              <div class="sermon-thumb">
-                <img src="https://img.youtube.com/vi/{{ sermon.get_video_id }}/mqdefault.jpg" alt="{{ sermon.title }}">
-                <div class="play-icon"><i class="fas fa-play"></i></div>
-              </div>
-              <div class="sermon-meta">
-                <h6>{{ sermon.title }}</h6>
-                <small>{{ sermon.preacher }}</small>
-              </div>
-            </a>
-
-            <!-- Modal -->
-            <div class="modal fade" id="videoModal{{ sermon.id }}" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-body">
-                    <div class="ratio ratio-16x9">
-                      <iframe src="https://www.youtube.com/embed/{{ sermon.get_video_id }}" allowfullscreen></iframe>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          {% empty %}
-            <p style="padding:1.2rem; color:var(--muted); font-size:.9rem; font-style:italic;">No recent sermons available.</p>
-          {% endfor %}
+          
+          <!-- All sermons and the first set of buttons will load inside here -->
+          <div id="sermon-list">
+              {% include 'core/sermon_list_partial.html' %}
+          </div>
         </div>
 
       </div>
@@ -1049,6 +1041,31 @@
         allowfullscreen></iframe>`;
     });
   }
+  
+  // View more sermons logic
+const moreBtn = document.getElementById('viewMoreBtn');
+const lessBtn = document.getElementById('viewLessBtn');
+const extraSermons = document.querySelectorAll('.extra-sermon');
+
+if (moreBtn && lessBtn) {
+    // When "View More" is clicked
+    moreBtn.addEventListener('click', function() {
+        extraSermons.forEach(sermon => sermon.classList.remove('d-none'));
+        moreBtn.classList.add('d-none'); // Hide More button
+        lessBtn.classList.remove('d-none'); // Show Less button
+    });
+
+    // When "Show Less" is clicked
+    lessBtn.addEventListener('click', function() {
+        extraSermons.forEach(sermon => sermon.classList.add('d-none'));
+        lessBtn.classList.add('d-none'); // Hide Less button
+        moreBtn.classList.remove('d-none'); // Show More button
+        
+        // Optional: Smooth scroll back to the top of the sidebar 
+        // so the user doesn't lose their place
+        document.querySelector('.recent-sermons').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+}
 </script>
 
 {% endblock %}

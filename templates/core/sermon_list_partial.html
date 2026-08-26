@@ -1,0 +1,36 @@
+{% for sermon in recent_sermons %}
+  <a class="sermon-item" href="https://www.youtube.com/watch?v={{ sermon.get_video_id }}" target="_blank">
+    <div class="sermon-thumb">
+      <img src="https://img.youtube.com/vi/{{ sermon.get_video_id }}/mqdefault.jpg" alt="{{ sermon.title }}">
+      <div class="play-icon"><i class="fas fa-play"></i></div>
+    </div>
+    <div class="sermon-meta">
+      <h6>{{ sermon.title }}</h6>
+      <small>{{ sermon.preacher }}</small>
+    </div>
+  </a>
+{% endfor %}
+
+<!-- This container MUST match the ID used in hx-target -->
+<div id="sermon-controls" class="text-center p-3 d-flex justify-content-center gap-2">
+  
+  {% if has_next %}
+    <button class="btn btn-sm sermon-toggle-btn" 
+            hx-get="{% url 'ants_chapel' %}?page={{ next_page_number }}" 
+            hx-target="#sermon-controls" 
+            hx-swap="outerHTML">
+      Load More <i class="fas fa-chevron-down ms-1"></i>
+    </button>
+  {% endif %}
+
+  {% if recent_sermons.number > 1 %}
+    <button class="btn btn-sm sermon-toggle-btn" 
+            hx-get="{% url 'ants_chapel' %}?page=1" 
+            hx-target="#sermon-list" 
+            hx-swap="innerHTML"
+            onclick="window.scrollTo({top: document.getElementById('sermon-list').offsetTop - 100, behavior: 'smooth'})">
+      Show Less <i class="fas fa-chevron-up ms-1"></i>
+    </button>
+  {% endif %}
+  
+</div>

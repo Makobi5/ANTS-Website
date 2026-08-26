@@ -33,6 +33,7 @@ from .models import ChapelEvent
 from .models import ChapelPreacher
 from datetime import date, timedelta
 from .models import Notice
+from django.core.paginator import Paginator
 
 # If you have already created the Outreach and Sermon models, ensure they are imported:
 # from outreach.models import OutreachProgram 
@@ -334,11 +335,20 @@ def service_detail(request, slug):
     return render(request, 'core/services/service_detail.html', {'service': service})
 
 def ants_chapel(request):
-    sermons = Sermon.objects.all().order_by('-date_preached')
-    latest_sermon = sermons.first()
-    recent_sermons = sermons[1:] if len(sermons) > 1 else []
-    today = date.today()
+    # --- 1. SERMON LOGIC (PAGINATED) ---
+    all_sermons = Sermon.objects.all().order_by('-date_preached')
+    latest_sermon = all_sermons.first()
 
+    # We paginate the sermons starting FROM the second one (index 1 onwards)
+    # so we don't repeat the latest sermon which is shown in the big video player
+    remaining_sermons = all_sermons[1:] if all_sermons.count() > 1 else Sermon.objects.none()
+
+    paginator = Paginator(remaining_sermons, 5) # Load 5 per "chunk"
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    # --- 2. WEEKLY PREACHER LOGIC (EXISTING) ---
+    today = date.today()
     if today.weekday() == 6:  # Sunday
         monday = today + timedelta(days=1)
     else:
@@ -349,19 +359,29 @@ def ants_chapel(request):
         ChapelPreacher.objects.filter(week_of=monday),
         key=lambda p: DAY_ORDER.get(p.day, 99)
     )
+
+    # --- 3. EVENT LOGIC (EXISTING) ---
     featured_event = ChapelEvent.objects.filter(is_featured=True).order_by('date').first()
     chapel_events = ChapelEvent.objects.filter(
         is_featured=True,
         end_date__gte=timezone.now().date()
     ).order_by('date')[:8]
 
-    return render(request, 'core/chapel.html', {
+    context = {
         'latest_sermon': latest_sermon,
-        'recent_sermons': recent_sermons,
+        'recent_sermons': page_obj, # This is now a Page object
+        'has_next': page_obj.has_next(),
+        'next_page_number': page_obj.next_page_number() if page_obj.has_next() else None,
         'chapel_events': chapel_events,
         'featured_event': featured_event,
         'chapel_preachers': chapel_preachers,
-    })
+    }
+
+    # HTMX CHECK: If this is an AJAX "Load More" request, only return the partial HTML
+    if request.headers.get('HX-Request'):
+        return render(request, 'core/sermon_list_partial.html', context)
+
+    return render(request, 'core/chapel.html', context)
 
 def donations(request):
     """
