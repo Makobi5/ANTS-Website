@@ -5,7 +5,8 @@
 {% block content %}
 
 <!-- ============================================ -->
-<!-- 1. KAB-STYLE HERO SLIDER (CLEAN VERSION)     -->
+<!-- ============================================ -->
+<!-- 1. FINAL KAB-STYLE HERO SLIDER (ANTS PURPLE) -->
 <!-- ============================================ -->
 <div id="heroNewsCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     
@@ -19,7 +20,9 @@
     <div class="carousel-inner">
         {% for slide in combined_slides %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <div class="kab-image-wrapper">
+            
+            <!-- Image Area: Clean, no overlays -->
+            <div class="kab-image-frame">
                 {% if slide.slide_type == 'sermon' and not slide.image %}
                     <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" alt="{{ slide.title }}">
                 {% else %}
@@ -27,32 +30,37 @@
                 {% endif %}
             </div>
 
-            <!-- CAPTION BANNER: Now in ANTS Purple -->
-            <div class="kab-caption-overlay">
-                <div class="container">
-                    <div class="kab-caption-banner">
-                        <span class="kab-title-text">
+            <!-- THE EXACT KAB HEADLINE BOX -->
+            <div class="kab-headline-container">
+                <div class="container d-flex justify-content-center">
+                    <div class="kab-box-ants">
+                        <p class="kab-box-text">
                             {{ slide.title }}
                             {% if slide.slide_type == 'news' %}
-                                <a href="{% url 'news_detail' slide.pk %}" class="kab-link">Read More</a>
+                                <a href="{% url 'news_detail' slide.pk %}" class="kab-box-link">Read More</a>
                             {% elif slide.slide_type == 'sermon' %}
-                                <a href="{% url 'ants_chapel' %}" class="kab-link">Watch Sermon</a>
+                                <a href="{% url 'ants_chapel' %}" class="kab-box-link">Watch Sermon</a>
                             {% elif slide.slide_type == 'event' %}
-                                <a href="{% url 'event_detail' slide.pk %}" class="kab-link">View Details</a>
+                                <a href="{% url 'event_detail' slide.pk %}" class="kab-box-link">View Details</a>
+                            {% elif slide.slide_type == 'chapel_event' %}
+                                <a href="{% url 'ants_chapel' %}#chapel-events" class="kab-box-link">View Program</a>
+                            {% elif slide.slide_type == 'outreach' %}
+                                <a href="{% url 'community_outreach' %}" class="kab-box-link">Read Story</a>
                             {% endif %}
-                        </span>
+                        </p>
                     </div>
                 </div>
             </div>
+            
         </div>
         {% endfor %}
     </div>
 
-    <!-- Controls -->
-    <button class="carousel-control-prev kab-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="prev">
+    <!-- Circle Nav Arrows -->
+    <button class="carousel-control-prev kab-arrow-btn" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="prev">
         <i class="fas fa-chevron-left"></i>
     </button>
-    <button class="carousel-control-next kab-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="next">
+    <button class="carousel-control-next kab-arrow-btn" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="next">
         <i class="fas fa-chevron-right"></i>
     </button>
 </div>
@@ -61,72 +69,100 @@
 <!-- STYLING FOR KAB-STYLE SLIDER                 -->
 <!-- ============================================ -->
 <style>
-   /* --- 1. Sizing --- */
-    .kab-image-wrapper {
-        height: 520px; 
-        width: 100%;
+/* --- HERO SLIDER: KAB-STYLE RE-ENGINEERED --- */
+    #heroNewsCarousel {
+        height: 550px;
         background: #000;
-    }
-    .kab-image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center 25%;
+        position: relative;
+        overflow: hidden;
     }
 
-    /* --- 2. Purple Caption Banner --- */
-    .kab-caption-overlay {
-        position: absolute;
-        bottom: 0; /* Anchored to the very bottom since bar is removed */
-        left: 0;
+    .kab-image-frame {
+        height: 550px;
         width: 100%;
-        z-index: 5;
     }
-    .kab-caption-banner {
-        display: inline-block;
-        background-color: rgba(74, 20, 140, 0.9); /* Official ANTS Purple */
-        padding: 12px 30px;
-        border-radius: 4px 4px 0 0;
+    .kab-image-frame img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        object-position: center 20%; /* Keeps faces in view */
     }
-    .kab-title-text {
+
+    /* THE HEADLINE POSITIONING */
+    .kab-headline-container {
+        position: absolute;
+        bottom: 25px; /* Distance from the bottom edge */
+        left: 0; right: 0;
+        z-index: 20;
+    }
+
+    /* THE EXACT BOX DESIGN */
+    .kab-box-ants {
+        background-color: rgba(74, 20, 140, 0.95); /* Solid ANTS Purple */
+        max-width: 880px; /* Fixed width to match the KAB look */
+        width: 90%;
+        padding: 22px 45px;
+        text-align: center;
+        border-radius: 4px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        
+        /* Animation: Start state */
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    /* TRIGGER ANIMATION ON SLIDE CHANGE */
+    .carousel-item.active .kab-box-ants {
+        animation: kabBoxSlideUp 0.8s ease-out forwards;
+        animation-delay: 0.3s;
+    }
+
+    @keyframes kabBoxSlideUp {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .kab-box-text {
         color: #fff;
-        font-size: 1.3rem;
+        font-size: 1.45rem; /* Larger, readable size like KAB */
         font-weight: 500;
+        margin: 0;
+        line-height: 1.3;
     }
-    .kab-link {
-        color: #ffca28 !important; /* ANTS Gold */
-        font-weight: 700;
+
+    .kab-box-link {
+        color: #ffca28 !important; /* Brand Gold */
+        font-weight: 800;
         font-style: italic;
         text-decoration: underline !important;
         margin-left: 15px;
+        white-space: nowrap;
     }
 
-    /* --- 3. Indicators & Controls --- */
-    .kab-indicators {
-        bottom: 60px !important; /* Positioned above the purple box */
-        justify-content: flex-start !important;
-        margin-left: 5% !important;
+    /* Circular Controls */
+    .kab-arrow-btn {
+        width: 50px !important; height: 50px !important;
+        background: rgba(0,0,0,0.3) !important;
+        border-radius: 50%;
+        top: 50% !important; transform: translateY(-50%);
+        margin: 0 20px;
+        opacity: 0;
+        transition: 0.3s;
     }
+    #heroNewsCarousel:hover .kab-arrow-btn { opacity: 1; }
+
+    /* Small dots at the very bottom */
+    .kab-indicators { bottom: 5px !important; }
     .kab-indicators button {
         width: 10px !important; height: 10px !important;
-        border-radius: 50% !important; border: none !important;
-        margin: 0 5px !important; background-color: #fff !important; opacity: 0.5;
+        border-radius: 50% !important; margin: 0 5px !important;
     }
-    .kab-indicators button.active { opacity: 1; background-color: #ffca28 !important; }
 
-    .kab-control {
-        width: 45px !important; height: 45px !important;
-        background: rgba(255,255,255,0.2) !important; border-radius: 50%;
-        top: 50% !important; transform: translateY(-50%);
-        opacity: 0; transition: 0.3s;
-    }
-    #heroNewsCarousel:hover .kab-control { opacity: 1; }
-
-    /* Mobile Adjustments */
+    /* Mobile Compatibility */
     @media (max-width: 768px) {
-        .kab-image-wrapper { height: 300px; }
-        .kab-title-text { font-size: 0.95rem; }
-        .kab-caption-banner { padding: 8px 15px; width: 95%; }
+        #heroNewsCarousel, .kab-image-frame { height: 320px; }
+        .kab-box-text { font-size: 1rem; }
+        .kab-box-ants { padding: 12px 20px; }
+        .kab-headline-container { bottom: 15px; }
+        .kab-box-link { display: block; margin-left: 0; margin-top: 5px; }
     }
 </style>
 
