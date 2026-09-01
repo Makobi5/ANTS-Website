@@ -25,143 +25,141 @@
     <meta property="og:description" content="Preparing Servants for the Harvest.">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     {% endblock %}
+    <style>
+    /* --- TOP UTILITY BAR (Restored Styling) --- */
+    .top-utility-strip {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eee;
+        padding: 6px 0;
+    }
+
+    .header-quick-links {
+        margin: 0;
+        padding: 0;
+        list-style: none !important; /* Removes bullets */
+        display: flex; /* Makes horizontal */
+        align-items: center;
+        gap: 12px; /* Spacing between items */
+    }
+
+    .header-quick-links li {
+        font-size: 13px;
+        font-weight: 700; /* Restored Boldness */
+        color: #6c757d;
+    }
+
+    .header-quick-links a {
+        text-decoration: none;
+        color: #6c757d; /* Muted gray like before */
+        transition: color 0.2s ease;
+    }
+
+    .header-quick-links a:hover {
+        color: #4a148c !important; /* Purple Hover */
+    }
+
+    /* --- Social Icons --- */
+    .social-icons-compact { display: flex; align-items: center; gap: 8px; }
+    .social-circle {
+        width: 30px; height: 30px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: white !important; text-decoration: none; font-size: 14px;
+        transition: transform 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .social-circle:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    .sc-facebook { background-color: #1877F2; }
+    .sc-x        { background-color: #000; }
+    .sc-youtube  { background-color: #F00; }
+    .sc-linkedin { background-color: #0A66C2; }
+    .sc-tiktok   { background-color: #010101; }
+
+    /* --- Compact Branding Row --- */
+    .brand-main-row { padding: 10px 0; background: #fff; }
+    .brand-logo-compact { height: 65px; width: auto; }
+    .brand-text-compact h1 { font-size: 1.35rem; margin: 0; color: #222; font-weight: 800; line-height: 1.1; }
+    .brand-text-compact p { font-size: 12px; margin: 0; color: #777; font-style: italic; }
+
+    /* --- Compact Search Box --- */
+    .search-box-compact {
+        display: flex; background: #f1f1f1; border-radius: 25px;
+        padding: 2px 5px; border: 1px solid #ddd; max-width: 280px; width: 100%;
+    }
+    .search-box-compact input { border: none; background: transparent; padding: 5px 15px; font-size: 13px; width: 100%; outline: none; }
+    .search-box-compact button { border: none; background: #4a148c; color: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+
+    .btn-apply-header {
+        background: #ffca28; color: #4a148c !important;
+        font-weight: 800; border-radius: 25px; padding: 8px 20px; font-size: 13px;
+        text-transform: uppercase; border: none; transition: 0.3s;
+    }
+</style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-            <!-- ============================================ -->
-            <!-- 0. TOP UTILITY BAR (Secondary Menu)          -->
-            <!-- ============================================ -->
-            <div class="top-utility-bar border-bottom bg-light py-2">
-                <div class="container">
-                    <div class="row align-items-center">
-                        
-                        <!-- Left Side: Quick Links (Updated) -->
-                        <div class="col-lg-7 d-none d-lg-block">
-                            <ul class="list-inline mb-0 small fw-bold">
-                                <li class="list-inline-item me-2">
-                                    <a href="{% url 'events_list' %}" class="text-decoration-none text-muted hover-purple">Events</a>
-                                </li>
-                                <li class="list-inline-item me-2">|</li>
-                                <li class="list-inline-item me-2">
-                                    <a href="{% url 'news_list' %}" class="text-decoration-none text-muted hover-purple">News</a>
-                                </li>
-                                <li class="list-inline-item me-2">|</li>
-                                <li class="list-inline-item me-2">
-                                    <a href="{% url 'gallery' %}" class="text-decoration-none text-muted hover-purple">Gallery</a>
-                                </li>
-                                <li class="list-inline-item me-2">|</li>
-                                <!-- Moved Here -->
-                                <li class="list-inline-item me-2">
-                                <a href="{% url 'community_outreach' %}" class="text-decoration-none text-muted hover-purple">Community Outreach</a>
-                                </li>
-                                <li class="list-inline-item me-2">|</li>
-                                <!-- Moved Here -->
-                                <li class="list-inline-item me-2">
-                                    <a href="#" class="text-decoration-none text-muted hover-purple">Partners</a>
-                                </li>
-                                <li class="list-inline-item me-2">|</li>
-                                <li class="list-inline-item">
-                                    <a href="https://webmail.ants.ac.ug/" class="text-decoration-none text-muted hover-purple">Staff Webmail</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Right Side: Socials & Search -->
-                                    <div class="col-lg-5 text-end d-flex justify-content-end align-items-center">
-                                        
-                                        <div class="social-utility-icons me-3">
-                                            <!-- Facebook -->
-                                            <a href="https://www.facebook.com/ants.uganda" class="social-circle sc-facebook" title="Facebook" target="_blank">
-                                                <i class="fab fa-facebook-f"></i>
-                                            </a>
-                                            
-                                            <!-- X (Twitter) -->
-                                            <a href="https://x.com/antsuganda" class="social-circle sc-x" title="X" target="_blank">
-                                                <i class="fa-brands fa-x-twitter"></i>
-                                            </a>
-
-                                            <!-- YouTube -->
-                                            <a href="https://www.youtube.com/@antsuganda" class="social-circle sc-youtube" title="YouTube" target="_blank">
-                                                <i class="fab fa-youtube"></i>
-                                            </a>
-
-                                            <!-- LinkedIn (Corrected Link) -->
-                                            <a href="https://www.linkedin.com/in/all-nations-theological-college-and-seminary-49b479381" class="social-circle sc-linkedin" title="LinkedIn" target="_blank">
-                                                <i class="fab fa-linkedin-in"></i>
-                                            </a>
-
-                                            <!-- TikTok -->
-                                            <a href="https://www.tiktok.com/@antsuganda" class="social-circle sc-tiktok" title="TikTok" target="_blank">
-                                                <i class="fab fa-tiktok"></i>
-                                            </a>
-                                        </div>
-
-                                        <!-- 2. Search Form Group -->
-                                        <form action="{% url 'global_search' %}" method="GET" class="top-search-form">
-                                            <input type="text" name="q" class="search-input-top" placeholder="Search...">
-                                            <button type="submit" class="search-btn-circle">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </form>
-
-                                    </div>
-                                </div>
-                        
-                    </div>
-                </div>
-            </div>
-            <!-- ============================================ -->
-    <!-- ============================================ -->
-    <!-- GLOBAL MESSAGES (Alerts)                     -->
-    <!-- ============================================ -->
-    <div class="container mt-3">
-        {% if messages %}
-            {% for message in messages %}
-                
-                <!-- NEW: Only show if it is NOT a newsletter AND NOT a contact form message -->
-                {% if 'newsletter' not in message.tags and 'contact_form' not in message.tags %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
-                        <i class="fas fa-info-circle me-2"></i> {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endif %}
-                
-            {% endfor %}
-        {% endif %}
+<!-- ============================================ -->
+<!-- 1. CONSOLIDATED HEADER (Utility + Branding)  -->
+<!-- ============================================ -->
+<header class="main-site-header">
+<!-- A. TOP UTILITY STRIP -->
+<div class="top-utility-strip d-none d-lg-block">
+    <div class="container d-flex justify-content-between align-items-center">
+        
+        <!-- Left Side: Horizontal List -->
+        <ul class="header-quick-links mb-0">
+            <li><a href="{% url 'events_list' %}">Events</a></li>
+            <li class="text-muted opacity-25">|</li>
+            <li><a href="{% url 'news_list' %}">News</a></li>
+            <li class="text-muted opacity-25">|</li>
+            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+            <li class="text-muted opacity-25">|</li>
+            <li><a href="{% url 'community_outreach' %}">Outreach</a></li>
+            <li class="text-muted opacity-25">|</li>
+            <li><a href="https://webmail.ants.ac.ug/">Staff Webmail</a></li>
+        </ul>
+        
+        <!-- Right Side: Social Circles -->
+        <div class="social-icons-compact">
+            <a href="https://facebook.com/ants.uganda" target="_blank" class="social-circle sc-facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/antsuganda" target="_blank" class="social-circle sc-x"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://youtube.com/@antsuganda" target="_blank" class="social-circle sc-youtube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.linkedin.com/..." target="_blank" class="social-circle sc-linkedin"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://tiktok.com/@antsuganda" target="_blank" class="social-circle sc-tiktok"><i class="fab fa-tiktok"></i></a>
+        </div>
     </div>
-    <!-- ============================================ -->
-    <!-- 1. BRAND HEADER (Logo & Apply Button)        -->
-    <!-- ============================================ -->
-    <header class="brand-header">
+</div>
+
+    <!-- B. MIDDLE ROW: Logo + Search + Apply -->
+    <div class="header-brand-row py-2">
         <div class="container">
             <div class="row align-items-center">
-                
-                <!-- Left: Logo & Name (Takes up more space now) -->
-                <div class="col-lg-8 col-md-8 text-center text-lg-start mb-3 mb-lg-0">
-                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                <!-- Logo and Name -->
+                <div class="col-lg-6 col-md-7">
+                    <div class="d-flex align-items-center">
                         <a href="{% url 'home' %}">
-                            <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" class="brand-logo">
+                            <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" class="header-logo-img">
                         </a>
-                        <div class="ms-3 text-start">
-                            <h1 class="mb-0 fw-bold text-dark" style="font-size: 1.5rem; line-height: 1.2;">
-                                All Nations Theological <br> College & Seminary
-                            </h1>
-                            <p class="mb-0 text-muted fst-italic small">
-                                "Make Disciples of All Nations"
-                            </p>
+                        <div class="ms-3 brand-text-wrap">
+                            <h1 class="brand-title-main">All Nations Theological <br> College & Seminary</h1>
+                            <p class="brand-slogan-sub">"Make Disciples of All Nations"</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Apply Button -->
-                <div class="col-lg-4 col-md-4 text-center text-lg-end">
-                   <a href="{% url 'student_dashboard' %}" class="btn btn-apply-custom btn-lg px-4">Apply Now</a>
+                <!-- Search and Action -->
+                <div class="col-lg-6 col-md-5 text-end d-flex justify-content-end align-items-center">
+                    <form action="{% url 'global_search' %}" method="GET" class="header-search-form me-3 d-none d-md-flex">
+                        <input type="text" name="q" placeholder="Search website...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                    <a href="{% url 'student_dashboard' %}" class="btn btn-apply-compact shadow-sm">APPLY NOW</a>
                 </div>
-
             </div>
         </div>
-    </header>
+    </div>
+</header>
+
+
 
 
     <!-- ============================================ -->
@@ -630,6 +628,7 @@
     .ants-pop-img-panel::after { border-radius: 20px 20px 4px 4px; }
     .ants-pop-content { border-radius: 0 0 16px 16px !important; }
   }
+
 </style>
 
 <div id="ants-popup-overlay" class="ants-hidden" role="dialog" aria-modal="true" aria-label="ANTS Announcement">

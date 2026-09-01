@@ -544,3 +544,105 @@ footer {
         padding-top: 55.9%;
     }
 }
+
+/* --- Header Compacting Styles --- */
+.main-site-header {
+    background: #fff;
+}
+
+/* 1. Top Strip */
+.header-quick-links li {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.header-quick-links a {
+    color: #666;
+    text-decoration: none;
+    transition: 0.2s;
+}
+.header-quick-links a:hover { color: #4a148c; }
+
+.header-socials a {
+    color: #4a148c;
+    margin-left: 12px;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+.header-socials a:hover { color: #ffca28; transform: translateY(-2px); display: inline-block; }
+
+/* 2. Brand Row */
+.header-logo-img {
+    height: 70px; /* Reduced from original big size */
+    width: auto;
+}
+.brand-title-main {
+    font-size: 1.25rem !important; /* Smaller to fit one line or tight two lines */
+    font-weight: 800;
+    margin-bottom: 0;
+    color: #002147;
+    line-height: 1.1;
+}
+.brand-slogan-sub {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* 3. Search Bar Integration */
+.header-search-form {
+    position: relative;
+    background: #f1f3f5;
+    border-radius: 30px;
+    padding: 2px 5px;
+    border: 1px solid #dee2e6;
+    width: 250px;
+}
+.header-search-form input {
+    border: none;
+    background: transparent;
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    width: 100%;
+    outline: none;
+}
+.header-search-form button {
+    border: none;
+    background: #4a148c;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 4. Compact Apply Button */
+.btn-apply-compact {
+    background: #ffca28;
+    color: #4a148c !important;
+    font-weight: 800;
+    border-radius: 30px;
+    padding: 8px 25px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border: 2px solid #ffca28;
+    transition: 0.3s;
+}
+.btn-apply-compact:hover {
+    background: transparent;
+    color: #4a148c !important;
+}
+
+/* Navbar Tightening */
+.top-navbar {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    min-height: 45px;
+}
+.nav-link {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+    font-size: 0.9rem !important;
+}
