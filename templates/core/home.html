@@ -5,190 +5,130 @@
 {% block content %}
 
 <!-- ============================================ -->
-<!-- 1. HERO SLIDER (Combines Manual & News)      -->
+<!-- 1. KAB-STYLE HERO SLIDER (CLEAN VERSION)     -->
 <!-- ============================================ -->
 <div id="heroNewsCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     
     <!-- Indicators -->
-    <div class="carousel-indicators justify-content-start ms-5 mb-4">
+    <div class="carousel-indicators kab-indicators">
         {% for slide in combined_slides %}
-        <button type="button" data-bs-target="#heroNewsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true"></button>
+        <button type="button" data-bs-target="#heroNewsCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></button>
         {% endfor %}
     </div>
 
-        <div class="carousel-inner">
-                {% for slide in combined_slides %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %} {% if slide.slide_type == 'manual' %}manual-slide{% endif %}">
-                    
-                    <!-- A. The Image Wrapper -->
-                <div class="slider-image-wrapper">
-                    
-                    <!-- CHECK: Is it News, Sermon, Event, Outreach, Chapel Event, or Manual Slide? -->
-                    {% if slide.slide_type == 'news' %}
-                        <a href="{% url 'news_detail' slide.pk %}">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" alt="{{ slide.title }}">{% endif %}
-                        </a>
-                    {% elif slide.slide_type == 'event' %}
-                        <a href="{% url 'event_detail' slide.pk %}">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">{% endif %}
-                        </a>
-                    {% elif slide.slide_type == 'sermon' %}
-                        <a href="{% url 'ants_chapel' %}">
-                            {% if slide.image %}
-                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100" " alt="{{ slide.title }}">
-                            {% else %}
-                                <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" class="d-block w-100 h-100"  alt="{{ slide.title }}">
-                            {% endif %}
-                        </a>
-                    {% elif slide.slide_type == 'chapel_event' %}
-                        <a href="{% url 'ants_chapel' %}#chapel-events">
-                            {% if slide.image %}
-                                <img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">
-                            {% else %}
-                                <div class="d-block w-100 h-100" style="background:linear-gradient(135deg,#4a148c,#7b1fa2);"></div>
-                            {% endif %}
-                        </a>
-                    {% elif slide.slide_type == 'outreach' %}
-                        <a href="{% url 'community_outreach' %}">
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100" alt="{{ slide.title }}">{% endif %}
-                        </a>
-                    {% else %}
-                        {% if slide.link %}
-                            <a href="{{ slide.link }}">
-                                {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">{% endif %}
-                            </a>
-                        {% else %}
-                            {% if slide.image %}<img src="{{ slide.image.url }}" class="d-block w-100 h-100"  alt="{{ slide.title }}">{% endif %}
-                        {% endif %}
-                    {% endif %}
-                    
-                    <!-- B. The Overlays (ONLY SHOW IF THERE IS TEXT TO READ) -->
-                    {% if slide.slide_type != 'manual' or slide.title or slide.subtitle %}
-                        <div class="slider-overlay"></div>
-                        <div class="kyambogo-gradient"></div>
-                    {% endif %}
-                </div>
-
-                <!-- B. The Content Box -->
-                <div class="carousel-caption d-flex flex-column justify-content-end text-start">
-                    <div class="container pb-5 mb-2" style="position: relative; z-index: 2;">
-                        <div class="row">
-                            <div class="col-lg-9 col-md-10">
-                                
-                                <!-- 1. NEWS LAYOUT -->
-                                {% if slide.slide_type == 'news' %}
-                                    <span class="badge bg-warning text-dark mb-2 fw-bold shadow-sm">NEWS UPDATE</span>
-                                    <h1 class="display-5 fw-bold text-white mb-2 slider-title">
-                                        <a href="{% url 'news_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
-                                    </h1>
-                                    {% if slide.summary %}
-                                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">{{ slide.summary|truncatewords:30 }}</p>
-                                    {% endif %}
-
-                                <!-- 2. SERMON LAYOUT -->
-                                {% elif slide.slide_type == 'sermon' %}
-                                    <span class="badge bg-danger text-white mb-2 fw-bold shadow-sm"><i class="fas fa-play-circle me-1"></i> LATEST SERMON</span>
-                                    <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #dc3545;">
-                                        <a href="{% url 'ants_chapel' %}" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
-                                    </h1>
-                                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">Preached by {{ slide.preacher }} on {{ slide.date_preached|date:"M d, Y" }}</p>
-
-                                <!-- 3. EVENT LAYOUT -->
-                                {% elif slide.slide_type == 'event' %}
-                                    <span class="badge bg-info text-dark mb-2 fw-bold shadow-sm"><i class="far fa-calendar-alt me-1"></i> UPCOMING EVENT</span>
-                                    <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #0dcaf0;">
-                                        <a href="{% url 'event_detail' slide.pk %}" class="text-white text-decoration-none hover-underline">{{ slide.title }}</a>
-                                    </h1>
-                                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">Join us on {{ slide.date|date:"F d, Y" }} at {{ slide.location }}.</p>
-
-<!-- 4. OUTREACH LAYOUT -->
-                            {% elif slide.slide_type == 'outreach' %}
-                                <span class="badge bg-success text-white mb-2 fw-bold shadow-sm">
-                                    <i class="fas fa-hands-helping me-1"></i> COMMUNITY OUTREACH
-                                </span>
-                                
-                                <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color: #198754;">
-                                    <a href="{% url 'community_outreach' %}" class="text-white text-decoration-none hover-underline">
-                                        {{ slide.title }}
-                                    </a>
-                                </h1>
-                                
-                                <!-- The Description -->
-                                {% if slide.description %}
-                                <p class="lead text-white opacity-90 mb-0 d-none d-md-block" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
-                                    {{ slide.description|striptags|truncatewords:25 }}
-                                </p>
-                                {% endif %}
-                                
-                                <!-- Optional: A button to read more -->
-                                <a href="{% url 'community_outreach' %}" class="btn btn-success btn-sm fw-bold rounded-pill px-4 mt-3 shadow-sm">
-                                    Learn More <i class="fas fa-arrow-right ms-1"></i>
-                                </a>
-{% elif slide.slide_type == 'chapel_event' %}
-    <span class="badge mb-2 fw-bold shadow-sm" style="background:#7b1fa2;color:#fff;">
-        <i class="fas fa-church me-1"></i> CHAPEL EVENT
-    </span>
-    <h1 class="display-5 fw-bold text-white mb-2 slider-title" style="border-left-color:#ffca28;">
-        <a href="{% url 'ants_chapel' %}#chapel-events" class="text-white text-decoration-none hover-underline">
-            {{ slide.title }}
-                        </a>
-                    </h1>
-                    {% if slide.description %}
-                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">{{ slide.description|truncatewords:20 }}</p>
-                    {% endif %}
-                    <p class="lead text-white opacity-90 mb-0 d-none d-md-block">
-                        <i class="far fa-calendar-alt me-1"></i> {{ slide.date|date:"F d, Y" }}
-                        {% if slide.time %} · {{ slide.time }}{% endif %}
-                    </p>
-                    <a href="{% url 'ants_chapel' %}#chapel-events" class="btn btn-sm fw-bold rounded-pill px-4 mt-3 shadow-sm"
-                    style="background:#ffca28;color:#4a148c;">
-                        View Program <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
-                                <!-- 5. MANUAL SLIDER LAYOUT -->
-                                {% else %}
-                                    {% if slide.title %}
-                                    <h1 class="display-4 fw-bold text-white mb-2 slider-title" style="border-left-color: #fff;">{{ slide.title }}</h1>
-                                    {% endif %}
-                                    
-                                    {% if slide.subtitle %}
-                                    <p class="lead text-warning fw-bold mb-3" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">{{ slide.subtitle }}</p>
-                                    {% endif %}
-                                    
-                                    {% if slide.link %}
-                                    <a href="{{ slide.link }}" class="btn btn-outline-light rounded-pill px-4 fw-bold mt-2">{{ slide.button_text|default:"Learn More" }} &rarr;</a>
-                                    {% endif %}
-                                {% endif %}
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+    <div class="carousel-inner">
+        {% for slide in combined_slides %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="kab-image-wrapper">
+                {% if slide.slide_type == 'sermon' and not slide.image %}
+                    <img src="https://img.youtube.com/vi/{{ slide.get_video_id }}/maxresdefault.jpg" alt="{{ slide.title }}">
+                {% else %}
+                    <img src="{{ slide.image.url }}" alt="{{ slide.title }}">
+                {% endif %}
             </div>
-            {% empty %}
-            <!-- Fallback Slide -->
-            <div class="carousel-item active">
-                <div class="slider-image-wrapper bg-primary"></div>
-                <div class="carousel-caption d-flex flex-column justify-content-end text-start">
-                    <div class="container pb-5">
-                        <h1 class="text-white fw-bold">Welcome to ANTS</h1>
+
+            <!-- CAPTION BANNER: Now in ANTS Purple -->
+            <div class="kab-caption-overlay">
+                <div class="container">
+                    <div class="kab-caption-banner">
+                        <span class="kab-title-text">
+                            {{ slide.title }}
+                            {% if slide.slide_type == 'news' %}
+                                <a href="{% url 'news_detail' slide.pk %}" class="kab-link">Read More</a>
+                            {% elif slide.slide_type == 'sermon' %}
+                                <a href="{% url 'ants_chapel' %}" class="kab-link">Watch Sermon</a>
+                            {% elif slide.slide_type == 'event' %}
+                                <a href="{% url 'event_detail' slide.pk %}" class="kab-link">View Details</a>
+                            {% endif %}
+                        </span>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-
-    <!-- D. Controls (Bottom Right) -->
-    <div class="slider-controls">
-        <button class="carousel-control-prev custom-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-        <button class="carousel-control-next custom-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
+        {% endfor %}
     </div>
 
+    <!-- Controls -->
+    <button class="carousel-control-prev kab-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="prev">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="carousel-control-next kab-control" type="button" data-bs-target="#heroNewsCarousel" data-bs-slide="next">
+        <i class="fas fa-chevron-right"></i>
+    </button>
 </div>
+
+<!-- ============================================ -->
+<!-- STYLING FOR KAB-STYLE SLIDER                 -->
+<!-- ============================================ -->
+<style>
+   /* --- 1. Sizing --- */
+    .kab-image-wrapper {
+        height: 520px; 
+        width: 100%;
+        background: #000;
+    }
+    .kab-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 25%;
+    }
+
+    /* --- 2. Purple Caption Banner --- */
+    .kab-caption-overlay {
+        position: absolute;
+        bottom: 0; /* Anchored to the very bottom since bar is removed */
+        left: 0;
+        width: 100%;
+        z-index: 5;
+    }
+    .kab-caption-banner {
+        display: inline-block;
+        background-color: rgba(74, 20, 140, 0.9); /* Official ANTS Purple */
+        padding: 12px 30px;
+        border-radius: 4px 4px 0 0;
+    }
+    .kab-title-text {
+        color: #fff;
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+    .kab-link {
+        color: #ffca28 !important; /* ANTS Gold */
+        font-weight: 700;
+        font-style: italic;
+        text-decoration: underline !important;
+        margin-left: 15px;
+    }
+
+    /* --- 3. Indicators & Controls --- */
+    .kab-indicators {
+        bottom: 60px !important; /* Positioned above the purple box */
+        justify-content: flex-start !important;
+        margin-left: 5% !important;
+    }
+    .kab-indicators button {
+        width: 10px !important; height: 10px !important;
+        border-radius: 50% !important; border: none !important;
+        margin: 0 5px !important; background-color: #fff !important; opacity: 0.5;
+    }
+    .kab-indicators button.active { opacity: 1; background-color: #ffca28 !important; }
+
+    .kab-control {
+        width: 45px !important; height: 45px !important;
+        background: rgba(255,255,255,0.2) !important; border-radius: 50%;
+        top: 50% !important; transform: translateY(-50%);
+        opacity: 0; transition: 0.3s;
+    }
+    #heroNewsCarousel:hover .kab-control { opacity: 1; }
+
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+        .kab-image-wrapper { height: 300px; }
+        .kab-title-text { font-size: 0.95rem; }
+        .kab-caption-banner { padding: 8px 15px; width: 95%; }
+    }
+</style>
 
 
 <!-- ============================================ -->
