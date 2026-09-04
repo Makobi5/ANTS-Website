@@ -60,14 +60,14 @@
             <h4 class="text-uppercase text-secondary border-start border-4 border-warning ps-2 mb-3">News & Events</h4>
             <div class="list-group">
                 {% for news in news_results %}
-                <a href="{% url 'news_detail' news.pk %}" class="list-group-item list-group-item-action">
+                <a href="{% url 'news_detail' news.slug %}" class="list-group-item list-group-item-action">
                     <h6 class="mb-1 text-primary">{{ news.title }}</h6>
                     <small class="text-muted">News Article | {{ news.date_posted|date:"M d, Y" }}</small>
                 </a>
                 {% endfor %}
                 
                 {% for event in event_results %}
-                <a href="{% url 'event_detail' event.pk %}" class="list-group-item list-group-item-action">
+                <a href="{% url 'event_detail' event.slug %}" class="list-group-item list-group-item-action">
                     <h6 class="mb-1 text-success">{{ event.title }}</h6>
                     <small class="text-muted">Event | {{ event.date }}</small>
                 </a>
