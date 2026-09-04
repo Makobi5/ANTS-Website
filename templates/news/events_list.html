@@ -285,7 +285,7 @@
           {% if event.is_chapel_event %}
             <a href="{% url 'ants_chapel' %}#chapel-events" class="event-card">
           {% else %}
-            <a href="{% url 'event_detail' event.pk %}" class="event-card">
+            <a href="{% url 'event_detail' event.slug %}" class="event-card">
           {% endif %}
 
             <div class="event-img">

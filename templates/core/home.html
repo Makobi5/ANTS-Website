@@ -37,11 +37,11 @@
                         <p class="kab-box-text">
                             {{ slide.title }}
                             {% if slide.slide_type == 'news' %}
-                                <a href="{% url 'news_detail' slide.pk %}" class="kab-box-link">Read More</a>
+                                <a href="{% url 'news_detail' slide.slug %}" class="kab-box-link">Read More</a>
                             {% elif slide.slide_type == 'sermon' %}
                                 <a href="{% url 'ants_chapel' %}" class="kab-box-link">Watch Sermon</a>
                             {% elif slide.slide_type == 'event' %}
-                                <a href="{% url 'event_detail' slide.pk %}" class="kab-box-link">View Details</a>
+                                <a href="{% url 'event_detail' slide.slug %}" class="kab-box-link">View Details</a>
                             {% elif slide.slide_type == 'chapel_event' %}
                                 <a href="{% url 'ants_chapel' %}#chapel-events" class="kab-box-link">View Program</a>
                             {% elif slide.slide_type == 'outreach' %}
@@ -566,7 +566,7 @@
                         
                         <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
                             <h3 class="fw-bold text-white mb-2">
-                                <a href="{% url 'news_detail' featured_news.pk %}" class="text-white text-decoration-none">{{ featured_news.title }}</a>
+                                <a href="{% url 'news_detail' featured_news.slug %}" class="text-white text-decoration-none">{{ featured_news.title }}</a>
                             </h3>
                             <small class="text-white-50 text-uppercase fw-bold">{{ featured_news.date_posted|date:"F d, Y" }}</small>
                         </div>
@@ -597,7 +597,7 @@
                             
                             <div class="card-body">
                                 <h6 class="fw-bold mb-2">
-                                    <a href="{% url 'news_detail' news.pk %}" class="text-dark text-decoration-none">{{ news.title|truncatechars:50 }}</a>
+                                    <a href="{% url 'news_detail' news.slug %}" class="text-dark text-decoration-none">{{ news.title|truncatechars:50 }}</a>
                                 </h6>
                                 <small class="text-muted d-block mb-2">{{ news.date_posted|date:"F d, Y" }}</small>
                             </div>
@@ -639,7 +639,7 @@
                             {% if event.event_type == 'chapel' %}
                                 <a href="{% url 'ants_chapel' %}#chapel-events" class="text-decoration-none text-primary">{{ event.title }}</a>
                             {% else %}
-                                <a href="{% url 'event_detail' event.pk %}" class="text-decoration-none text-primary">{{ event.title }}</a>
+                                <a href="{% url 'event_detail' event.slug %}" class="text-decoration-none text-primary">{{ event.title }}</a>
                             {% endif %}
                         </h5>
                         
@@ -660,7 +660,7 @@
                         <div class="text-dark small mb-3">
                             <i class="fas fa-map-marker-alt text-danger me-2"></i> {{ event.location }}
                         </div>
-                        <a href="{% url 'event_detail' event.pk %}" class="btn btn-primary w-100 fw-bold btn-sm">LEARN MORE</a>
+                        <a href="{% url 'event_detail' event.slug %}" class="btn btn-primary w-100 fw-bold btn-sm">LEARN MORE</a>
                         {% endif %}
                     </div>
                 </div>

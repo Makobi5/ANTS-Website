@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
+from django.utils.text import slugify
 
 # 1. Category Model
 class Category(models.Model):
@@ -25,8 +26,13 @@ class NewsArticle(models.Model):
         help_text="Check this box if you want this article to appear in the big main slider on the homepage."
     )
     
-    image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image (Wide)")
-    
+    image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image")
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # This turns "Hello World" into "hello-world"
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
     # 2. NEW: Thumbnail Image (For Cards, Lists, and Sidebar)
     thumbnail = models.ImageField(
         upload_to='news_thumbnails/', 
@@ -40,7 +46,6 @@ class NewsArticle(models.Model):
     tags = TaggableManager(help_text="A comma-separated list of tags (e.g. Graduation, Theology)")
     
     # Content
-    image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image")
     date_posted = models.DateTimeField(auto_now_add=True)
     # Allow blank summary so we can have "Image Only" banners
     summary = models.TextField(max_length=500, blank=True, help_text="Leave blank if you want an Image-Only banner (no text overlay).")
@@ -66,6 +71,7 @@ class NewsImage(models.Model):
 # 4. Event Model (Keep this safe)
 class Event(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     description = models.TextField()
     date = models.DateField()
     time = models.TimeField()

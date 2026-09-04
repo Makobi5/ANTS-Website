@@ -37,7 +37,7 @@ class NewsArticleAdmin(admin.ModelAdmin):
     list_editable = ('show_on_slider',)
     list_filter = ('show_on_slider', 'category', 'tags', 'date_posted')
     search_fields = ('title', 'content')
-
+    prepopulated_fields = {'slug': ('title',)}
     fieldsets = (
         ('Content', {
             'fields': ('title', 'category', 'content')

@@ -3,10 +3,10 @@
 
 {% block content %}
 <!-- Header -->
-<div class="bg-primary py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/banner.jpg' %}') center/cover;">
+<div class="py-5 text-white text-center" style="background: linear-gradient(rgba(74, 20, 140, 0.9), rgba(74, 20, 140, 0.9)), url('{% static 'img/banner.jpg' %}') center/cover;">
     <div class="container">
         <h1 class="fw-bold display-5">News & Announcements</h1>
-        <p class="mb-0 text-white-50 text-uppercase">HOME / NEWS</p>
+        <p class="mb-0 text-white-50 text-uppercase" style="letter-spacing: 2px; font-size: 0.85rem;">HOME / NEWS</p>
     </div>
 </div>
 
@@ -14,33 +14,58 @@
     <div class="row">
         {% for article in articles %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm border-0 hover-shadow transition-all">
-                <a href="{% url 'news_detail' article.pk %}">
+            <div class="card h-100 shadow-sm border-0 news-card-hover">
+                <!-- 1. Changed article.pk to article.slug -->
+                <a href="{% url 'news_detail' article.slug %}">
                     {% if article.image %}
                         <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}" style="height: 220px; object-fit: cover;">
                     {% else %}
-                        <div class="bg-secondary card-img-top" style="height: 220px;"></div>
+                        <div class="bg-secondary card-img-top d-flex align-items-center justify-content-center" style="height: 220px;">
+                            <i class="fas fa-newspaper fa-3x text-white-50"></i>
+                        </div>
                     {% endif %}
                 </a>
-                <div class="card-body">
-                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem;">
-                        {{ article.date_posted|date:"M d, Y" }}
+                <div class="card-body p-4">
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 0.75rem; color: var(--ants-purple) !important;">
+                        <i class="far fa-calendar-alt me-1"></i> {{ article.date_posted|date:"M d, Y" }}
                     </small>
+                    
+                    <!-- 2. Changed article.pk to article.slug -->
                     <h5 class="fw-bold mt-2">
-                        <a href="{% url 'news_detail' article.pk %}" class="text-dark text-decoration-none">{{ article.title }}</a>
+                        <a href="{% url 'news_detail' article.slug %}" class="text-dark text-decoration-none hover-purple-text">{{ article.title }}</a>
                     </h5>
+                    
                     <p class="card-text text-muted small">
                         {{ article.summary|truncatewords:20 }}
                     </p>
-                    <a href="{% url 'news_detail' article.pk %}" class="btn btn-sm btn-outline-primary mt-2">Read Article</a>
+                    
+                    <!-- 3. Changed article.pk to article.slug -->
+                    <a href="{% url 'news_detail' article.slug %}" class="btn btn-sm btn-link p-0 fw-bold text-decoration-none" style="color: var(--ants-purple);">
+                        Read Full Article <i class="fas fa-arrow-right ms-1" style="font-size: 0.7rem;"></i>
+                    </a>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-12 text-center py-5">
+            <i class="fas fa-bullhorn fa-3x mb-3 text-muted opacity-25"></i>
             <h3 class="text-muted">No news posted yet.</h3>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<style>
+    .news-card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .news-card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(74, 20, 140, 0.1) !important;
+    }
+    .hover-purple-text:hover {
+        color: var(--ants-purple) !important;
+        text-decoration: underline !important;
+    }
+</style>
 {% endblock %}

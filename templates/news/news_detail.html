@@ -8,14 +8,19 @@
     <meta name="twitter:title" content="{{ article.title }}">
     <meta name="twitter:description" content="{{ article.summary|striptags|truncatechars:150 }}">
     <meta name="twitter:creator" content="@antsuganda">
-    <!-- Twitter Summary card images must be at least 120x120px -->
-    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.image.url }}">
+    
+    {% if article.image %}
+        <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.image.url }}">
+        <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.image.url }}" />
+    {% else %}
+        <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}">
+        <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}" />
+    {% endif %}
 
-    <!-- Open Graph data (Facebook, LinkedIn, WhatsApp) -->
+    <!-- Open Graph data -->
     <meta property="og:title" content="{{ article.title }}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ article.image.url }}" />
     <meta property="og:description" content="{{ article.summary|striptags|truncatechars:150 }}" />
     <meta property="og:site_name" content="ANTS" />
 {% endblock %}
@@ -191,10 +196,7 @@
             
             <!-- Search -->
             <div class="mb-5">
-                <form action="" method="GET" class="position-relative">
-                    <input type="text" class="form-control rounded-pill py-2 ps-4 pe-5" placeholder="Search news...">
-                    <button class="btn text-primary position-absolute top-50 end-0 translate-middle-y me-2"><i class="fas fa-search"></i></button>
-                </form>
+               <form action="{% url 'news_list' %}" method="GET" class="position-relative">
             </div>
 
             <!-- Recent Posts -->
@@ -203,7 +205,7 @@
                 <ul class="list-unstyled">
                     {% for recent in recent_articles %}
                     <li class="mb-3">
-                        <a href="{% url 'news_detail' recent.pk %}" class="text-decoration-none text-dark fw-bold d-block hover-gold">
+                        <a href="{% url 'news_detail' recent.slug %}" class="text-decoration-none text-dark fw-bold d-block hover-gold">
                             {{ recent.title }}
                         </a>
                         <small class="text-muted">{{ recent.date_posted|date:"F d, Y" }}</small>
@@ -244,7 +246,7 @@
                 <div class="card h-100 border-0 shadow-sm album-card">
                     <!-- Image -->
                     <div class="position-relative overflow-hidden">
-                        <a href="{% url 'news_detail' album.pk %}">
+                        <a href="{% url 'news_detail' album.slug %}">
                             <!-- Thumbnail Logic -->
                             {% if album.thumbnail %}
                                 <img src="{{ album.thumbnail.url }}" class="card-img-top album-img" alt="{{ album.title }}">
@@ -266,7 +268,7 @@
                     <!-- Content -->
                     <div class="card-body text-center d-flex flex-column pt-4 px-3 pb-4 bg-white">
                         <h6 class="fw-bold mb-3">
-                            <a href="{% url 'news_detail' album.pk %}" class="text-decoration-none" style="color: #0088cc;">
+                            <a href="{% url 'news_detail' album.slug %}" class="text-decoration-none" style="color: #0088cc;">
                                 {{ album.title|truncatechars:60 }}
                             </a>
                         </h6>

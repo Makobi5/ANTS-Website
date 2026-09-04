@@ -4,17 +4,18 @@
 {% block content %}
 
 <!-- 1. HEADER SECTION (Kabale Style) -->
-<div class="gallery-header py-5 text-center text-white position-relative" style="background: linear-gradient(rgba(30, 144, 255, 0.9), rgba(0, 110, 255, 0.9)), url('{% static 'img/church1.png' %}'); background-size: cover; background-position: center;">
-    <div class="container py-4">
-        <img src="{% static 'img/logo.png' %}" alt="Logo" width="80" class="mb-3 bg-white rounded-circle p-1">
-        <h1 class="fw-bold mb-4">ANTS Gallery</h1>
+<!-- 1. HEADER SECTION (Matched to Events Style) -->
+<div class="gallery-header py-5 text-center text-white position-relative">
+    <div class="container py-4 position-relative" style="z-index: 2;">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" width="80" class="mb-3 bg-white rounded-circle p-1 shadow-sm">
+        <h1 class="fw-bold mb-4 display-5" style="font-family: 'Playfair Display', serif; text-shadow: 0 2px 12px rgba(0,0,0,0.3);">ANTS Gallery</h1>
         
         <!-- Search Bar -->
         <div class="mx-auto" style="max-width: 600px;">
-            <form action="" method="GET" class="position-relative">
-                <input type="text" class="form-control rounded-pill py-3 px-4 shadow-sm" placeholder="Search albums..." style="border: none;">
-                <button class="btn btn-warning rounded-circle position-absolute top-50 end-0 translate-middle-y me-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-search"></i>
+            <form action="{% url 'gallery' %}" method="GET" class="position-relative">
+                <input type="text" name="q" class="form-control rounded-pill py-3 px-4 shadow-sm" placeholder="Search albums..." style="border: none; font-weight: 500;">
+                <button type="submit" class="btn btn-warning rounded-circle position-absolute top-50 end-0 translate-middle-y me-2" style="width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background-color: var(--ants-gold); border: none;">
+                    <i class="fas fa-search text-dark"></i>
                 </button>
             </form>
         </div>
@@ -28,9 +29,9 @@
         {% for album in albums %}
         <div class="col-md-4">
             <div class="card h-100 border-0 shadow-sm album-card">
-                <!-- Cover Image -->
+                <!-- Cover Image (Fixed the << typo) -->
                 <div class="position-relative overflow-hidden">
-                    <a href="{% url 'news_detail' album.pk %}">
+                    <a href="{% url 'news_detail' album.slug %}" class="text-decoration-none">
                         {% if album.thumbnail %}
                             <img src="{{ album.thumbnail.url }}" class="card-img-top album-img" alt="{{ album.title }}">
                         {% elif album.image %}
@@ -51,7 +52,7 @@
                 <!-- Content -->
                 <div class="card-body text-center d-flex flex-column">
                     <h5 class="fw-bold text-primary mb-3">
-                        <a href="{% url 'news_detail' album.pk %}" class="text-decoration-none text-primary">
+                        <a href="{% url 'news_detail' album.slug %}" class="text-decoration-none text-primary">
                             {{ album.title|truncatechars:60 }}
                         </a>
                     </h5>
@@ -80,6 +81,26 @@
 
 <!-- CSS Styles -->
 <style>
+    /* --- 1. Header Styling (Matched to Events) --- */
+    .gallery-header {
+        background: 
+            linear-gradient(160deg, rgba(74,20,140,0.88) 0%, rgba(30,10,70,0.82) 100%),
+            url("{% static 'img/banner.jpg' %}") center center / cover no-repeat;
+        overflow: hidden;
+    }
+
+    /* The decorative circle in the corner from the Events page */
+    .gallery-header::after {
+        content: '';
+        position: absolute;
+        right: -80px; top: -80px;
+        width: 320px; height: 320px;
+        border-radius: 50%;
+        background: rgba(255,202,40,0.07);
+        z-index: 1;
+    }
+
+    /* --- 2. Album Card Styles --- */
     .album-img {
         height: 250px;
         object-fit: cover;
@@ -87,17 +108,19 @@
     }
     .album-card {
         transition: transform 0.3s ease;
+        border-top: 4px solid var(--ants-gold) !important; /* Added gold top border to match homepage style */
     }
     .album-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(74,20,140,0.12) !important;
     }
     .album-card:hover .album-img {
         transform: scale(1.05);
     }
-    /* Logo animation on hover */
+    
+    /* Logo hover animation */
     .gallery-header img:hover {
-        transform: rotate(10deg);
+        transform: scale(1.1) rotate(5deg);
         transition: 0.3s;
     }
 </style>
