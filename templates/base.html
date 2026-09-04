@@ -17,16 +17,23 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- Social Media Meta Tags (Placeholder) -->
+    <!-- Social Media Meta Tags -->
     {% block social_meta %}
-    <!-- Defaults if a page has no specific info -->
     <meta property="og:image" content="{% static 'img/logo.png' %}">
     <meta property="og:title" content="All Nations Theological College & Seminary">
     <meta property="og:description" content="Preparing Servants for the Harvest.">
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     {% endblock %}
+    
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
     <style>
-    /* --- TOP UTILITY BAR (Restored Styling) --- */
+    /* --- GLOBAL HEADER & NAVIGATION --- */
+    :root {
+        --ants-purple: #4a148c;
+        --ants-gold: #ffca28;
+    }
+
+    /* 1. Top Strip */
     .top-utility-strip {
         background-color: #f8f9fa;
         border-bottom: 1px solid #eee;
@@ -34,36 +41,21 @@
     }
 
     .header-quick-links {
-        margin: 0;
-        padding: 0;
-        list-style: none !important; /* Removes bullets */
-        display: flex; /* Makes horizontal */
-        align-items: center;
-        gap: 12px; /* Spacing between items */
+        margin: 0; padding: 0;
+        list-style: none !important;
+        display: flex; align-items: center; gap: 12px;
     }
 
-    .header-quick-links li {
-        font-size: 13px;
-        font-weight: 700; /* Restored Boldness */
-        color: #6c757d;
-    }
+    .header-quick-links li { font-size: 13px; font-weight: 700; display: inline-block; }
+    .header-quick-links a { text-decoration: none; color: #6c757d; transition: 0.2s; }
+    .header-quick-links a:hover { color: var(--ants-purple) !important; }
 
-    .header-quick-links a {
-        text-decoration: none;
-        color: #6c757d; /* Muted gray like before */
-        transition: color 0.2s ease;
-    }
-
-    .header-quick-links a:hover {
-        color: #4a148c !important; /* Purple Hover */
-    }
-
-    /* --- Social Icons --- */
+    /* Circular Social Icons */
     .social-icons-compact { display: flex; align-items: center; gap: 8px; }
     .social-circle {
         width: 30px; height: 30px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        color: white !important; text-decoration: none; font-size: 14px;
+        color: white !important; font-size: 14px;
         transition: transform 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .social-circle:hover { transform: translateY(-2px); filter: brightness(1.1); }
@@ -73,97 +65,111 @@
     .sc-linkedin { background-color: #0A66C2; }
     .sc-tiktok   { background-color: #010101; }
 
-    /* --- Compact Branding Row --- */
-    .brand-main-row { padding: 10px 0; background: #fff; }
-    .brand-logo-compact { height: 65px; width: auto; }
-    .brand-text-compact h1 { font-size: 1.35rem; margin: 0; color: #222; font-weight: 800; line-height: 1.1; }
-    .brand-text-compact p { font-size: 12px; margin: 0; color: #777; font-style: italic; }
+    /* 2. Main Branding Row (The Fix for the "Funny" Look) */
+    .brand-main-row { padding: 12px 0; background: #fff; border-bottom: 1px solid #eee; }
+    
+    /* This forces the layout into a neat row on desktop */
+    .brand-container {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
 
-    /* --- Compact Search Box --- */
+    .header-logo-group { display: flex; align-items: center; gap: 15px; }
+
+    /* FIXED: This now matches the HTML class exactly */
+    .brand-logo-img {
+        height: 70px !important; 
+        width: auto !important;
+    }
+
+    .brand-text-compact h1 {
+        font-size: 1.4rem; font-weight: 800; color: #222;
+        margin: 0; line-height: 1.1;
+    }
+    .brand-text-compact p {
+        font-size: 12px; margin: 0; color: #777; font-style: italic;
+    }
+
+    /* 3. Integrated Search & Apply */
+    .header-actions-group { display: flex; align-items: center; gap: 15px; }
+    
     .search-box-compact {
-        display: flex; background: #f1f1f1; border-radius: 25px;
-        padding: 2px 5px; border: 1px solid #ddd; max-width: 280px; width: 100%;
+        display: flex; background: #f1f3f5; border-radius: 25px;
+        padding: 2px 5px; border: 1px solid #dee2e6; width: 260px;
     }
     .search-box-compact input { border: none; background: transparent; padding: 5px 15px; font-size: 13px; width: 100%; outline: none; }
-    .search-box-compact button { border: none; background: #4a148c; color: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+    .search-box-compact button { border: none; background: var(--ants-purple); color: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
 
     .btn-apply-header {
-        background: #ffca28; color: #4a148c !important;
-        font-weight: 800; border-radius: 25px; padding: 8px 20px; font-size: 13px;
+        background: var(--ants-gold); color: var(--ants-purple) !important;
+        font-weight: 800; border-radius: 25px; padding: 10px 25px; font-size: 13px;
         text-transform: uppercase; border: none; transition: 0.3s;
+        text-decoration: none;
+    }
+    .btn-apply-header:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,202,40,0.4); }
+
+    @media (max-width: 991px) {
+        .brand-container { flex-direction: column; text-align: center; }
+        .header-logo-group { flex-direction: column; margin-bottom: 10px; }
+        .header-actions-group { display: none !important; }
     }
 </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-<!-- ============================================ -->
-<!-- 1. CONSOLIDATED HEADER (Utility + Branding)  -->
-<!-- ============================================ -->
 <header class="main-site-header">
-<!-- A. TOP UTILITY STRIP -->
-<div class="top-utility-strip d-none d-lg-block">
-    <div class="container d-flex justify-content-between align-items-center">
-        
-        <!-- Left Side: Horizontal List -->
-        <ul class="header-quick-links mb-0">
-            <li><a href="{% url 'events_list' %}">Events</a></li>
-            <li class="text-muted opacity-25">|</li>
-            <li><a href="{% url 'news_list' %}">News</a></li>
-            <li class="text-muted opacity-25">|</li>
-            <li><a href="{% url 'gallery' %}">Gallery</a></li>
-            <li class="text-muted opacity-25">|</li>
-            <li><a href="{% url 'community_outreach' %}">Outreach</a></li>
-            <li class="text-muted opacity-25">|</li>
-            <li><a href="https://webmail.ants.ac.ug/" target="_blank" rel="noopener noreferrer">Staff Webmail</a></li>
-        </ul>
-        
-        <!-- Right Side: Social Circles -->
-        <div class="social-icons-compact">
-            <a href="https://facebook.com/ants.uganda" target="_blank" class="social-circle sc-facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://x.com/antsuganda" target="_blank" class="social-circle sc-x"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://youtube.com/@antsuganda" target="_blank" class="social-circle sc-youtube"><i class="fab fa-youtube"></i></a>
-            <a href="https://www.linkedin.com/..." target="_blank" class="social-circle sc-linkedin"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://tiktok.com/@antsuganda" target="_blank" class="social-circle sc-tiktok"><i class="fab fa-tiktok"></i></a>
+    <!-- A. TOP UTILITY STRIP -->
+    <div class="top-utility-strip d-none d-lg-block">
+        <div class="container d-flex justify-content-between align-items-center">
+            <ul class="header-quick-links mb-0">
+                <li><a href="{% url 'events_list' %}">Events</a></li>
+                <li class="text-muted opacity-25">|</li>
+                <li><a href="{% url 'news_list' %}">News</a></li>
+                <li class="text-muted opacity-25">|</li>
+                <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                <li class="text-muted opacity-25">|</li>
+                <li><a href="{% url 'community_outreach' %}">Outreach</a></li>
+                <li class="text-muted opacity-25">|</li>
+                <!-- FIXED: Target Blank -->
+                <li><a href="https://webmail.ants.ac.ug/" target="_blank" rel="noopener">Staff Webmail</a></li>
+            </ul>
+            
+            <div class="social-icons-compact">
+                <a href="https://facebook.com/ants.uganda" target="_blank" class="social-circle sc-facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com/antsuganda" target="_blank" class="social-circle sc-x"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://youtube.com/@antsuganda" target="_blank" class="social-circle sc-youtube"><i class="fab fa-youtube"></i></a>
+                <a href="https://linkedin.com/..." target="_blank" class="social-circle sc-linkedin"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://tiktok.com/@antsuganda" target="_blank" class="social-circle sc-tiktok"><i class="fab fa-tiktok"></i></a>
+            </div>
         </div>
     </div>
-</div>
 
-    <!-- B. MIDDLE ROW: Logo + Search + Apply -->
-    <div class="header-brand-row py-2">
-        <div class="container">
-            <div class="row align-items-center">
-                <!-- Logo and Name -->
-                <div class="col-lg-6 col-md-7">
-                    <div class="d-flex align-items-center">
-                        <a href="{% url 'home' %}">
-                            <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" class="header-logo-img">
-                        </a>
-                        <div class="ms-3 brand-text-wrap">
-                            <h1 class="brand-title-main">All Nations Theological <br> College & Seminary</h1>
-                            <p class="brand-slogan-sub">"Make Disciples of All Nations"</p>
-                        </div>
-                    </div>
+    <!-- B. BRANDING ROW -->
+    <div class="brand-main-row">
+        <div class="container brand-container">
+            <div class="header-logo-group">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="ANTS Logo" class="brand-logo-img">
+                </a>
+                <div class="brand-text-compact">
+                    <h1>All Nations Theological <br> College & Seminary</h1>
+                    <p>"Make Disciples of All Nations"</p>
                 </div>
+            </div>
 
-                <!-- Search and Action -->
-                <div class="col-lg-6 col-md-5 text-end d-flex justify-content-end align-items-center">
-                    <form action="{% url 'global_search' %}" method="GET" class="header-search-form me-3 d-none d-md-flex">
-                        <input type="text" name="q" placeholder="Search website...">
-                        <button type="submit"><i class="fas fa-search"></i></button>
-                    </form>
-                    <a href="{% url 'student_dashboard' %}" class="btn btn-apply-header" target="_blank" rel="noopener noreferrer">Apply Now</a>
-                </div>
+            <div class="header-actions-group d-none d-lg-flex">
+                <form action="{% url 'global_search' %}" method="GET" class="search-box-compact">
+                    <input type="text" name="q" placeholder="Search website...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                <!-- FIXED: Target Blank -->
+                <a href="{% url 'student_dashboard' %}" class="btn btn-apply-header" target="_blank" rel="noopener">Apply Now</a>
             </div>
         </div>
     </div>
 </header>
-
-
-
-
-    <!-- ============================================ -->
-    <!-- 2. MAIN NAVIGATION BAR (Sticky Menu)         -->
 <!-- ============================================ -->
     <!-- 2. MAIN NAVIGATION (Sticky Wrapper)          -->
     <!-- ============================================ -->
