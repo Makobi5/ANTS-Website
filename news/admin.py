@@ -40,7 +40,7 @@ class NewsArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     fieldsets = (
         ('Content', {
-            'fields': ('title', 'category', 'content')
+            'fields': ('title', 'category','slug', 'content')
         }),
         ('Display Settings', {
             'fields': ('show_on_slider', 'tags', 'summary')
@@ -59,6 +59,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'time', 'location')
     list_filter = ('date',)
     search_fields = ('title',)
+    prepopulated_fields = {'slug': ('title',)}
 
 
 # --- Custom Action to Export Emails to CSV ---

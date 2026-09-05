@@ -27,7 +27,7 @@ class NewsArticle(models.Model):
     )
     
     image = models.ImageField(upload_to='news_images/', verbose_name="Featured Image")
-    slug = models.SlugField(max_length=255, null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     def save(self, *args, **kwargs):
         if not self.slug:
             # This turns "Hello World" into "hello-world"
@@ -71,7 +71,7 @@ class NewsImage(models.Model):
 # 4. Event Model (Keep this safe)
 class Event(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=255, null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     description = models.TextField()
     date = models.DateField()
     time = models.TimeField()
