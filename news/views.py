@@ -71,8 +71,8 @@ def events_list(request):
     }
     return render(request, 'news/events_list.html', context)
 
-def event_detail(request, pk):
-    event = get_object_or_404(Event, pk=pk)
+def event_detail(request, slug):
+    event = get_object_or_404(Event, slug=slug)
     return render(request, 'news/event_detail.html', {'event': event})
 
 def gallery(request):
