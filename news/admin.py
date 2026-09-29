@@ -15,7 +15,6 @@ class NewsImageInline(admin.TabularInline):
     model = NewsImage
     extra = 5          # start with 5 empty slots visible
     min_num = 0
-    max_num = 100      # effectively unlimited — JS auto-adds rows as needed
     verbose_name = "Gallery Photo"
     verbose_name_plural = "Add Gallery Photos (drag & drop or select multiple)"
 
