@@ -90,45 +90,41 @@ def gallery(request):
     return render(request, 'news/gallery.html', {'albums': albums})
 
 def subscribe_newsletter(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        
-        if email:
-            if Subscriber.objects.filter(email=email).exists():
-                messages.warning(request, "You are already subscribed!", extra_tags='newsletter')
-            else:
-                Subscriber.objects.create(email=email)
-                
-                # --- NEW EMAIL LOGIC ---
-                subject = "Welcome to All Nations Theological College!"
-                from_email = settings.DEFAULT_FROM_EMAIL
-                to = [email]
+    if request.method != 'POST':
+        return redirect('home')
 
-                # 1. Render the HTML template with data
-                html_content = render_to_string('emails/welcome_email.html', {'email': email})
-                
-                # 2. Create a plain text version (for old email clients)
-                text_content = strip_tags(html_content)
+    email = (request.POST.get('email') or '').strip().lower()
+    next_url = request.META.get('HTTP_REFERER', '/')
 
-                # 3. Construct the email
-                msg = EmailMultiAlternatives(subject, text_content, from_email, to)
-                msg.attach_alternative(html_content, "text/html")
-                
-                # 4. Send
-                try:
-                    msg.send()
-                except Exception as e:
-                    print(f"Error sending email: {e}")
+    if '#' in next_url:
+        next_url = next_url.split('#')[0]
 
-                # Success Message
-                success_msg = "Success! An email was just sent to confirm your subscription. Please check your inbox."
-                messages.success(request, success_msg, extra_tags='newsletter')
-        # Get the page the user came from
-        next_url = request.META.get('HTTP_REFERER', '/')
-        
-        # Clean up existing anchors if any (prevents #newsletter#newsletter)
-        if '#' in next_url:
-            next_url = next_url.split('#')[0]
+    if not email:
+        messages.error(request, "Please provide a valid email address.", extra_tags='newsletter')
         return redirect(f"{next_url}#newsletter")
-    
-    return redirect('home')
+
+    if Subscriber.objects.filter(email=email).exists():
+        messages.warning(request, "You are already subscribed!", extra_tags='newsletter')
+        return redirect(f"{next_url}#newsletter")
+
+    Subscriber.objects.create(email=email)
+
+    try:
+        subject = "Welcome to All Nations Theological College!"
+        from_email = settings.DEFAULT_FROM_EMAIL
+        html_content = render_to_string('emails/welcome_email.html', {'email': email})
+        text_content = strip_tags(html_content)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send(fail_silently=False)
+    except Exception:
+        messages.error(
+            request,
+            "Your subscription was saved, but we could not send the confirmation email right now. Please try again later.",
+            extra_tags='newsletter',
+        )
+        return redirect(f"{next_url}#newsletter")
+
+    success_msg = "Success! An email was just sent to confirm your subscription. Please check your inbox."
+    messages.success(request, success_msg, extra_tags='newsletter')
+    return redirect(f"{next_url}#newsletter")
