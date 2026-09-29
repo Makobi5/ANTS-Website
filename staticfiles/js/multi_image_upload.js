@@ -1,218 +1,281 @@
 /**
  * multi_image_upload.js
- * Drag-and-drop + multi-select image uploader for Django Admin TabularInline.
- * Place this file in:  news/static/news/js/multi_image_upload.js
+ * Place at: static/js/multi_image_upload.js
+ *
+ * Features:
+ *  - Drag & drop MULTIPLE images at once
+ *  - "Browse" button supports multi-select
+ *  - Auto-creates new inline rows as needed
+ *  - Thumbnail previews
  */
 
-(function ($) {
+(function () {
   "use strict";
 
-  function initMultiUpload() {
-    var $inline = $("#newsimage_set-group");
-    if (!$inline.length) return;
+  function waitForInline(callback) {
+    var attempts = 0;
+    var timer = setInterval(function () {
+      attempts++;
+      var inline = document.getElementById("gallery_images-group");
+      if (inline) {
+        clearInterval(timer);
+        callback(inline);
+      }
+      if (attempts > 40) clearInterval(timer);
+    }, 100);
+  }
 
-    /* ── 1. Inject the drop zone above the inline table ── */
-    var $dropZone = $(`
-      <div id="gallery-dropzone">
-        <div class="dz-inner">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="1.5"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
-          <p><strong>Drag &amp; drop photos here</strong><br>
-             or <label for="gallery-file-picker" class="dz-browse-link">browse to select</label>
-             &nbsp;— you can pick as many as you like</p>
-          <input type="file" id="gallery-file-picker"
-                 accept="image/*" multiple style="display:none">
-        </div>
-        <div id="gallery-preview-strip"></div>
-      </div>
-    `);
+  function init(inlineGroup) {
 
-    $inline.before($dropZone);
+    /* ── Inject CSS ── */
+    var style = document.createElement("style");
+    style.textContent = `
+      #gallery-dropzone {
+        border: 2px dashed #79aec8;
+        border-radius: 8px;
+        background: #f0f8ff;
+        padding: 28px 20px 20px;
+        margin-bottom: 18px;
+        text-align: center;
+        transition: background .2s, border-color .2s;
+        cursor: pointer;
+      }
+      #gallery-dropzone.dz-over {
+        background: #dceefb;
+        border-color: #2196f3;
+      }
+      #gallery-dropzone svg {
+        display: block;
+        margin: 0 auto 10px;
+        color: #79aec8;
+      }
+      #gallery-dropzone p {
+        margin: 0 0 10px;
+        font-size: 14px;
+        color: #444;
+        line-height: 1.7;
+      }
+      #gallery-browse-btn {
+        display: inline-block;
+        padding: 7px 20px;
+        background: #417690;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        font-weight: 600;
+        letter-spacing: .3px;
+      }
+      #gallery-browse-btn:hover { background: #2c5f7a; }
+      #gallery-preview-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+        justify-content: center;
+      }
+      .dz-thumb {
+        position: relative;
+        width: 86px;
+        height: 86px;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 2px solid #4caf50;
+        box-shadow: 0 2px 6px rgba(0,0,0,.15);
+      }
+      .dz-thumb img {
+        width: 100%; height: 100%;
+        object-fit: cover; display: block;
+      }
+      .dz-thumb-label {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: rgba(0,0,0,.55);
+        color: #fff; font-size: 9px;
+        text-align: center; padding: 3px 2px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      #gallery-count-badge {
+        display: inline-block;
+        margin-left: 8px;
+        background: #4caf50;
+        color: #fff;
+        border-radius: 10px;
+        padding: 1px 8px;
+        font-size: 12px;
+        font-weight: bold;
+        vertical-align: middle;
+      }
+    `;
+    document.head.appendChild(style);
 
-    /* ── 2. Styles (injected so no separate CSS file needed) ── */
-    $("head").append(`
-      <style>
-        #gallery-dropzone {
-          border: 2px dashed #79aec8;
-          border-radius: 8px;
-          background: #f8fcff;
-          padding: 24px 20px 16px;
-          margin-bottom: 16px;
-          transition: background .2s, border-color .2s;
-        }
-        #gallery-dropzone.dz-over {
-          background: #e3f2fd;
-          border-color: #2196f3;
-        }
-        .dz-inner {
-          text-align: center;
-          color: #555;
-        }
-        .dz-inner svg { color: #79aec8; margin-bottom: 8px; }
-        .dz-inner p { margin: 0; font-size: 14px; line-height: 1.6; }
-        .dz-browse-link {
-          color: #2196f3;
-          cursor: pointer;
-          text-decoration: underline;
-          font-weight: 600;
-        }
-        #gallery-preview-strip {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-top: 14px;
-        }
-        .dz-thumb {
-          position: relative;
-          width: 90px;
-          height: 90px;
-          border-radius: 6px;
-          overflow: hidden;
-          border: 2px solid #79aec8;
-          box-shadow: 0 2px 6px rgba(0,0,0,.12);
-        }
-        .dz-thumb img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-        }
-        .dz-thumb .dz-status {
-          position: absolute; bottom: 0; left: 0; right: 0;
-          background: rgba(0,0,0,.55);
-          color: #fff; font-size: 10px;
-          text-align: center; padding: 3px 2px;
-        }
-        .dz-thumb.dz-queued  { border-color: #79aec8; }
-        .dz-thumb.dz-ready   { border-color: #4caf50; }
-        .dz-thumb.dz-error   { border-color: #f44336; }
-      </style>
-    `);
+    /* ── Build the drop zone HTML ── */
+    var dz = document.createElement("div");
+    dz.id = "gallery-dropzone";
+    dz.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="1.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      <p>
+        <strong>Drag &amp; drop photos here</strong><br>
+        or click the button below to browse &mdash; select as many as you want at once
+      </p>
+      <button type="button" id="gallery-browse-btn">&#128247; Choose Photos</button>
+      <input type="file" id="gallery-file-input" accept="image/*" multiple
+             style="display:none">
+      <div id="gallery-preview-strip"></div>
+    `;
 
-    /* ── 3. Drag-over feedback ── */
-    $dropZone
-      .on("dragover dragenter", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $(this).addClass("dz-over");
-      })
-      .on("dragleave dragend drop", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $(this).removeClass("dz-over");
-      })
-      .on("drop", function (e) {
-        var files = e.originalEvent.dataTransfer.files;
-        handleFiles(files);
-      });
+    inlineGroup.parentNode.insertBefore(dz, inlineGroup);
 
-    /* ── 4. Browse-button click ── */
-    $("#gallery-file-picker").on("change", function () {
-      handleFiles(this.files);
-      this.value = ""; // reset so same file can be re-added
+    var fileInput = document.getElementById("gallery-file-input");
+    var browseBtn = document.getElementById("gallery-browse-btn");
+    var previewStrip = document.getElementById("gallery-preview-strip");
+
+    /* ── Browse button ── */
+    browseBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      fileInput.click();
     });
 
-    /* ── 5. Core: assign each file to an inline row ── */
-    function handleFiles(files) {
+    fileInput.addEventListener("change", function () {
+      processFiles(this.files);
+      this.value = "";
+    });
+
+    /* ── Drag events ── */
+    dz.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      dz.classList.add("dz-over");
+    });
+    dz.addEventListener("dragleave", function (e) {
+      if (!dz.contains(e.relatedTarget)) dz.classList.remove("dz-over");
+    });
+    dz.addEventListener("drop", function (e) {
+      e.preventDefault();
+      dz.classList.remove("dz-over");
+      processFiles(e.dataTransfer.files);
+    });
+
+    dz.addEventListener("click", function (e) {
+      if (e.target !== browseBtn && e.target !== fileInput) {
+        fileInput.click();
+      }
+    });
+
+    /* ── Process a FileList ── */
+    function processFiles(files) {
       if (!files || !files.length) return;
-
-      $.each(files, function (i, file) {
-        if (!file.type.match(/^image\//)) return; // skip non-images
-
-        // Make sure there is a free empty row; add one if not
-        ensureEmptyRow();
-
-        // Find the LAST empty image input in the inline
-        var $rows = $inline.find(".dynamic-newsimage_set");
-        var $targetRow = null;
-        $rows.each(function () {
-          var $inp = $(this).find('input[type="file"]');
-          // A row is "empty" if no file is assigned and it's not marked DELETE
-          if ($inp.length && !$(this).find('[id$="-DELETE"]').prop("checked")) {
-            // Check if its file input still has no file staged
-            if (!$inp[0]._stagedFile) {
-              $targetRow = $(this);
-              return false; // break
-            }
-          }
-        });
-
-        if (!$targetRow) return; // safety
-
-        var $fileInput = $targetRow.find('input[type="file"]');
-        // Stage the file on the input via DataTransfer API
-        try {
-          var dt = new DataTransfer();
-          dt.items.add(file);
-          $fileInput[0].files = dt.files;
-          $fileInput[0]._stagedFile = true; // mark as used
-          $fileInput.trigger("change");
-        } catch (err) {
-          console.warn("DataTransfer not supported, falling back.", err);
-        }
-
-        // Show thumbnail preview
-        addThumb(file, $fileInput[0]);
+      var imageFiles = Array.from(files).filter(function (f) {
+        return f.type.startsWith("image/");
       });
+      processNext(imageFiles, 0);
     }
 
-    /* ── 6. Ensure there is at least one empty row ── */
-    function ensureEmptyRow() {
-      var $rows = $inline.find(".dynamic-newsimage_set");
-      var hasFree = false;
-      $rows.each(function () {
-        var $inp = $(this).find('input[type="file"]');
-        if ($inp.length && !$inp[0]._stagedFile &&
-            !$(this).find('[id$="-DELETE"]').prop("checked")) {
-          hasFree = true;
-          return false;
-        }
-      });
-      if (!hasFree) {
-        // Click Django's "Add another" link to generate a new row
-        $inline.find(".add-row a, [id$='add_id']").first().trigger("click");
+    /* Process one file at a time, waiting for new rows to render */
+    function processNext(files, index) {
+      if (index >= files.length) {
+        updateCountBadge();
+        return;
+      }
+      var file = files[index];
+      var freeRow = findFreeRow();
+
+      if (freeRow) {
+        stageFile(freeRow, file);
+        addThumb(file);
+        processNext(files, index + 1);
+      } else {
+        clickAddRow();
+        /* Wait for Django to render the new row */
+        setTimeout(function () {
+          var newRow = findFreeRow();
+          if (newRow) {
+            stageFile(newRow, file);
+            addThumb(file);
+          }
+          processNext(files, index + 1);
+        }, 150);
       }
     }
 
-    /* ── 7. Thumbnail preview strip ── */
-    function addThumb(file, inputEl) {
-      var $strip = $("#gallery-preview-strip");
+    function findFreeRow() {
+      var rows = inlineGroup.querySelectorAll(".dynamic-gallery_images");
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var deleteChk = row.querySelector('input[id$="-DELETE"]');
+        if (deleteChk && deleteChk.checked) continue;
+        var fileInp = row.querySelector('input[type="file"]');
+        if (fileInp && !fileInp._dzUsed) {
+          return row;
+        }
+      }
+      return null;
+    }
+
+    function stageFile(row, file) {
+      var fileInp = row.querySelector('input[type="file"]');
+      if (!fileInp) return;
+      try {
+        var dt = new DataTransfer();
+        dt.items.add(file);
+        fileInp.files = dt.files;
+        fileInp._dzUsed = true;
+        fileInp.dispatchEvent(new Event("change", { bubbles: true }));
+      } catch (err) {
+        console.error("Could not stage file:", err);
+      }
+    }
+
+    function clickAddRow() {
+      var addLink = inlineGroup.querySelector(".add-row a");
+      if (addLink) addLink.click();
+    }
+
+    function addThumb(file) {
       var reader = new FileReader();
       reader.onload = function (e) {
-        var $thumb = $(`
-          <div class="dz-thumb dz-queued">
-            <img src="${e.target.result}" alt="">
-            <div class="dz-status">Queued</div>
-          </div>
-        `);
-        $strip.append($thumb);
-
-        // Update status when the form is submitted
-        $(inputEl).closest("form").on("submit.dzthumb", function () {
-          $thumb.removeClass("dz-queued").addClass("dz-ready");
-          $thumb.find(".dz-status").text("Uploading…");
-        });
+        var thumb = document.createElement("div");
+        thumb.className = "dz-thumb";
+        thumb.innerHTML = `
+          <img src="${e.target.result}" alt="">
+          <div class="dz-thumb-label">${file.name}</div>
+        `;
+        previewStrip.appendChild(thumb);
       };
       reader.readAsDataURL(file);
     }
 
-    /* ── 8. Keep unlimited rows: remove max_num cap visually ── */
-    // Django enforces max_num server-side; we raised it to 100 in admin.py
-    // but we also hide the "maximum reached" warning if it appears.
-    var observer = new MutationObserver(function () {
-      $inline.find(".help").filter(function () {
-        return $(this).text().indexOf("maximum") !== -1;
-      }).hide();
-    });
-    observer.observe($inline[0], { childList: true, subtree: true });
+    function updateCountBadge() {
+      var header = inlineGroup.querySelector("h2");
+      if (!header) return;
+      var existing = header.querySelector("#gallery-count-badge");
+      if (existing) existing.remove();
+      var count = inlineGroup.querySelectorAll("input[type='file']._dzUsed, input[type='file'][_dzUsed]").length;
+      // Count via _dzUsed property
+      var inputs = inlineGroup.querySelectorAll("input[type='file']");
+      count = 0;
+      inputs.forEach(function (inp) { if (inp._dzUsed) count++; });
+      if (count > 0) {
+        var badge = document.createElement("span");
+        badge.id = "gallery-count-badge";
+        badge.textContent = count + " queued";
+        header.appendChild(badge);
+      }
+    }
+
   }
 
-  /* ── Run after Django's inline JS is ready ── */
-  $(document).ready(function () {
-    initMultiUpload();
-  });
+  /* ── Boot ── */
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () { waitForInline(init); });
+  } else {
+    waitForInline(init);
+  }
 
-})(django.jQuery);
+})();

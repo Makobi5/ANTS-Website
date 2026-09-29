@@ -16,7 +16,7 @@
     var attempts = 0;
     var timer = setInterval(function () {
       attempts++;
-      var inline = document.getElementById("newsimage_set-group");
+      var inline = document.getElementById("gallery_images-group");
       if (inline) {
         clearInterval(timer);
         callback(inline);
@@ -205,7 +205,7 @@
     }
 
     function findFreeRow() {
-      var rows = inlineGroup.querySelectorAll(".dynamic-newsimage_set");
+      var rows = inlineGroup.querySelectorAll(".dynamic-gallery_images");
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i];
         var deleteChk = row.querySelector('input[id$="-DELETE"]');
@@ -269,18 +269,6 @@
       }
     }
 
-    /* ── Upgrade existing Choose File buttons to also support multi-select ── */
-    function upgradeExistingInputs() {
-      inlineGroup.querySelectorAll('input[type="file"]').forEach(function (inp) {
-        inp.setAttribute("multiple", "multiple");
-        inp.setAttribute("accept", "image/*");
-      });
-    }
-
-    upgradeExistingInputs();
-
-    var observer = new MutationObserver(upgradeExistingInputs);
-    observer.observe(inlineGroup, { childList: true, subtree: true });
   }
 
   /* ── Boot ── */
