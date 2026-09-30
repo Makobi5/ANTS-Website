@@ -133,9 +133,14 @@ def notices_list(request):
         'categories': Notice.CATEGORY_CHOICES,
     })
  
-def notice_detail(request, pk):
-    notice = get_object_or_404(Notice, pk=pk, is_published=True)
+def notice_detail(request, slug):
+    notice = get_object_or_404(Notice, slug=slug, is_published=True)
     return render(request, 'notices/notice_detail.html', {'notice': notice})
+
+
+def notice_detail_legacy(request, pk):
+    notice = get_object_or_404(Notice, pk=pk, is_published=True)
+    return redirect(notice.get_absolute_url(), permanent=True)
 
 
 def who_we_are(request):

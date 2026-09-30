@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import notices_list, notice_detail
+from .views import notices_list, notice_detail, notice_detail_legacy
 urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
@@ -24,5 +24,6 @@ urlpatterns = [
     path('donations/', views.donations, name='donations'),
     path('community-outreach/', views.community_outreach, name='community_outreach'),
     path('noticeboard/',          notices_list,  name='notices_list'),
-    path('noticeboard/<int:pk>/', notice_detail, name='notice_detail'),
+    path('noticeboard/<int:pk>/', notice_detail_legacy, name='notice_detail_legacy'),
+    path('noticeboard/<slug:slug>/', notice_detail, name='notice_detail'),
 ]

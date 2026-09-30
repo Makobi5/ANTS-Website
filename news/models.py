@@ -85,6 +85,11 @@ class Event(models.Model):
         help_text="Check this box if you want this event to appear in the big main slider on the homepage."
     )
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
     class Meta:
         ordering = ['date', 'time']
 

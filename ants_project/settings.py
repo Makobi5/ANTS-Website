@@ -62,6 +62,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'ants_project.middleware.CanonicalDomainMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,7 +76,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ants_project.urls'
 ROOT_HOSTCONF = 'ants_project.hosts'
-DEFAULT_HOST = 'default'
+DEFAULT_HOST = 'www'
 
 TEMPLATES = [
     {
@@ -186,6 +187,7 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'info@ants.ac.ug')
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+SITE_URL = os.getenv('SITE_URL', 'https://www.ants.ac.ug').rstrip('/')
 
 if os.getenv('DJANGO_EMAIL_BACKEND'):
     EMAIL_BACKEND = os.getenv('DJANGO_EMAIL_BACKEND')

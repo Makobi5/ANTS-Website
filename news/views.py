@@ -107,8 +107,6 @@ def subscribe_newsletter(request):
         messages.warning(request, "You are already subscribed!", extra_tags='newsletter')
         return redirect(f"{next_url}#newsletter")
 
-    Subscriber.objects.create(email=email)
-
     try:
         subject = "Welcome to All Nations Theological College!"
         from_email = settings.DEFAULT_FROM_EMAIL
@@ -120,11 +118,12 @@ def subscribe_newsletter(request):
     except Exception:
         messages.error(
             request,
-            "Your subscription was saved, but we could not send the confirmation email right now. Please try again later.",
+            "We could not complete your subscription because the email could not be sent. Please try again later.",
             extra_tags='newsletter',
         )
         return redirect(f"{next_url}#newsletter")
 
-    success_msg = "Success! An email was just sent to confirm your subscription. Please check your inbox."
+    Subscriber.objects.create(email=email)
+    success_msg = "You are subscribed! A welcome email has been sent."
     messages.success(request, success_msg, extra_tags='newsletter')
     return redirect(f"{next_url}#newsletter")

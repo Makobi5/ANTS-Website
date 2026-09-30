@@ -3,6 +3,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from staff.models import StaffMember
 import re
 from django.utils import timezone
+from django.utils.text import slugify
 
 # Create your models here.
 class Policy(models.Model):
@@ -461,6 +462,7 @@ class Notice(models.Model):
         ('academic',   'Academic'),
         ('admissions', 'Admissions'),
         ('chapel',     'Chapel'),
+        ('jobs',       'Job Opportunities'),
         ('finance',    'Finance'),
         ('staff',      'Staff'),
         ('general',    'General'),
@@ -474,6 +476,7 @@ class Notice(models.Model):
     ]
  
     title           = models.CharField(max_length=255)
+    slug            = models.SlugField(max_length=255, unique=True, blank=True)
     content         = RichTextUploadingField(help_text="Full body of the notice.")
     category        = models.CharField(max_length=30, choices=CATEGORY_CHOICES, default='general')
     target_audience = models.CharField(max_length=20, choices=TARGET_CHOICES, default='all',
@@ -493,10 +496,22 @@ class Notice(models.Model):
  
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title) or 'notice'
+            if base_slug.isdigit():
+                base_slug = f'notice-{base_slug}'
+            self.slug = base_slug
+            suffix = 2
+            while type(self).objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+                self.slug = f'{base_slug}-{suffix}'
+                suffix += 1
+        super().save(*args, **kwargs)
  
     def get_absolute_url(self):
         from django.urls import reverse
-        return reverse('notice_detail', kwargs={'pk': self.pk})    
+        return reverse('notice_detail', kwargs={'slug': self.slug})
 
 # ============================================================
 # PopupBanner — controls the site-wide popup from Admin

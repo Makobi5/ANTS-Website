@@ -64,12 +64,12 @@
                         </span>
                     </div>
 
-                    <a href="{% url 'notice_detail' notice.pk %}" class="fw-bold text-decoration-none d-block mb-1"
+                    <a href="{% url 'notice_detail' notice.slug %}" class="fw-bold text-decoration-none d-block mb-1"
                        style="color: var(--ants-purple); font-size: 1rem;">
                         {{ notice.title }}
                     </a>
 
-                    <a href="{% url 'notice_detail' notice.pk %}" class="small fw-bold text-decoration-none"
+                    <a href="{% url 'notice_detail' notice.slug %}" class="small fw-bold text-decoration-none"
                        style="color: var(--ants-gold);">
                         Read More <i class="fas fa-arrow-right ms-1"></i>
                     </a>

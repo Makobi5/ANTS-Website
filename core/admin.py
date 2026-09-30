@@ -249,6 +249,7 @@ class FeeStructureAdmin(admin.ModelAdmin):
 
 @admin.register(Notice)
 class NoticeAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
     list_display   = ('title', 'category', 'target_audience', 'date_posted', 'is_published', 'is_pinned')
     list_filter    = ('category', 'target_audience', 'is_published', 'is_pinned')
     search_fields  = ('title', 'content')
@@ -257,7 +258,7 @@ class NoticeAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_posted'
     fieldsets = (
         ('Notice Details', {
-            'fields': ('title', 'content', 'category', 'target_audience', 'attachment')
+            'fields': ('title', 'slug', 'content', 'category', 'target_audience', 'attachment')
         }),
         ('Publishing', {
             'fields': ('date_posted', 'is_published', 'is_pinned')

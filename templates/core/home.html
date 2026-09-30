@@ -465,6 +465,9 @@
             <a href="{% url 'notices_list' %}?category=chapel"
                class="nb-pill {% if request.GET.category == 'chapel' %}nb-pill-active{% endif %}"
                data-cat="chapel">Chapel</a>
+                <a href="{% url 'notices_list' %}?category=jobs"
+                    class="nb-pill {% if request.GET.category == 'jobs' %}nb-pill-active{% endif %}"
+                    data-cat="jobs">Job Opportunities</a>
         </div>
  
         <!-- Notice List Card -->
@@ -490,7 +493,7 @@
  
                     <!-- Notice Content -->
                     <div class="flex-grow-1 d-flex flex-column justify-content-center" style="padding: 16px 20px; gap: 4px;">
-                        <a href="{% url 'notice_detail' notice.pk %}"
+                        <a href="{% url 'notice_detail' notice.slug %}"
                            class="fw-500 text-decoration-none"
                            style="font-size: 0.93rem; color: var(--ants-purple); font-weight: 500;">
                             {{ notice.title }}
@@ -827,6 +830,10 @@
     .nb-badge-chapel {
         background: #e8f5e9;
         color: #1b5e20;
+    }
+    .nb-badge-jobs {
+        background: #fff0d6;
+        color: #754500;
     }
     .nb-badge-general {
         background: #f0f0f0;

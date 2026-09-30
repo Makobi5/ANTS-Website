@@ -395,17 +395,21 @@
                     {% if messages %}
                         {% for message in messages %}
                             {% if 'newsletter' in message.tags %}
-                                <!-- SUCCESS MESSAGE (Appears instead of form) -->
-                                <div class="text-white fade-in-right p-3 rounded" style="background-color: rgba(0,0,0,0.1);">
-                                    <h4 class="fw-bold mb-2">
-                                        <i class="fas fa-check-circle me-2"></i> Success!
-                                    </h4>
-                                    <p class="mb-0" style="font-size: 1.05rem; line-height: 1.4; color: #333;">
+                                {% if message.level_tag == 'success' %}
+                                    <div class="text-white fade-in-right p-3 rounded" style="background-color: rgba(0,0,0,0.1);">
+                                        <h4 class="fw-bold mb-2">
+                                            <i class="fas fa-check-circle me-2"></i> Success!
+                                        </h4>
+                                        <p class="mb-0" style="font-size: 1.05rem; line-height: 1.4; color: #333;">
+                                            {{ message }}
+                                        </p>
+                                    </div>
+                                    <style>.newsletter-form-wrapper { display: none !important; }</style>
+                                {% else %}
+                                    <div class="alert alert-{% if message.level_tag == 'error' %}danger{% else %}{{ message.level_tag }}{% endif %} mb-3" role="alert">
                                         {{ message }}
-                                    </p>
-                                </div>
-                                <!-- Hide the form if success message exists -->
-                                <style>.newsletter-form-wrapper { display: none !important; }</style>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
