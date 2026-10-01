@@ -21,21 +21,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-92h_6@t$x$d+u-lv95*0g)xeh&w7r@fn3$@t$3)kc1(b7@d_n9'
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-
+SITE_URL = os.environ.get("SITE_URL", "https://www.ants.ac.ug")
 ALLOWED_HOSTS = [
-    'ants.ac.ug',
-    'www.ants.ac.ug',
-    'admissions.ants.ac.ug',
-    'chapel.ants.ac.ug',
-    'events.ants.ac.ug',
-    'gallery.ants.ac.ug',
-    '127.0.0.1',
+    "www.ants.ac.ug",
+    "ants.ac.ug",
+    "admissions.ants.ac.ug",
+    "chapel.ants.ac.ug",
+    "events.ants.ac.ug",
+    "gallery.ants.ac.ug",
+    "127.0.0.1",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.ants.ac.ug",
+    "https://ants.ac.ug",
+    "https://admissions.ants.ac.ug",
+    "https://chapel.ants.ac.ug",
+    "https://events.ants.ac.ug",
+    "https://gallery.ants.ac.ug",
 ]
 
 
@@ -176,22 +181,25 @@ CKEDITOR_CONFIGS = {
 }
 
 # Email Settings
-# Set these environment variables in the shell or deployment environment
-# to send real emails through SMTP. Without them, Django falls back to the
-# console backend for local development so messages are printed in the terminal.
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'true').lower() in ('1', 'true', 'yes', 'on')
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'false').lower() in ('1', 'true', 'yes', 'on')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'info@ants.ac.ug')
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "info@ants.ac.ug")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-SITE_URL = os.getenv('SITE_URL', 'https://www.ants.ac.ug').rstrip('/')
-
-if os.getenv('DJANGO_EMAIL_BACKEND'):
-    EMAIL_BACKEND = os.getenv('DJANGO_EMAIL_BACKEND')
-elif EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+if os.environ.get("EMAIL_HOST_PASSWORD"):
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ["EMAIL_HOST"]
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 465))
+    EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "True") == "True"
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "False") == "True"
+    EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+    EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+    EMAIL_TIMEOUT = 20
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Production hardening (only when DEBUG is off)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
